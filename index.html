@@ -341,6 +341,183 @@
 
         .toast.show { opacity: 1; }
 
+        /* ==================== 宝宝风格设置 ==================== */
+        .baby-style-section {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(255, 182, 193, 0.3);
+        }
+
+        .baby-style-section h3 {
+            font-size: 15px;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+
+        .style-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .style-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px 8px;
+            border-radius: 12px;
+            border: 2px solid var(--pink-light);
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .style-option:hover {
+            border-color: var(--pink);
+        }
+
+        .style-option.selected {
+            border-color: var(--pink-dark);
+            background: var(--pink-light);
+        }
+
+        .style-option .icon {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .style-option .name {
+            font-size: 11px;
+            color: var(--text-dark);
+            text-align: center;
+        }
+
+        .sub-options {
+            display: none;
+            padding: 15px;
+            background: var(--pink-light);
+            border-radius: 12px;
+            margin-top: 10px;
+        }
+
+        .sub-options.show {
+            display: block;
+        }
+
+        .sub-options-title {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 10px;
+        }
+
+        .sub-options-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .sub-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            cursor: pointer;
+            border: 2px solid var(--white);
+            transition: all 0.2s ease;
+            background: var(--white);
+        }
+
+        .sub-option:hover {
+            transform: scale(1.1);
+        }
+
+        .sub-option.selected {
+            border-color: var(--pink-dark);
+            box-shadow: 0 0 0 2px var(--pink-dark);
+        }
+
+        .upload-area {
+            border: 2px dashed var(--pink);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .upload-area:hover {
+            background: var(--pink-light);
+        }
+
+        .upload-area .upload-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+
+        .upload-area .upload-text {
+            font-size: 13px;
+            color: var(--text-light);
+        }
+
+        .preview-thumb {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 10px auto;
+            display: none;
+            border: 3px solid var(--pink-dark);
+        }
+
+        .preview-thumb.show {
+            display: block;
+        }
+
+        .baby-style-preview {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 10px;
+        }
+
+        /* 按钮上的宝宝图标 */
+        .kick-button .baby-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-bottom: 5px;
+            background: rgba(255,255,255,0.3);
+            overflow: hidden;
+        }
+
+        .kick-button .baby-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 记录按钮点击动画 */
+        @keyframes kickPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.95); }
+            100% { transform: scale(1); }
+        }
+
+        .kick-button.kicking {
+            animation: kickPulse 0.15s ease;
+        }
+
         /* 页面 */
         .page { display: none; }
         .page.active { display: block; }
@@ -491,10 +668,12 @@
 
             <!-- 记录按钮 -->
             <button class="kick-button" id="kickButton">
+                <span class="baby-icon" id="kickButtonIcon"></span>
                 <span>點擊記錄</span>
                 <span style="font-size: 12px; margin-top: 4px;">胎動</span>
             </button>
             <div class="last-kick" id="lastKick">還沒記錄，點擊上方按鈕</div>
+            <div style="text-align: center; margin-top: 8px; font-size: 15px; color: var(--pink-dark);" id="babyNameDisplay"></div>
 
             <!-- 快速计数切换 -->
             <div style="text-align: center;">
@@ -555,6 +734,82 @@
     <!-- 设置页 -->
     <div class="page" id="settingsPage">
         <div class="container">
+            <!-- 宝宝风格设置 -->
+            <div class="baby-style-section">
+                <h3>👶 宝宝风格设置</h3>
+                <p style="font-size: 12px; color: var(--text-light); margin-bottom: 12px;">选择你喜欢的风格：</p>
+                
+                <!-- 风格选择 -->
+                <div class="style-grid">
+                    <div class="style-option selected" data-style="cartoon" onclick="selectStyle('cartoon')">
+                        <span class="icon">👶🏻</span>
+                        <span class="name">卡通可爱</span>
+                    </div>
+                    <div class="style-option" data-style="stick" onclick="selectStyle('stick')">
+                        <span class="icon">⭕️</span>
+                        <span class="name">简笔画</span>
+                    </div>
+                    <div class="style-option" data-style="animal" onclick="selectStyle('animal')">
+                        <span class="icon">🐻</span>
+                        <span class="name">动物</span>
+                    </div>
+                    <div class="style-option" data-style="season" onclick="selectStyle('season')">
+                        <span class="icon">🌸</span>
+                        <span class="name">季节主题</span>
+                    </div>
+                    <div class="style-option" data-style="abstract" onclick="selectStyle('abstract')">
+                        <span class="icon">🎨</span>
+                        <span class="name">抽象艺术</span>
+                    </div>
+                    <div class="style-option" data-style="custom" onclick="selectStyle('custom')">
+                        <span class="icon">📷</span>
+                        <span class="name">自定义上传</span>
+                    </div>
+                </div>
+
+                <!-- 肤色选项（卡通风格） -->
+                <div class="sub-options show" id="cartoonOptions">
+                    <div class="sub-options-title">选择肤色：</div>
+                    <div class="sub-options-grid">
+                        <div class="sub-option selected" data-icon="👶🏻" onclick="selectIcon(this, 'cartoon')">👶🏻</div>
+                        <div class="sub-option" data-icon="👶🏼" onclick="selectIcon(this, 'cartoon')">👶🏼</div>
+                        <div class="sub-option" data-icon="👶🏽" onclick="selectIcon(this, 'cartoon')">👶🏽</div>
+                        <div class="sub-option" data-icon="👶🏾" onclick="selectIcon(this, 'cartoon')">👶🏾</div>
+                        <div class="sub-option" data-icon="👶🏿" onclick="selectIcon(this, 'cartoon')">👶🏿</div>
+                    </div>
+                </div>
+
+                <!-- 动物选项 -->
+                <div class="sub-options" id="animalOptions">
+                    <div class="sub-options-title">选择动物：</div>
+                    <div class="sub-options-grid">
+                        <div class="sub-option selected" data-icon="🐻" onclick="selectIcon(this, 'animal')">🐻</div>
+                        <div class="sub-option" data-icon="🐰" onclick="selectIcon(this, 'animal')">🐰</div>
+                        <div class="sub-option" data-icon="🐨" onclick="selectIcon(this, 'animal')">🐨</div>
+                        <div class="sub-option" data-icon="🐼" onclick="selectIcon(this, 'animal')">🐼</div>
+                        <div class="sub-option" data-icon="🐱" onclick="selectIcon(this, 'animal')">🐱</div>
+                        <div class="sub-option" data-icon="🐶" onclick="selectIcon(this, 'animal')">🐶</div>
+                        <div class="sub-option" data-icon="🦊" onclick="selectIcon(this, 'animal')">🦊</div>
+                        <div class="sub-option" data-icon="🐸" onclick="selectIcon(this, 'animal')">🐸</div>
+                    </div>
+                </div>
+
+                <!-- 自定义上传 -->
+                <div class="sub-options" id="customOptions">
+                    <div class="upload-area" onclick="document.getElementById('babyPhotoInput').click()">
+                        <div class="upload-icon">📷</div>
+                        <div class="upload-text">点击上传宝宝照片</div>
+                    </div>
+                    <input type="file" id="babyPhotoInput" accept="image/*" style="display:none" onchange="handlePhotoUpload(event)">
+                    <img id="babyPhotoPreview" class="preview-thumb" alt="宝宝照片预览">
+                </div>
+
+                <!-- 风格预览提示 -->
+                <div class="baby-style-preview" id="stylePreview">
+                    当前风格：卡通可爱
+                </div>
+            </div>
+
             <!-- 孕期设置 -->
             <div class="settings-card">
                 <h3>👶 孕期設置</h3>
@@ -565,6 +820,15 @@
                 <div class="setting-item">
                     <span class="setting-label">當前孕周</span>
                     <span class="report-value" id="displayWeek">-- 周</span>
+                </div>
+            </div>
+
+            <!-- 宝宝名字设置 -->
+            <div class="settings-card">
+                <h3>👶 宝宝信息设置</h3>
+                <div class="setting-item">
+                    <span class="setting-label">宝宝小名</span>
+                    <input type="text" id="babyName" class="setting-input" placeholder="输入名字（如：豆豆、小宝）" maxlength="50" onchange="updateBabyName()">
                 </div>
             </div>
 
@@ -588,9 +852,11 @@
             <div class="settings-card">
                 <h3>ℹ️ 關於</h3>
                 <p style="font-size: 12px; color: var(--text-light); line-height: 1.5;">
-                    胎動記錄器 v1.1<br>
+                    胎動記錄器 v1.2<br>
                     數據保存在本地<br>
-                    基於醫學指南設計
+                    基於醫學指南設計<br>
+                    <br>
+                    <span id="aboutBabyStyle" style="color: var(--pink-dark);"></span>
                 </p>
             </div>
         </div>
@@ -779,10 +1045,12 @@
                         // 云端更新，覆盖本地
                         Object.assign(settings, {
                             dueDate: remoteSettings.due_date || '',
-                            vibrate: remoteSettings.vibrate !== false
+                            vibrate: remoteSettings.vibrate !== false,
+                            babyName: remoteSettings.baby_name || ''
                         });
                         localStorage.setItem('kickSettings', JSON.stringify(settings));
                         updatePregnancyUI();
+                        initBabyNameUI();
                         console.log('設置已從雲端同步');
                     } else if (localUpdated > 0) {
                         // 本地更新，上传云端
@@ -807,7 +1075,9 @@
                 const settingsData = {
                     user_id: currentUser.id,
                     due_date: settings.dueDate || null,
-                    vibrate: settings.vibrate !== false
+                    vibrate: settings.vibrate !== false,
+                    baby_name: settings.babyName || null,
+                    updated_at: new Date().toISOString()
                 };
                 
                 const { error } = await supabase
@@ -1147,7 +1417,7 @@
 
         // ==================== 数据存储 ====================
         let kickData = JSON.parse(localStorage.getItem('kickData') || '{}');
-        let settings = JSON.parse(localStorage.getItem('kickSettings') || '{"vibrate": true, "dueDate": ""}');
+        let settings = JSON.parse(localStorage.getItem('kickSettings') || '{"vibrate": true, "dueDate": "", "babyName": ""}');
         let sessionData = { active: false, count: 0, startTime: null };
 
         // ==================== 工具函数 ====================
@@ -1197,6 +1467,7 @@
             }
             document.getElementById('reportDate').value = getToday();
             updatePregnancy();
+            initBabyNameUI();
             updateTodayCount();
             updateTimeline();
             updateWeekStats();
@@ -1234,6 +1505,46 @@
                 document.getElementById('countTip').textContent = `孕${weeks}周：2h內≥${getStandard(weeks).per2h}次為正常 - ${getTip(weeks)}`;
             } else {
                 document.getElementById('countTip').textContent = '寶寶預計16-20周開始胎動';
+            }
+        }
+
+        // ==================== 宝宝名字功能 ====================
+        function updateBabyName() {
+            const babyName = document.getElementById('babyName').value.trim();
+            settings.babyName = babyName;
+            localStorage.setItem('kickSettings', JSON.stringify(settings));
+            
+            // 同步到云端
+            if (supabase && currentUser?.id) {
+                uploadSettings();
+            }
+            
+            updateBabyNameDisplay();
+        }
+
+        function updateBabyNameDisplay() {
+            const display = document.getElementById('babyNameDisplay');
+            const aboutDisplay = document.getElementById('aboutBabyName');
+            
+            if (settings.babyName) {
+                display.textContent = `👶 ${settings.babyName}`;
+                display.style.display = 'block';
+                aboutDisplay.textContent = `寶寶小名：${settings.babyName}`;
+            } else {
+                display.style.display = 'none';
+                aboutDisplay.textContent = '';
+            }
+        }
+
+        function initBabyNameUI() {
+            if (settings.babyName) {
+                document.getElementById('babyName').value = settings.babyName;
+            }
+            updateBabyNameDisplay();
+            
+            // 如果有风格设置，更新按钮图标
+            if (settings.babyIcon) {
+                document.getElementById('kickButtonIcon').textContent = settings.babyIcon;
             }
         }
 
