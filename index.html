@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>胎动记录器 👶</title>
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+    
+    <!-- 原有样式保持不变 -->
     <style>
         * {
             margin: 0;
@@ -611,7 +615,520 @@
     <!-- 提示 -->
     <div class="toast" id="toast"></div>
 
+    <!-- ==================== Supabase 配置 ==================== -->
     <script>
+        // Supabase 配置
+        const SUPABASE_URL = 'https://uwvlduprxppwdkjkvwby.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_NCyVuDM0d_Nkn50QvKdY-Q_OCQJsN5L';
+        
+        // 初始化 Supabase 客户端
+        let supabase = null;
+        let currentUser = null;
+        let isOnline = navigator.onLine;
+        let syncPending = false;
+
+        // ==================== Supabase 初始化 ====================
+        async function initSupabase() {
+            try {
+                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+                    auth: {
+                        persistSession: true,
+                        autoRefreshToken: true
+                    }
+                });
+                
+                // 监听网络状态
+                window.addEventListener('online', () => {
+                    isOnline = true;
+                    showToast('🌐 已連線，開始同步');
+                    processSyncQueue();
+                });
+                window.addEventListener('offline', () => {
+                    isOnline = false;
+                    showToast('📴 離線模式');
+                });
+                
+                // 尝试匿名登录
+                await signInAnonymous();
+                
+                // 确保表存在
+                await ensureTables();
+                
+                // 同步数据
+                await syncAllData();
+                
+                return true;
+            } catch (e) {
+                console.error('Supabase 初始化失敗:', e);
+                // 使用本地模式
+                return false;
+            }
+        }
+
+        // ==================== 匿名登录 ====================
+        async function signInAnonymous() {
+            try {
+                // 检查现有会话
+                const { data: { session }, error } = await supabase.auth.getSession();
+                if (error && error.name !== 'AuthSessionMissingError') {
+                    throw error;
+                }
+                
+                if (session?.user) {
+                    currentUser = session.user;
+                    console.log('已有會話:', currentUser.id);
+                } else {
+                    // 尝试匿名登录
+                    const { data, error } = await supabase.auth.signInAnonymously();
+                    if (error) throw error;
+                    currentUser = data.user;
+                    console.log('匿名登錄成功:', currentUser.id);
+                }
+                
+                // 监听认证状态变化
+                supabase.auth.onAuthStateChange((event, session) => {
+                    if (session?.user) {
+                        currentUser = session.user;
+                        console.log('用戶已登錄:', currentUser.id);
+                    }
+                });
+                
+                return true;
+            } catch (e) {
+                console.error('登錄失敗:', e);
+                // 生成臨時用戶ID（離線模式）
+                currentUser = { id: localStorage.getItem('tempUserId') || generateTempUserId() };
+                return false;
+            }
+        }
+
+        function generateTempUserId() {
+            const id = crypto.randomUUID();
+            localStorage.setItem('tempUserId', id);
+            return { id };
+        }
+
+        // ==================== 确保表存在 ====================
+        async function ensureTables() {
+            // Supabase 会自动创建表，这里可以检查并创建
+            try {
+                // 检查 kick_records 表
+                const { error: recordsError } = await supabase
+                    .from('kick_records')
+                    .select('id')
+                    .limit(1);
+                
+                if (recordsError && recordsError.code === 'PGRST116') {
+                    // 表不存在，Supabase 会在首次插入时自动创建
+                    console.log('表結構將自動創建');
+                }
+                
+                // 检查 kick_settings 表
+                const { error: settingsError } = await supabase
+                    .from('kick_settings')
+                    .select('id')
+                    .limit(1);
+                
+                if (settingsError && settingsError.code === 'PGRST116') {
+                    console.log('設置表將自動創建');
+                }
+                
+            } catch (e) {
+                console.log('表檢查完成');
+            }
+        }
+
+        // ==================== 数据同步 ====================
+        async function syncAllData() {
+            if (!isOnline || !currentUser?.id) return;
+            
+            try {
+                // 同步设置
+                await syncSettings();
+                
+                // 同步记录
+                await syncRecords();
+                
+                console.log('數據同步完成');
+            } catch (e) {
+                console.error('同步失敗:', e);
+                addToSyncQueue();
+            }
+        }
+
+        // ==================== 设置同步 ====================
+        async function syncSettings() {
+            if (!isOnline || !currentUser?.id) return;
+            
+            try {
+                // 从云端获取设置
+                const { data: remoteSettings, error } = await supabase
+                    .from('kick_settings')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .single();
+                
+                if (error && error.code !== 'PGRST116') throw error;
+                
+                if (remoteSettings) {
+                    // 云端有数据，检查是否需要更新本地
+                    const localSettings = JSON.parse(localStorage.getItem('kickSettings') || '{}');
+                    const localUpdated = parseInt(localStorage.getItem('settingsUpdated') || '0');
+                    
+                    if (remoteSettings.updated_at && new Date(remoteSettings.updated_at) > new Date(localUpdated)) {
+                        // 云端更新，覆盖本地
+                        Object.assign(settings, {
+                            dueDate: remoteSettings.due_date || '',
+                            vibrate: remoteSettings.vibrate !== false
+                        });
+                        localStorage.setItem('kickSettings', JSON.stringify(settings));
+                        updatePregnancyUI();
+                        console.log('設置已從雲端同步');
+                    } else if (localUpdated > 0) {
+                        // 本地更新，上传云端
+                        await uploadSettings();
+                    }
+                } else {
+                    // 云端没有本地有，上传
+                    if (Object.keys(settings).length > 0) {
+                        await uploadSettings();
+                    }
+                }
+                
+            } catch (e) {
+                console.error('設置同步失敗:', e);
+            }
+        }
+
+        async function uploadSettings() {
+            if (!isOnline || !currentUser?.id) return;
+            
+            try {
+                const settingsData = {
+                    user_id: currentUser.id,
+                    due_date: settings.dueDate || null,
+                    vibrate: settings.vibrate !== false
+                };
+                
+                const { error } = await supabase
+                    .from('kick_settings')
+                    .upsert(settingsData, { onConflict: 'user_id' });
+                
+                if (error) throw error;
+                
+                localStorage.setItem('settingsUpdated', new Date().toISOString());
+                console.log('設置已上傳');
+            } catch (e) {
+                console.error('設置上傳失敗:', e);
+                addToSyncQueue({ type: 'settings', data: settings });
+            }
+        }
+
+        // ==================== 记录同步 ====================
+        async function syncRecords() {
+            if (!isOnline || !currentUser?.id) return;
+            
+            try {
+                // 获取云端最新记录时间
+                const { data: latestRecord } = await supabase
+                    .from('kick_records')
+                    .select('created_at')
+                    .eq('user_id', currentUser.id)
+                    .order('created_at', { ascending: false })
+                    .limit(1)
+                    .single();
+                
+                const localUpdated = parseInt(localStorage.getItem('recordsUpdated') || '0');
+                const lastSyncTime = latestRecord?.created_at ? new Date(latestRecord.created_at).getTime() : 0;
+                
+                if (localUpdated > lastSyncTime) {
+                    // 有本地新记录需要上传
+                    await uploadNewRecords();
+                }
+                
+                if (lastSyncTime > localUpdated) {
+                    // 有云端新记录需要下载
+                    await downloadNewRecords(lastSyncTime);
+                }
+                
+                localStorage.setItem('recordsUpdated', Date.now().toString());
+                
+            } catch (e) {
+                console.error('記錄同步失敗:', e);
+            }
+        }
+
+        async function uploadNewRecords() {
+            if (!isOnline || !currentUser?.id) return;
+            
+            const recordsToUpload = [];
+            const now = Date.now();
+            
+            for (const [date, times] of Object.entries(kickData)) {
+                const recordDate = new Date(date);
+                for (const time of times) {
+                    const recordTime = new Date(time).getTime();
+                    if (recordTime > localStorage.getItem('lastSyncTime') || !localStorage.getItem('lastSyncTime')) {
+                        recordsToUpload.push({
+                            user_id: currentUser.id,
+                            record_date: date,
+                            record_time: time,
+                            created_at: new Date(recordTime).toISOString()
+                        });
+                    }
+                }
+            }
+            
+            if (recordsToUpload.length === 0) return;
+            
+            try {
+                const { error } = await supabase
+                    .from('kick_records')
+                    .upsert(recordsToUpload, { ignoreDuplicates: true });
+                
+                if (error) throw error;
+                
+                localStorage.setItem('lastSyncTime', now.toString());
+                console.log(`已上傳 ${recordsToUpload.length} 條記錄`);
+            } catch (e) {
+                console.error('記錄上傳失敗:', e);
+                addToSyncQueue({ type: 'records', data: recordsToUpload });
+            }
+        }
+
+        async function downloadNewRecords(since) {
+            if (!isOnline || !currentUser?.id) return;
+            
+            try {
+                const { data: newRecords, error } = await supabase
+                    .from('kick_records')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .gt('created_at', new Date(since).toISOString())
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                
+                if (!newRecords || newRecords.length === 0) return;
+                
+                let updated = false;
+                for (const record of newRecords) {
+                    const date = record.record_date;
+                    if (!kickData[date]) kickData[date] = [];
+                    
+                    const timeStr = new Date(record.record_time).toISOString();
+                    if (!kickData[date].includes(timeStr)) {
+                        kickData[date].push(timeStr);
+                        updated = true;
+                    }
+                }
+                
+                if (updated) {
+                    localStorage.setItem('kickData', JSON.stringify(kickData));
+                    localStorage.setItem('recordsUpdated', Date.now().toString());
+                    updateTodayCount();
+                    updateTimeline();
+                    updateWeekStats();
+                    console.log(`已下載 ${newRecords.length} 條新記錄`);
+                }
+                
+            } catch (e) {
+                console.error('記錄下載失敗:', e);
+            }
+        }
+
+        // ==================== 同步队列 ====================
+        function addToSyncQueue(item) {
+            const queue = JSON.parse(localStorage.getItem('syncQueue') || '[]');
+            queue.push({
+                ...item,
+                timestamp: Date.now()
+            });
+            localStorage.setItem('syncQueue', JSON.stringify(queue));
+            syncPending = true;
+        }
+
+        async function processSyncQueue() {
+            if (!isOnline) return;
+            
+            const queue = JSON.parse(localStorage.getItem('syncQueue') || '[]');
+            if (queue.length === 0) {
+                syncPending = false;
+                return;
+            }
+            
+            const remaining = [];
+            for (const item of queue) {
+                try {
+                    if (item.type === 'settings') {
+                        await uploadSettings();
+                    } else if (item.type === 'records') {
+                        const { error } = await supabase
+                            .from('kick_records')
+                            .upsert(item.data, { ignoreDuplicates: true });
+                        if (error) throw error;
+                    }
+                } catch (e) {
+                    remaining.push(item);
+                }
+            }
+            
+            localStorage.setItem('syncQueue', JSON.stringify(remaining));
+            syncPending = remaining.length > 0;
+        }
+
+        // ==================== 导入/导出 ====================
+        async function importDataFromCloud() {
+            if (!isOnline || !currentUser?.id) {
+                showToast('📴 離線模式，無法導入');
+                return;
+            }
+            
+            try {
+                // 获取所有云端记录
+                const { data: records, error } = await supabase
+                    .from('kick_records')
+                    .select('*')
+                    .eq('user_id', currentUser.id);
+                
+                if (error) throw error;
+                
+                if (!records || records.length === 0) {
+                    showToast('☁️ 雲端沒有數據');
+                    return;
+                }
+                
+                // 合并数据
+                let importedCount = 0;
+                for (const record of records) {
+                    const date = record.record_date;
+                    if (!kickData[date]) kickData[date] = [];
+                    
+                    const timeStr = new Date(record.record_time).toISOString();
+                    if (!kickData[date].includes(timeStr)) {
+                        kickData[date].push(timeStr);
+                        importedCount++;
+                    }
+                }
+                
+                // 获取设置
+                const { data: settingsData } = await supabase
+                    .from('kick_settings')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .single();
+                
+                if (settingsData) {
+                    settings.dueDate = settingsData.due_date || settings.dueDate;
+                    settings.vibrate = settingsData.vibrate !== false;
+                    localStorage.setItem('kickSettings', JSON.stringify(settings));
+                }
+                
+                localStorage.setItem('kickData', JSON.stringify(kickData));
+                updateAllUI();
+                
+                showToast(`☁️ 已導入 ${importedCount} 條記錄`);
+                
+            } catch (e) {
+                console.error('導入失敗:', e);
+                showToast('❌ 導入失敗');
+            }
+        }
+
+        function exportAllData() {
+            const data = {
+                records: kickData,
+                settings: settings,
+                exportDate: getToday(),
+                exportedAt: new Date().toISOString()
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = `胎動記錄_${getToday()}.json`;
+            a.click();
+            
+            showToast('📦 已導出全部數據');
+        }
+
+        async function importFromFile(file) {
+            try {
+                const text = await file.text();
+                const data = JSON.parse(text);
+                
+                if (data.records) {
+                    // 合并记录（保留本地的）
+                    for (const [date, times] of Object.entries(data.records)) {
+                        if (!kickData[date]) {
+                            kickData[date] = times;
+                        } else {
+                            for (const time of times) {
+                                if (!kickData[date].includes(time)) {
+                                    kickData[date].push(time);
+                                }
+                            }
+                        }
+                    }
+                    localStorage.setItem('kickData', JSON.stringify(kickData));
+                }
+                
+                if (data.settings) {
+                    settings = { ...settings, ...data.settings };
+                    localStorage.setItem('kickSettings', JSON.stringify(settings));
+                    updatePregnancyUI();
+                }
+                
+                updateAllUI();
+                showToast('📥 導入成功');
+                
+                // 如果在线，同步到云端
+                if (isOnline && currentUser?.id) {
+                    syncAllData();
+                }
+                
+            } catch (e) {
+                console.error('導入失敗:', e);
+                showToast('❌ 導入失敗');
+            }
+        }
+
+        // ==================== UI 更新 ====================
+        function updateAllUI() {
+            updateTodayCount();
+            updateTimeline();
+            updateWeekStats();
+            updatePregnancyUI();
+            updateStatusBadge();
+        }
+
+        function updatePregnancyUI() {
+            if (settings.dueDate) {
+                document.getElementById('dueDate').value = settings.dueDate;
+            }
+            document.getElementById('vibrateToggle').classList.toggle('active', settings.vibrate);
+            updatePregnancy();
+        }
+
+        // ==================== 冲突解决 ====================
+        async function showSyncConflict(data) {
+            // 显示同步冲突选项
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <h3>☁️ 發現衝突</h3>
+                    <p>檢測到雲端有新數據，是否合併？</p>
+                    <div class="modal-buttons">
+                        <button onclick="resolveConflict('local')">保留本地</button>
+                        <button onclick="resolveConflict('cloud')">使用雲端</button>
+                        <button onclick="resolveConflict('merge')">合併兩者</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
         // ==================== 医学标准 ====================
         const PREGNANCY_STANDARDS = {
             ranges: [
@@ -671,7 +1188,8 @@
         }
 
         // ==================== 初始化 ====================
-        function init() {
+        async function init() {
+            // 先初始化 UI
             document.getElementById('currentDate').textContent = new Date().toLocaleDateString('zh-TW', { month: 'long', day: 'numeric', weekday: 'long' });
             document.getElementById('vibrateToggle').classList.toggle('active', settings.vibrate);
             if (settings.dueDate) {
@@ -682,12 +1200,26 @@
             updateTodayCount();
             updateTimeline();
             updateWeekStats();
+            
+            // 初始化 Supabase（异步，不阻塞 UI）
+            initSupabase().then(success => {
+                if (success) {
+                    console.log('☁️ Supabase 已連接');
+                } else {
+                    console.log('📴 使用本地模式');
+                }
+            });
         }
 
         function updatePregnancy() {
             const dueDate = document.getElementById('dueDate').value || settings.dueDate;
             settings.dueDate = dueDate;
             localStorage.setItem('kickSettings', JSON.stringify(settings));
+            
+            // 同步到云端
+            if (supabase && currentUser?.id) {
+                uploadSettings();
+            }
 
             if (!dueDate) {
                 document.getElementById('displayWeek').textContent = '-- 周';
@@ -778,10 +1310,29 @@
             if (!kickData[today]) kickData[today] = [];
             kickData[today].push(timeStr);
             localStorage.setItem('kickData', JSON.stringify(kickData));
+            localStorage.setItem('recordsUpdated', Date.now().toString());
             
             // 震动
             if (settings.vibrate && navigator.vibrate) {
                 navigator.vibrate([80, 40, 80]);
+            }
+            
+            // 同步到云端
+            if (supabase && currentUser?.id) {
+                const record = {
+                    user_id: currentUser.id,
+                    record_date: today,
+                    record_time: timeStr,
+                    created_at: timeStr
+                };
+                
+                supabase.from('kick_records').insert(record).then(({ error }) => {
+                    if (error) {
+                        addToSyncQueue({ type: 'records', data: [record] });
+                    } else {
+                        localStorage.setItem('lastSyncTime', Date.now().toString());
+                    }
+                });
             }
             
             // 提示
@@ -817,11 +1368,32 @@
             if (sessionData.active && sessionData.count > 0) {
                 const today = getToday();
                 const now = new Date();
+                const recordsToSync = [];
+                
                 for (let i = 0; i < sessionData.count; i++) {
+                    const timeStr = now.toISOString();
                     if (!kickData[today]) kickData[today] = [];
-                    kickData[today].push(now.toISOString());
+                    kickData[today].push(timeStr);
+                    
+                    recordsToSync.push({
+                        user_id: currentUser?.id,
+                        record_date: today,
+                        record_time: timeStr,
+                        created_at: timeStr
+                    });
                 }
                 localStorage.setItem('kickData', JSON.stringify(kickData));
+                localStorage.setItem('recordsUpdated', Date.now().toString());
+                
+                // 同步到云端
+                if (supabase && currentUser?.id) {
+                    supabase.from('kick_records').insert(recordsToSync).then(({ error }) => {
+                        if (error) {
+                            addToSyncQueue({ type: 'records', data: recordsToSync });
+                        }
+                    });
+                }
+                
                 updateTodayCount();
                 updateTimeline();
                 updateWeekStats();
@@ -926,23 +1498,59 @@
             settings.vibrate = !settings.vibrate;
             localStorage.setItem('kickSettings', JSON.stringify(settings));
             document.getElementById('vibrateToggle').classList.toggle('active', settings.vibrate);
+            
+            // 同步到云端
+            if (supabase && currentUser?.id) {
+                uploadSettings();
+            }
         }
 
         function exportData() {
-            const blob = new Blob([JSON.stringify({records: kickData, settings: settings, exportDate: getToday()}, null, 2)], {type: 'application/json'});
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `胎動記錄_${getToday()}.json`;
-            a.click();
-            showToast('📦 已導出');
+            exportAllData();
+        }
+
+        // 添加导入按钮功能
+        function addImportButton() {
+            // 检查是否已存在导入按钮
+            const existingBtn = document.querySelector('.import-btn');
+            if (existingBtn) return;
+            
+            const settingsCard = document.querySelector('.settings-card:nth-child(3)');
+            if (settingsCard) {
+                const importBtn = document.createElement('button');
+                importBtn.className = 'export-btn secondary import-btn';
+                importBtn.textContent = '☁️ 從雲端導入';
+                importBtn.onclick = importDataFromCloud;
+                settingsCard.appendChild(importBtn);
+                
+                // 添加文件导入按钮
+                const fileInput = document.createElement('input');
+                fileInput.type = 'file';
+                fileInput.accept = '.json';
+                fileInput.style.display = 'none';
+                fileInput.onchange = (e) => {
+                    if (e.target.files[0]) {
+                        importFromFile(e.target.files[0]);
+                    }
+                };
+                settingsCard.appendChild(fileInput);
+                
+                const importFileBtn = document.createElement('button');
+                importFileBtn.className = 'export-btn secondary import-btn';
+                importFileBtn.textContent = '📥 從文件導入';
+                importFileBtn.style.marginTop = '10px';
+                importFileBtn.onclick = () => fileInput.click();
+                settingsCard.appendChild(importFileBtn);
+            }
         }
 
         function clearAllData() {
-            if (confirm('確定清除所有數據？')) {
+            if (confirm('確定清除所有本地數據？雲端數據不會被刪除。')) {
                 kickData = {};
                 localStorage.removeItem('kickData');
+                localStorage.removeItem('recordsUpdated');
                 init();
-                showToast('🗑️ 已清除');
+                showToast('🗑️ 已清除本地數據');
             }
         }
 
@@ -955,6 +1563,9 @@
 
         // 启动
         init();
+        
+        // 添加导入按钮（在DOM加载后）
+        setTimeout(addImportButton, 100);
     </script>
 </body>
 </html>
