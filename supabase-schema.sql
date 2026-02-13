@@ -22,6 +22,9 @@ CREATE TABLE IF NOT EXISTS kick_settings (
     due_date DATE,
     vibrate BOOLEAN DEFAULT true,
     baby_name VARCHAR(50),
+    baby_style VARCHAR(50),          -- 宝宝风格：cartoon, stick, animal, season, abstract, custom
+    baby_icon VARCHAR(100),          -- 具体图标或emoji
+    baby_custom_image TEXT,          -- 自定义上传图片的base64或URL
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
