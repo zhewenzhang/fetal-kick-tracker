@@ -925,15 +925,15 @@
 
     <!-- 底部导航 -->
     <div class="nav-bar">
-        <button class="nav-item active" onclick="showPage('home')">
+        <button class="nav-item active" onclick="showPage('home', event)">
             <span>🏠</span>
             <span>首頁</span>
         </button>
-        <button class="nav-item" onclick="showPage('report')">
+        <button class="nav-item" onclick="showPage('report', event)">
             <span>📋</span>
             <span>報告</span>
         </button>
-        <button class="nav-item" onclick="showPage('settings')">
+        <button class="nav-item" onclick="showPage('settings', event)">
             <span>⚙️</span>
             <span>設置</span>
         </button>
@@ -1000,9 +1000,9 @@
             const std = getStandard(week);
             const ratio = count / std.per2h;
             
-            if (ratio >= 1) return { status: 'normal', label: '✅ 正常', tip: `2小时内≥${std.per2h}次` };
-            if (ratio >= 0.5) return { status: 'warning', label: '⚠️ 略少', tip: `建议继续观察` };
-            return { status: 'abnormal', label: '🚨 偏少', tip: '建议咨询医生" };
+            if (ratio >= 1) return { status: 'normal', label: '✅ 正常', tip: `2小時內≥${std.per2h}次` };
+            if (ratio >= 0.5) return { status: 'warning', label: '⚠️ 略少', tip: '建議繼續觀察' };
+            return { status: 'abnormal', label: '🚨 偏少', tip: '建議諮詢醫生' };
         }
 
         // ==================== 初始化 ====================
@@ -1279,12 +1279,22 @@
         }
 
         // ==================== 页面导航 ====================
-        function showPage(page) {
+        function showPage(page, evt) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             
             document.getElementById(page + 'Page').classList.add('active');
-            event.currentTarget.classList.add('active');
+            if (evt && evt.currentTarget) {
+                evt.currentTarget.classList.add('active');
+            } else {
+                // Find the nav item for this page
+                const navItems = document.querySelectorAll('.nav-item');
+                navItems.forEach(item => {
+                    if (item.textContent.toLowerCase().includes(page === 'home' ? '首頁' : page === 'report' ? '報告' : '設置')) {
+                        item.classList.add('active');
+                    }
+                });
+            }
         }
 
         // ==================== 报告功能 ====================
