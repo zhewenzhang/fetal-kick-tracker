@@ -1045,12 +1045,20 @@
                         // 云端更新，覆盖本地
                         Object.assign(settings, {
                             dueDate: remoteSettings.due_date || '',
-                            vibrate: remoteSettings.vibrate !== false,
-                            babyName: remoteSettings.baby_name || ''
+                            vibrate: remoteSettings.vibrate !== false
                         });
                         localStorage.setItem('kickSettings', JSON.stringify(settings));
                         updatePregnancyUI();
-                        initBabyNameUI();
+                        
+                        // 同步宝宝风格设置
+                        if (remoteSettings.baby_style || remoteSettings.baby_icon) {
+                            babyStyleSettings.style = remoteSettings.baby_style || babyStyleSettings.style;
+                            babyStyleSettings.icon = remoteSettings.baby_icon || babyStyleSettings.icon;
+                            babyStyleSettings.customImage = remoteSettings.baby_custom_image || babyStyleSettings.customImage;
+                            localStorage.setItem('babyStyleSettings', JSON.stringify(babyStyleSettings));
+                            initBabyStyle();
+                        }
+                        
                         console.log('設置已從雲端同步');
                     } else if (localUpdated > 0) {
                         // 本地更新，上传云端
@@ -1076,7 +1084,9 @@
                     user_id: currentUser.id,
                     due_date: settings.dueDate || null,
                     vibrate: settings.vibrate !== false,
-                    baby_name: settings.babyName || null,
+                    baby_style: babyStyleSettings.style,
+                    baby_icon: babyStyleSettings.icon,
+                    baby_custom_image: babyStyleSettings.customImage || null,
                     updated_at: new Date().toISOString()
                 };
                 
@@ -1467,7 +1477,7 @@
             }
             document.getElementById('reportDate').value = getToday();
             updatePregnancy();
-            initBabyNameUI();
+            initBabyStyle();
             updateTodayCount();
             updateTimeline();
             updateWeekStats();
@@ -1533,18 +1543,6 @@
             } else {
                 display.style.display = 'none';
                 aboutDisplay.textContent = '';
-            }
-        }
-
-        function initBabyNameUI() {
-            if (settings.babyName) {
-                document.getElementById('babyName').value = settings.babyName;
-            }
-            updateBabyNameDisplay();
-            
-            // 如果有风格设置，更新按钮图标
-            if (settings.babyIcon) {
-                document.getElementById('kickButtonIcon').textContent = settings.babyIcon;
             }
         }
 
@@ -1872,8 +1870,317 @@
             setTimeout(() => t.classList.remove('show'), 2500);
         }
 
+        // ==================== 宝宝风格设置 ====================
+        // 宝宝风格配置
+        const babyStyleConfig = {
+            cartoon: { name: '卡通可爱', icons: ['👶🏻', '👶🏼', '👶🏽', '👶🏾', '👶🏿'] },
+            stick: { name: '简笔画', icons: ['👶'] },
+            animal: { name: '动物', icons: ['🐻', '🐰', '🐨', '🐼', '🐱', '🐶', '🦊', '🐸'] },
+            season: { name: '季节主题', icons: ['🌸', '☀️', '🍂', '❄️'] },
+            abstract: { name: '抽象艺术', icons: ['🎨'] },
+            custom: { name: '自定义上传', icons: [] }
+        };
+
+        // 当前宝宝风格设置
+        let babyStyleSettings = JSON.parse(localStorage.getItem('babyStyleSettings') || '{"style": "cartoon", "icon": "👶🏻", "customImage": ""}');
+
+        // 初始化宝宝风格
+        function initBabyStyle() {
+            // 更新设置页显示
+            updateStyleSelector();
+            
+            // 更新记录按钮
+            updateKickButtonStyle();
+            
+            // 更新关于页
+            updateAboutStyle();
+        }
+
+        // 选择风格
+        function selectStyle(style) {
+            // 更新选中状态
+            document.querySelectorAll('.style-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            document.querySelector(`[data-style="${style}"]`).classList.add('selected');
+
+            // 隐藏所有子选项
+            document.querySelectorAll('.sub-options').forEach(el => {
+                el.classList.remove('show');
+            });
+
+            // 保存设置
+            babyStyleSettings.style = style;
+
+            // 显示对应的子选项
+            if (style === 'cartoon') {
+                document.getElementById('cartoonOptions').classList.add('show');
+                // 默认选择第一个
+                babyStyleSettings.icon = babyStyleConfig.cartoon.icons[0];
+                updateSubOptions('cartoon');
+            } else if (style === 'animal') {
+                document.getElementById('animalOptions').classList.add('show');
+                // 默认选择第一个
+                babyStyleSettings.icon = babyStyleConfig.animal.icons[0];
+                updateSubOptions('animal');
+            } else if (style === 'custom') {
+                document.getElementById('customOptions').classList.add('show');
+            } else if (style === 'stick') {
+                babyStyleSettings.icon = '👶';
+            } else if (style === 'season') {
+                babyStyleSettings.icon = '🌸';
+            } else if (style === 'abstract') {
+                babyStyleSettings.icon = '🎨';
+            }
+
+            // 保存并更新UI
+            saveBabyStyle();
+            updateStylePreview();
+            updateKickButtonStyle();
+            updateAboutStyle();
+        }
+
+        // 选择图标
+        function selectIcon(element, style) {
+            // 更新选中状态
+            element.parentElement.querySelectorAll('.sub-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            element.classList.add('selected');
+
+            // 保存设置
+            babyStyleSettings.icon = element.dataset.icon;
+            saveBabyStyle();
+            updateStylePreview();
+            updateKickButtonStyle();
+            updateAboutStyle();
+        }
+
+        // 更新子选项选中状态
+        function updateSubOptions(style) {
+            const container = document.querySelector(`#${style}Options .sub-options-grid`);
+            if (!container) return;
+            
+            container.querySelectorAll('.sub-option').forEach(el => {
+                el.classList.remove('selected');
+                if (el.dataset.icon === babyStyleSettings.icon) {
+                    el.classList.add('selected');
+                }
+            });
+        }
+
+        // 更新风格选择器
+        function updateStyleSelector() {
+            // 更新主选项选中状态
+            document.querySelectorAll('.style-option').forEach(el => {
+                el.classList.remove('selected');
+                if (el.dataset.style === babyStyleSettings.style) {
+                    el.classList.add('selected');
+                }
+            });
+
+            // 显示对应的子选项
+            document.querySelectorAll('.sub-options').forEach(el => {
+                el.classList.remove('show');
+            });
+
+            if (babyStyleSettings.style === 'cartoon') {
+                document.getElementById('cartoonOptions').classList.add('show');
+                updateSubOptions('cartoon');
+            } else if (babyStyleSettings.style === 'animal') {
+                document.getElementById('animalOptions').classList.add('show');
+                updateSubOptions('animal');
+            } else if (babyStyleSettings.style === 'custom') {
+                document.getElementById('customOptions').classList.add('show');
+                // 显示自定义图片预览
+                if (babyStyleSettings.customImage) {
+                    const preview = document.getElementById('babyPhotoPreview');
+                    preview.src = babyStyleSettings.customImage;
+                    preview.classList.add('show');
+                }
+            }
+
+            updateStylePreview();
+        }
+
+        // 更新风格预览文本
+        function updateStylePreview() {
+            const config = babyStyleConfig[babyStyleSettings.style];
+            let previewText = `当前风格：${config.name}`;
+            
+            if (babyStyleSettings.style === 'custom' && babyStyleSettings.customImage) {
+                previewText += ' (已上传照片)';
+            } else if (babyStyleSettings.style !== 'stick' && babyStyleSettings.style !== 'season' && babyStyleSettings.style !== 'abstract') {
+                previewText += ` ${babyStyleSettings.icon}`;
+            }
+            
+            document.getElementById('stylePreview').textContent = previewText;
+        }
+
+        // 更新记录按钮风格
+        function updateKickButtonStyle() {
+            const iconEl = document.getElementById('kickButtonIcon');
+            const displayEl = document.getElementById('babyNameDisplay');
+            const config = babyStyleConfig[babyStyleSettings.style];
+
+            if (babyStyleSettings.style === 'custom' && babyStyleSettings.customImage) {
+                // 显示自定义图片
+                iconEl.innerHTML = `<img src="${babyStyleSettings.customImage}" alt="宝宝">`;
+                // 如果有宝宝名字，也显示在下面
+                if (settings.babyName) {
+                    displayEl.textContent = `👶 ${settings.babyName}`;
+                } else {
+                    displayEl.textContent = config.name;
+                }
+            } else {
+                // 显示图标
+                iconEl.innerHTML = babyStyleSettings.icon;
+                // 如果有宝宝名字，显示名字 + 风格名称
+                if (settings.babyName) {
+                    displayEl.textContent = `👶 ${settings.babyName} · ${config.name}`;
+                } else {
+                    displayEl.textContent = config.name;
+                }
+            }
+        }
+
+        // 更新关于页风格显示
+        function updateAboutStyle() {
+            const config = babyStyleConfig[babyStyleSettings.style];
+            let text = `宝宝风格：${config.name}`;
+            
+            if (babyStyleSettings.style === 'custom' && babyStyleSettings.customImage) {
+                text += ' (自定义照片)';
+            } else if (babyStyleSettings.style !== 'stick' && babyStyleSettings.style !== 'season' && babyStyleSettings.style !== 'abstract') {
+                text += ` ${babyStyleSettings.icon}`;
+            }
+            
+            document.getElementById('aboutBabyStyle').textContent = text;
+        }
+
+        // 保存宝宝风格设置
+        function saveBabyStyle() {
+            localStorage.setItem('babyStyleSettings', JSON.stringify(babyStyleSettings));
+            
+            // 同步到云端
+            if (supabase && currentUser?.id) {
+                supabase.from('kick_settings').upsert({
+                    user_id: currentUser.id,
+                    baby_style: babyStyleSettings.style,
+                    baby_icon: babyStyleSettings.icon,
+                    baby_custom_image: babyStyleSettings.customImage,
+                    updated_at: new Date().toISOString()
+                }).then(({ error }) => {
+                    if (error) {
+                        console.error('同步宝宝风格失败:', error);
+                    }
+                });
+            }
+        }
+
+        // 处理照片上传
+        function handlePhotoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                // 压缩图片
+                compressImage(e.target.result, 200, 200, function(compressedData) {
+                    babyStyleSettings.customImage = compressedData;
+                    babyStyleSettings.icon = '📷';
+                    
+                    // 显示预览
+                    const preview = document.getElementById('babyPhotoPreview');
+                    preview.src = compressedData;
+                    preview.classList.add('show');
+                    
+                    saveBabyStyle();
+                    updateStylePreview();
+                    updateKickButtonStyle();
+                    updateAboutStyle();
+                    showToast('📷 照片已上传');
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // 压缩图片
+        function compressImage(base64, maxWidth, maxHeight, callback) {
+            const img = new Image();
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+
+                // 计算缩放比例
+                if (width > height) {
+                    if (width > maxWidth) {
+                        height *= maxWidth / width;
+                        width = maxWidth;
+                    }
+                } else {
+                    if (height > maxHeight) {
+                        width *= maxHeight / height;
+                        height = maxHeight;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                
+                // 绘制圆形裁剪
+                ctx.beginPath();
+                ctx.arc(width/2, height/2, Math.min(width, height)/2, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.clip();
+                
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                callback(canvas.toDataURL('image/jpeg', 0.7));
+            };
+            img.src = base64;
+        }
+
+        // 从云端加载宝宝风格设置
+        async function loadBabyStyleFromCloud() {
+            if (!supabase || !currentUser?.id) return;
+
+            try {
+                const { data, error } = await supabase
+                    .from('kick_settings')
+                    .select('baby_style, baby_icon, baby_custom_image')
+                    .eq('user_id', currentUser.id)
+                    .single();
+
+                if (error || !data) return;
+
+                if (data.baby_style) {
+                    babyStyleSettings.style = data.baby_style;
+                }
+                if (data.baby_icon) {
+                    babyStyleSettings.icon = data.baby_icon;
+                }
+                if (data.baby_custom_image) {
+                    babyStyleSettings.customImage = data.baby_custom_image;
+                }
+
+                localStorage.setItem('babyStyleSettings', JSON.stringify(babyStyleSettings));
+                initBabyStyle();
+            } catch (e) {
+                console.error('加载宝宝风格失败:', e);
+            }
+        }
+
         // 启动
         init();
+        
+        // 初始化宝宝风格（在DOM加载后）
+        setTimeout(() => {
+            initBabyStyle();
+            loadBabyStyleFromCloud();
+        }, 200);
         
         // 添加导入按钮（在DOM加载后）
         setTimeout(addImportButton, 100);
