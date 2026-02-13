@@ -1449,6 +1449,27 @@
             return { weeks: Math.floor(totalWeeks), days: diffDays, totalWeeks };
         }
 
+        // 更新顶部显示（孕周+距离预产期天数）
+        function updateHeaderDisplay() {
+            const headerDate = document.getElementById('currentDate');
+            if (settings.dueDate) {
+                const { weeks, days } = getWeekFromDue(settings.dueDate);
+                if (weeks !== undefined && weeks > 0) {
+                    if (days > 0) {
+                        headerDate.textContent = `🤰 孕${weeks}週 | 距預產期還有${days}天`;
+                    } else if (days === 0) {
+                        headerDate.textContent = `🤰 孕${weeks}週 | 今天是預產期！`;
+                    } else {
+                        headerDate.textContent = `👶 寶寶已出生${Math.abs(days)}天`;
+                    }
+                } else {
+                    headerDate.textContent = new Date().toLocaleDateString('zh-TW', { month: 'long', day: 'numeric', weekday: 'long' });
+                }
+            } else {
+                headerDate.textContent = new Date().toLocaleDateString('zh-TW', { month: 'long', day: 'numeric', weekday: 'long' });
+            }
+        }
+
         function getStandard(week) {
             if (week < 20) return { per2h: 6, per1h: 2 };
             if (week < 28) return { per2h: 6, per1h: 3 };
@@ -1473,8 +1494,8 @@
 
         // ==================== 初始化 ====================
         async function init() {
-            // 先初始化 UI
-            document.getElementById('currentDate').textContent = new Date().toLocaleDateString('zh-TW', { month: 'long', day: 'numeric', weekday: 'long' });
+            // 先初始化 UI - 更新顶部显示
+            updateHeaderDisplay();
             document.getElementById('vibrateToggle').classList.toggle('active', settings.vibrate);
             if (settings.dueDate) {
                 document.getElementById('dueDate').value = settings.dueDate;
@@ -1506,6 +1527,9 @@
             if (supabase && currentUser?.id) {
                 uploadSettings();
             }
+
+            // 更新顶部显示
+            updateHeaderDisplay();
 
             if (!dueDate) {
                 document.getElementById('displayWeek').textContent = '-- 周';
