@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS kick_settings (
     user_id UUID NOT NULL UNIQUE,
     due_date DATE,
     vibrate BOOLEAN DEFAULT true,
+    baby_name VARCHAR(50),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
