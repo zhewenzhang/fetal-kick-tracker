@@ -235,6 +235,22 @@
             min-width: 55px;
         }
 
+        .timeline-delete {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 16px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .timeline-delete:hover {
+            background: rgba(239, 83, 80, 0.1);
+            color: var(--danger);
+        }
+
         .timeline-dot {
             width: 12px;
             height: 12px;
@@ -1630,10 +1646,35 @@
             let html = '';
             kicks.slice().reverse().forEach((time, i) => {
                 const t = new Date(time).toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' });
-                html += `<div class="timeline-item"><div class="timeline-time">${t}</div><div class="timeline-dot"></div><div class="timeline-count">第 ${kicks.length - i} 次</div></div>`;
+                const originalIndex = kicks.length - 1 - i; // 原始索引
+                html += `<div class="timeline-item">
+                    <div class="timeline-time">${t}</div>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-count">第 ${kicks.length - i} 次</div>
+                    <button class="timeline-delete" onclick="deleteRecord(${originalIndex})" title="刪除">🗑️</button>
+                </div>`;
             });
             timeline.innerHTML = html;
             document.getElementById('lastKick').textContent = `上次：${new Date(kicks[kicks.length-1]).toLocaleTimeString('zh-TW', {hour:'2-digit', minute:'2-digit'})}`;
+        }
+
+        // 删除单条记录
+        function deleteRecord(index) {
+            if (confirm('確定要刪除這筆記錄嗎？')) {
+                const today = getToday();
+                if (kickData[today] && kickData[today][index]) {
+                    kickData[today].splice(index, 1);
+                    localStorage.setItem('kickData', JSON.stringify(kickData));
+                    updateTodayCount();
+                    updateTimeline();
+                    updateWeekStats();
+                    
+                    // 同步到云端
+                    if (supabase && currentUser?.id) {
+                        uploadRecords();
+                    }
+                }
+            }
         }
 
         function updateWeekStats() {
