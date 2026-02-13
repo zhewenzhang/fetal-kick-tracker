@@ -1045,10 +1045,12 @@
                         // 云端更新，覆盖本地
                         Object.assign(settings, {
                             dueDate: remoteSettings.due_date || '',
-                            vibrate: remoteSettings.vibrate !== false
+                            vibrate: remoteSettings.vibrate !== false,
+                            babyName: remoteSettings.baby_name || ''
                         });
                         localStorage.setItem('kickSettings', JSON.stringify(settings));
                         updatePregnancyUI();
+                        document.getElementById('babyName').value = settings.babyName || '';
                         
                         // 同步宝宝风格设置
                         if (remoteSettings.baby_style || remoteSettings.baby_icon) {
@@ -1059,6 +1061,7 @@
                             initBabyStyle();
                         }
                         
+                        updateBabyNameDisplay();
                         console.log('設置已從雲端同步');
                     } else if (localUpdated > 0) {
                         // 本地更新，上传云端
@@ -1084,6 +1087,7 @@
                     user_id: currentUser.id,
                     due_date: settings.dueDate || null,
                     vibrate: settings.vibrate !== false,
+                    baby_name: settings.babyName || null,
                     baby_style: babyStyleSettings.style,
                     baby_icon: babyStyleSettings.icon,
                     baby_custom_image: babyStyleSettings.customImage || null,
@@ -1478,6 +1482,7 @@
             document.getElementById('reportDate').value = getToday();
             updatePregnancy();
             initBabyStyle();
+            updateBabyNameDisplay(); // 初始化宝宝名字显示
             updateTodayCount();
             updateTimeline();
             updateWeekStats();
@@ -1530,19 +1535,31 @@
             }
             
             updateBabyNameDisplay();
+            updateKickButtonStyle(); // 更新按钮显示
         }
 
         function updateBabyNameDisplay() {
             const display = document.getElementById('babyNameDisplay');
-            const aboutDisplay = document.getElementById('aboutBabyName');
+            const aboutDisplay = document.getElementById('aboutBabyStyle');
             
             if (settings.babyName) {
                 display.textContent = `👶 ${settings.babyName}`;
                 display.style.display = 'block';
-                aboutDisplay.textContent = `寶寶小名：${settings.babyName}`;
+                // 在关于页面添加宝宝名字信息
+                if (aboutDisplay) {
+                    const styleText = aboutDisplay.textContent;
+                    if (styleText.includes('宝宝风格：')) {
+                        aboutDisplay.textContent = `寶寶小名：${settings.babyName} | ${styleText}`;
+                    } else {
+                        aboutDisplay.textContent = `寶寶小名：${settings.babyName}`;
+                    }
+                }
             } else {
                 display.style.display = 'none';
-                aboutDisplay.textContent = '';
+                // 恢复只显示风格
+                if (aboutDisplay) {
+                    updateAboutStyle();
+                }
             }
         }
 
@@ -2055,7 +2072,12 @@
                 text += ` ${babyStyleSettings.icon}`;
             }
             
-            document.getElementById('aboutBabyStyle').textContent = text;
+            // 如果有宝宝名字，添加到前面
+            if (settings.babyName) {
+                document.getElementById('aboutBabyStyle').textContent = `寶寶小名：${settings.babyName} | ${text}`;
+            } else {
+                document.getElementById('aboutBabyStyle').textContent = text;
+            }
         }
 
         // 保存宝宝风格设置
