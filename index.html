@@ -37,18 +37,18 @@
         /* 顶部装饰 */
         .header {
             text-align: center;
-            padding: 20px;
+            padding: 15px;
             position: relative;
         }
 
         .header h1 {
-            font-size: 28px;
+            font-size: 24px;
             color: var(--pink-dark);
-            margin-bottom: 5px;
+            margin-bottom: 3px;
         }
 
         .header .subtitle {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-light);
         }
 
@@ -70,107 +70,47 @@
         }
 
         .cloud:nth-child(1) {
-            width: 120px;
-            height: 45px;
+            width: 100px;
+            height: 40px;
             top: 5px;
-            left: -30px;
-            animation-delay: 0s;
+            left: -20px;
         }
 
         .cloud:nth-child(2) {
-            width: 100px;
-            height: 35px;
-            top: 50px;
-            right: -20px;
+            width: 80px;
+            height: 30px;
+            top: 60px;
+            right: -10px;
             animation-delay: 2s;
         }
 
-        .cloud:nth-child(3) {
-            width: 80px;
-            height: 30px;
-            top: 100px;
-            left: 10px;
-            animation-delay: 4s;
-        }
-
         @keyframes float {
-            0%, 100% { transform: translateY(0) translateX(0); }
-            25% { transform: translateY(-8px) translateX(5px); }
-            50% { transform: translateY(0) translateX(0); }
-            75% { transform: translateY(-5px) translateX(-3px); }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
         }
 
         /* 主要内容区 */
         .container {
-            max-width: 420px;
+            max-width: 400px;
             margin: 0 auto;
-            padding: 15px;
-            padding-bottom: 100px;
+            padding: 10px;
+            padding-bottom: 90px;
         }
 
-        /* 孕期状态卡片 */
-        .pregnancy-card {
-            background: linear-gradient(135deg, var(--purple-light) 0%, var(--white) 100%);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(147, 112, 219, 0.2);
-            text-align: center;
-        }
-
-        .pregnancy-card h3 {
-            font-size: 14px;
-            color: var(--text-light);
-            margin-bottom: 8px;
-        }
-
-        .pregnancy-week {
-            font-size: 36px;
-            font-weight: bold;
-            color: var(--pink-dark);
-            line-height: 1;
-        }
-
-        .pregnancy-days {
-            font-size: 16px;
-            color: var(--text-light);
-            margin-top: 5px;
-        }
-
-        .pregnancy-info {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px dashed var(--purple);
-        }
-
-        .pregnancy-info div {
-            font-size: 12px;
-            color: var(--text-light);
-        }
-
-        .pregnancy-info strong {
-            display: block;
-            font-size: 16px;
-            color: var(--pink-dark);
-            margin-top: 3px;
-        }
-
-        /* 今日统计卡片 */
+        /* 今日统计卡片 - 简化版 */
         .stats-card {
             background: var(--white);
             border-radius: 20px;
             padding: 20px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             box-shadow: 0 4px 15px rgba(255, 182, 193, 0.3);
             text-align: center;
         }
 
         .stats-card h2 {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-light);
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .stats-number {
@@ -178,227 +118,172 @@
             font-weight: bold;
             color: var(--pink-dark);
             line-height: 1;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .stats-label {
-            font-size: 16px;
+            font-size: 15px;
             color: var(--text-light);
             margin-bottom: 10px;
         }
 
         .status-badge {
             display: inline-block;
-            padding: 6px 16px;
+            padding: 5px 14px;
             border-radius: 20px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
         }
 
-        .status-badge.normal {
-            background: rgba(129, 199, 132, 0.2);
-            color: var(--success);
-        }
-
-        .status-badge.warning {
-            background: rgba(255, 213, 79, 0.3);
-            color: #F57F17;
-        }
-
-        .status-badge.abnormal {
-            background: rgba(239, 83, 80, 0.2);
-            color: var(--danger);
-        }
+        .status-badge.normal { background: rgba(129, 199, 132, 0.2); color: var(--success); }
+        .status-badge.warning { background: rgba(255, 213, 79, 0.3); color: #F57F17; }
+        .status-badge.abnormal { background: rgba(239, 83, 80, 0.2); color: var(--danger); }
 
         .status-tip {
             font-size: 12px;
             color: var(--text-light);
-            margin-top: 10px;
+            margin-top: 8px;
         }
 
         /* 胎动记录按钮 */
         .kick-button {
-            width: 200px;
-            height: 200px;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
             border: none;
             background: linear-gradient(135deg, var(--pink) 0%, var(--pink-dark) 100%);
             color: var(--white);
-            font-size: 22px;
+            font-size: 20px;
             font-weight: bold;
             cursor: pointer;
-            margin: 25px auto;
+            margin: 20px auto;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.4);
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.4);
             transition: all 0.15s ease;
             position: relative;
-            overflow: hidden;
         }
 
         .kick-button::before {
             content: '👶';
-            font-size: 60px;
-            margin-bottom: 8px;
+            font-size: 50px;
+            margin-bottom: 5px;
         }
 
         .kick-button:active {
             transform: scale(0.95);
-            box-shadow: 0 5px 20px rgba(255, 105, 180, 0.4);
         }
 
-        .kick-button.recording {
-            animation: pulse 1s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 105, 180, 0.5); }
-            50% { box-shadow: 0 0 0 25px rgba(255, 105, 180, 0); }
-        }
-
-        /* 最后一次记录时间 */
+        /* 最后一次记录 */
         .last-kick {
             text-align: center;
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-light);
-            margin-top: 15px;
+            margin-top: 12px;
         }
 
-        /* 今日胎动时间线 */
+        /* 时间线 */
         .timeline-card {
             background: var(--white);
             border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 15px;
+            margin-bottom: 15px;
             box-shadow: 0 4px 15px rgba(255, 182, 193, 0.3);
         }
 
         .timeline-card h3 {
-            font-size: 16px;
+            font-size: 15px;
             color: var(--text-dark);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
-        .timeline-card h3::before {
-            content: '🕐';
-        }
+        .timeline-card h3::before { content: '🕐'; }
 
         .timeline {
-            max-height: 250px;
+            max-height: 180px;
             overflow-y: auto;
         }
 
         .timeline-item {
             display: flex;
             align-items: center;
-            padding: 12px 0;
+            padding: 10px 0;
             border-bottom: 1px dashed var(--pink-light);
             animation: slideIn 0.3s ease;
         }
 
-        .timeline-item:last-child {
-            border-bottom: none;
-        }
+        .timeline-item:last-child { border-bottom: none; }
 
         @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
         }
 
         .timeline-time {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--pink-dark);
             font-weight: bold;
-            min-width: 60px;
+            min-width: 55px;
         }
 
         .timeline-dot {
-            width: 14px;
-            height: 14px;
+            width: 12px;
+            height: 12px;
             background: linear-gradient(135deg, var(--pink) 0%, var(--pink-dark) 100%);
             border-radius: 50%;
-            margin: 0 12px;
-            flex-shrink: 0;
+            margin: 0 10px;
         }
 
         .timeline-count {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-dark);
         }
 
         .empty-tip {
             text-align: center;
-            padding: 40px 20px;
+            padding: 25px;
             color: var(--text-light);
-            font-size: 14px;
+            font-size: 13px;
         }
 
-        /* 统计图表区 */
-        .chart-card {
+        /* 本周统计 */
+        .week-card {
             background: var(--white);
             border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 15px;
+            margin-bottom: 15px;
             box-shadow: 0 4px 15px rgba(255, 182, 193, 0.3);
         }
 
-        .chart-card h3 {
-            font-size: 16px;
+        .week-card h3 {
+            font-size: 15px;
             color: var(--text-dark);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            margin-bottom: 12px;
         }
 
-        .chart-card h3::before {
-            content: '📊';
+        .week-stats {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
         }
 
-        .chart-placeholder {
-            display: flex;
-            align-items: flex-end;
-            justify-content: space-around;
-            height: 100px;
-            padding: 10px 0;
-        }
-
-        .chart-bar {
-            width: 32px;
-            background: linear-gradient(180deg, var(--pink) 0%, var(--pink-dark) 100%);
-            border-radius: 8px 8px 0 0;
-            transition: height 0.5s ease;
-        }
-
-        .chart-bar.today {
-            background: linear-gradient(180deg, var(--purple) 0%, #BA55D3 100%);
-        }
-
-        .chart-label {
+        .week-day {
             text-align: center;
-            font-size: 11px;
-            color: var(--text-light);
-            margin-top: 5px;
+            padding: 8px 2px;
+            border-radius: 8px;
+            background: var(--pink-light);
         }
 
-        .chart-value {
-            text-align: center;
-            font-size: 12px;
-            font-weight: bold;
-            color: var(--pink-dark);
-            margin-bottom: 5px;
-        }
+        .week-day.today { background: var(--pink-dark); color: var(--white); }
+        .week-day .day { font-size: 10px; color: var(--text-light); }
+        .week-day.today .day { color: var(--white); }
+        .week-day .count { font-size: 14px; font-weight: bold; color: var(--text-dark); margin-top: 3px; }
+        .week-day.today .count { color: var(--white); }
 
         /* 底部导航 */
         .nav-bar {
@@ -410,8 +295,8 @@
             display: flex;
             justify-content: space-around;
             padding: 8px 0;
-            padding-bottom: max(15px, env(safe-area-inset-bottom));
-            box-shadow: 0 -2px 15px rgba(0,0,0,0.08);
+            padding-bottom: max(12px, env(safe-area-inset-bottom));
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
             z-index: 100;
         }
 
@@ -419,27 +304,21 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
-            padding: 8px 16px;
-            border-radius: 12px;
+            gap: 3px;
+            padding: 6px 14px;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.2s ease;
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-light);
             border: none;
             background: none;
         }
 
-        .nav-item.active {
-            color: var(--pink-dark);
-            background: var(--pink-light);
-        }
+        .nav-item.active { color: var(--pink-dark); background: var(--pink-light); }
+        .nav-item span:first-child { font-size: 20px; }
 
-        .nav-item span:first-child {
-            font-size: 22px;
-        }
-
-        /* 弹窗提示 */
+        /* Toast提示 */
         .toast {
             position: fixed;
             top: 50%;
@@ -447,328 +326,138 @@
             transform: translate(-50%, -50%);
             background: rgba(0, 0, 0, 0.85);
             color: var(--white);
-            padding: 18px 36px;
-            border-radius: 30px;
-            font-size: 18px;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
             z-index: 1000;
             opacity: 0;
             transition: opacity 0.3s ease;
             pointer-events: none;
-            text-align: center;
         }
 
-        .toast.show {
-            opacity: 1;
-        }
+        .toast.show { opacity: 1; }
 
-        /* 报告弹窗 */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 200;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
+        /* 页面 */
+        .page { display: none; }
+        .page.active { display: block; }
 
-        .modal.show {
-            display: flex;
-        }
-
-        .modal-content {
-            background: var(--white);
-            border-radius: 24px;
-            padding: 25px;
-            max-width: 420px;
-            width: 100%;
-            max-height: 85vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .modal-header h3 {
-            font-size: 20px;
-            color: var(--text-dark);
-        }
-
-        .modal-close {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            border: none;
-            background: var(--pink-light);
-            cursor: pointer;
-            font-size: 18px;
-            color: var(--pink-dark);
-        }
-
-        .report-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px 0;
-            border-bottom: 1px dashed var(--pink-light);
-        }
-
-        .report-item:last-child {
-            border-bottom: none;
-        }
-
-        .report-label {
-            color: var(--text-light);
-            font-size: 14px;
-        }
-
-        .report-value {
-            font-weight: bold;
-            color: var(--pink-dark);
-            font-size: 16px;
-        }
-
-        /* 设置页面 */
-        .page {
-            display: none;
-        }
-
-        .page.active {
-            display: block;
-        }
-
+        /* 设置卡片 */
         .settings-card {
             background: var(--white);
             border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 18px;
+            margin-bottom: 15px;
             box-shadow: 0 4px 15px rgba(255, 182, 193, 0.3);
         }
 
         .settings-card h3 {
-            font-size: 16px;
+            font-size: 15px;
             color: var(--text-dark);
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .settings-card h3::before {
-            content: '⚙️';
+            margin-bottom: 12px;
         }
 
         .setting-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 0;
+            padding: 12px 0;
             border-bottom: 1px dashed var(--pink-light);
         }
 
-        .setting-item:last-child {
-            border-bottom: none;
-        }
-
-        .setting-label {
-            font-size: 14px;
-            color: var(--text-dark);
-        }
+        .setting-item:last-child { border-bottom: none; }
+        .setting-label { font-size: 14px; color: var(--text-dark); }
 
         .setting-input {
-            padding: 12px;
+            padding: 10px;
             border: 2px solid var(--pink-light);
-            border-radius: 12px;
-            font-size: 16px;
-            width: 140px;
+            border-radius: 10px;
+            font-size: 14px;
+            width: 130px;
             text-align: center;
         }
 
         .toggle {
-            width: 52px;
-            height: 30px;
-            border-radius: 15px;
+            width: 48px;
+            height: 26px;
+            border-radius: 13px;
             background: var(--pink-light);
             position: relative;
             cursor: pointer;
-            transition: background 0.3s ease;
         }
 
-        .toggle.active {
-            background: var(--pink-dark);
-        }
-
+        .toggle.active { background: var(--pink-dark); }
         .toggle::after {
             content: '';
             position: absolute;
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
             background: var(--white);
-            top: 3px;
-            left: 3px;
+            top: 2px;
+            left: 2px;
             transition: left 0.3s ease;
         }
 
-        .toggle.active::after {
-            left: 25px;
-        }
+        .toggle.active::after { left: 24px; }
 
-        /* 导出按钮 */
         .export-btn {
             width: 100%;
-            padding: 16px;
-            border-radius: 16px;
+            padding: 14px;
+            border-radius: 14px;
             border: none;
             background: linear-gradient(135deg, var(--pink) 0%, var(--pink-dark) 100%);
             color: var(--white);
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 20px;
-        }
-
-        .export-btn.secondary {
-            background: linear-gradient(135deg, #FFB6C1 0%, #FF69B4 100%);
-            margin-top: 10px;
-        }
-
-        /* 周统计 */
-        .week-stats {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 6px;
             margin-top: 15px;
         }
 
-        .week-day {
-            text-align: center;
-            padding: 10px 4px;
-            border-radius: 10px;
-            background: var(--pink-light);
+        .export-btn.secondary { background: linear-gradient(135deg, #FFB6C1 0%, #FF69B4 100%); }
+
+        /* 报告卡片 */
+        .report-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px dashed var(--pink-light);
         }
 
-        .week-day.today {
-            background: var(--pink-dark);
-            color: var(--white);
-        }
+        .report-item:last-child { border-bottom: none; }
+        .report-label { font-size: 13px; color: var(--text-light); }
+        .report-value { font-weight: bold; color: var(--pink-dark); font-size: 15px; }
 
-        .week-day .day {
-            font-size: 11px;
-            color: var(--text-light);
-        }
-
-        .week-day.today .day {
-            color: var(--white);
-        }
-
-        .week-day .count {
-            font-size: 16px;
-            font-weight: bold;
-            color: var(--text-dark);
-            margin-top: 4px;
-        }
-
-        .week-day.today .count {
-            color: var(--white);
-        }
-
-        .week-day .status {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            margin: 4px auto 0;
-            background: var(--success);
-        }
-
-        .week-day.today .status {
-            background: var(--white);
-        }
-
-        /* 孕期建议卡片 */
-        .tip-card {
-            background: linear-gradient(135deg, var(--blue-light) 0%, var(--white) 100%);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 20px;
-            border-left: 4px solid var(--purple);
-        }
-
-        .tip-card h4 {
-            font-size: 14px;
-            color: var(--pink-dark);
-            margin-bottom: 8px;
-        }
-
-        .tip-card p {
-            font-size: 13px;
-            color: var(--text-light);
-            line-height: 1.6;
-        }
-
-        /* 记录时段模式 */
-        .session-mode {
-            display: none;
-            background: var(--white);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(255, 182, 193, 0.3);
-            text-align: center;
-        }
-
-        .session-mode.active {
-            display: block;
-        }
-
-        .session-info {
-            font-size: 14px;
-            color: var(--text-light);
-            margin-bottom: 15px;
-        }
-
-        .session-count {
-            font-size: 48px;
-            font-weight: bold;
-            color: var(--pink-dark);
-        }
-
-        .session-btn {
-            padding: 12px 24px;
-            border-radius: 25px;
-            border: none;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin: 5px;
-        }
-
-        .session-btn.start {
-            background: var(--pink-dark);
-            color: var(--white);
-        }
-
-        .session-btn.stop {
-            background: var(--danger);
-            color: var(--white);
-        }
-
+        /* 快速计数切换 */
         .mode-toggle {
-            font-size: 13px;
+            text-align: center;
+            font-size: 12px;
             color: var(--purple);
             text-decoration: underline;
             cursor: pointer;
-            margin-top: 15px;
-            display: inline-block;
+            margin-top: 12px;
         }
+
+        /* 定时计数模式 */
+        .session-mode { display: none; background: var(--white); border-radius: 20px; padding: 18px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(255, 182, 193, 0.3); text-align: center; }
+        .session-mode.active { display: block; }
+        .session-info { font-size: 13px; color: var(--text-light); margin-bottom: 12px; }
+        .session-count { font-size: 48px; font-weight: bold; color: var(--pink-dark); }
+        .session-btn { padding: 10px 20px; border-radius: 22px; border: none; font-size: 14px; font-weight: bold; cursor: pointer; margin: 4px; }
+        .session-btn.start { background: var(--pink-dark); color: var(--white); }
+        .session-btn.stop { background: var(--danger); color: var(--white); }
+
+        /* 孕期提醒 */
+        .pregnancy-reminder {
+            background: linear-gradient(135deg, var(--purple-light) 0%, var(--white) 100%);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--purple);
+        }
+
+        .pregnancy-reminder h4 { font-size: 13px; color: var(--pink-dark); margin-bottom: 6px; }
+        .pregnancy-reminder p { font-size: 12px; color: var(--text-light); line-height: 1.5; }
     </style>
 </head>
 <body>
@@ -776,38 +465,20 @@
     <div class="clouds">
         <div class="cloud"></div>
         <div class="cloud"></div>
-        <div class="cloud"></div>
     </div>
 
     <!-- 顶部 -->
     <div class="header">
         <h1>👶 胎动记录器</h1>
-        <div class="subtitle" id="currentDate">记录宝宝的每一次跳动</div>
+        <div class="subtitle" id="currentDate">记录宝宝每一次跳动</div>
     </div>
 
     <!-- 首页 -->
     <div class="page active" id="homePage">
         <div class="container">
-            <!-- 孕期状态卡片 -->
-            <div class="pregnancy-card" id="pregnancyCard">
-                <h3>当前孕期</h3>
-                <div class="pregnancy-week" id="pregnancyWeek">--</div>
-                <div class="pregnancy-days" id="pregnancyDays">请先设置预产期</div>
-                <div class="pregnancy-info">
-                    <div>孕周<span id="currentWeek">--</span><strong>周</strong></div>
-                    <div>距预产期<span id="daysToDue">--</span><strong>天</strong></div>
-                </div>
-            </div>
-
-            <!-- 孕期建议 -->
-            <div class="tip-card" id="tipCard">
-                <h4>💡 孕期建议</h4>
-                <p id="pregnancyTip">请设置预产期，获取孕期建议</p>
-            </div>
-
             <!-- 今日统计 -->
             <div class="stats-card">
-                <h2>今日胎动次数</h2>
+                <h2>今日胎动</h2>
                 <div class="stats-number" id="todayCount">0</div>
                 <div class="stats-label">次</div>
                 <div id="statusBadge"></div>
@@ -817,42 +488,39 @@
             <!-- 记录按钮 -->
             <button class="kick-button" id="kickButton">
                 <span>點擊記錄</span>
-                <span style="font-size: 13px; margin-top: 5px;">胎動</span>
-                <div class="heart-beat" id="heartBeat">💗</div>
+                <span style="font-size: 12px; margin-top: 4px;">胎動</span>
             </button>
-            <div class="last-kick" id="lastKick">還沒有記錄，點擊上方按鈕開始吧！</div>
+            <div class="last-kick" id="lastKick">還沒記錄，點擊上方按鈕</div>
 
-            <!-- 快速计数模式切换 -->
+            <!-- 快速计数切换 -->
             <div style="text-align: center;">
-                <span class="mode-toggle" onclick="toggleSessionMode()">📝 切换到定时计数模式</span>
+                <span class="mode-toggle" onclick="toggleSessionMode()">📝 定時計數模式</span>
             </div>
 
             <!-- 定时计数模式 -->
             <div class="session-mode" id="sessionMode">
-                <div class="session-info">定时计数：2小时内≥10次为正常</div>
+                <div class="session-info">2小時內≥10次為正常</div>
                 <div class="session-count" id="sessionCount">0</div>
-                <div style="margin: 15px 0;">
+                <div style="margin: 12px 0;">
                     <button class="session-btn start" id="sessionStart" onclick="startSession()">開始計時</button>
                     <button class="session-btn stop" onclick="stopSession()">停止</button>
                 </div>
-                <div style="font-size: 13px; color: var(--text-light);">
-                    開始時間：<span id="sessionStartTime">--:--</span>
+                <div style="font-size: 12px; color: var(--text-light);">
+                    開始：<span id="sessionStartTime">--:--</span>
                 </div>
             </div>
 
             <!-- 本周统计 -->
-            <div class="chart-card">
+            <div class="week-card">
                 <h3>本週記錄 📅</h3>
-                <div class="week-stats" id="weekStats">
-                    <!-- JS动态生成 -->
-                </div>
+                <div class="week-stats" id="weekStats"></div>
             </div>
 
             <!-- 今日时间线 -->
             <div class="timeline-card">
                 <h3>今日記錄</h3>
                 <div class="timeline" id="timeline">
-                    <div class="empty-tip">還沒有記錄，點擊上方按鈕開始吧！</div>
+                    <div class="empty-tip">還沒記錄，點擊上方按鈕</div>
                 </div>
             </div>
         </div>
@@ -861,20 +529,21 @@
     <!-- 报告页 -->
     <div class="page" id="reportPage">
         <div class="container">
-            <div class="stats-card">
-                <h2>選擇日期查看報告</h2>
-                <input type="date" id="reportDate" class="setting-input" style="margin-top: 15px;">
+            <div class="settings-card">
+                <h3>📋 查看報告</h3>
+                <input type="date" id="reportDate" class="setting-input" style="margin: 10px 0; width: 100%;">
                 <button class="export-btn" onclick="generateReport()">查看報告</button>
             </div>
 
             <div class="stats-card" id="dailyReport" style="display: none;">
-                <h2>📋 每日報告</h2>
+                <h2 id="reportTitle">每日報告</h2>
                 <div id="reportContent"></div>
             </div>
 
-            <div class="tip-card">
-                <h4>📖 计数说明</h4>
-                <p id="countTip">根据您的孕周自动显示正常范围</p>
+            <!-- 计数说明 -->
+            <div class="pregnancy-reminder">
+                <h4>💡 計數說明</h4>
+                <p id="countTip">請先設置預產期</p>
             </div>
         </div>
     </div>
@@ -882,6 +551,7 @@
     <!-- 设置页 -->
     <div class="page" id="settingsPage">
         <div class="container">
+            <!-- 孕期设置 -->
             <div class="settings-card">
                 <h3>👶 孕期設置</h3>
                 <div class="setting-item">
@@ -894,30 +564,29 @@
                 </div>
             </div>
 
+            <!-- 提醒设置 -->
             <div class="settings-card">
                 <h3>🔔 提醒設置</h3>
-                <div class="setting-item">
-                    <span class="setting-label">聲音提示</span>
-                    <div class="toggle" id="soundToggle" onclick="toggleSound()"></div>
-                </div>
                 <div class="setting-item">
                     <span class="setting-label">震動提示</span>
                     <div class="toggle active" id="vibrateToggle" onclick="toggleVibrate()"></div>
                 </div>
             </div>
 
+            <!-- 数据管理 -->
             <div class="settings-card">
                 <h3>📤 數據管理</h3>
-                <button class="export-btn" onclick="exportData()">導出所有數據</button>
-                <button class="export-btn secondary" onclick="clearAllData()">清除所有數據</button>
+                <button class="export-btn" onclick="exportData()">導出數據</button>
+                <button class="export-btn secondary" onclick="clearAllData()">清除數據</button>
             </div>
 
+            <!-- 关于 -->
             <div class="settings-card">
                 <h3>ℹ️ 關於</h3>
-                <p style="font-size: 13px; color: var(--text-light); line-height: 1.6;">
-                    胎动记录器 v1.0<br>
-                    基于医学指南设计<br>
-                    数据保存在本地，不上传云端
+                <p style="font-size: 12px; color: var(--text-light); line-height: 1.5;">
+                    胎動記錄器 v1.1<br>
+                    數據保存在本地<br>
+                    基於醫學指南設計
                 </p>
             </div>
         </div>
@@ -943,43 +612,40 @@
     <div class="toast" id="toast"></div>
 
     <script>
-        // ==================== 医学标准配置 ====================
+        // ==================== 医学标准 ====================
         const PREGNANCY_STANDARDS = {
-            // 孕周范围定义
             ranges: [
-                { week: 16, per2h: 6, per1h: 2, tip: "胎动刚开始规律，每天感受宝宝的动静" },
-                { week: 20, per2h: 6, per1h: 3, tip: "胎动越来越明显，开始有节奏感" },
-                { week: 28, per2h: 10, per1h: 4, tip: "⭐ 最活跃时期！胎动最频繁，注意记录" },
-                { week: 34, per2h: 8, per1h: 3, tip: "胎动略有减少但保持规律，空间变小" },
-                { week: 37, per2h: 6, per1h: 2, tip: "接近预产期，持续监测胎动" }
+                { week: 16, per2h: 6, per1h: 2 },
+                { week: 20, per2h: 6, per1h: 3 },
+                { week: 28, per2h: 10, per1h: 4 },
+                { week: 34, per2h: 8, per1h: 3 },
+                { week: 37, per2h: 6, per1h: 2 }
             ],
             tips: {
-                early: "孕中期：每天感受宝宝活动，建立规律",
-                peak: "孕晚期28-34周：胎动最活跃时期！重点监测",
-                late: "临产前：胎动减少但保持规律，注意变化"
+                early: "孕中期：每天感受寶寶活動，建立規律",
+                peak: "⭐孕晚期28-34周：胎動最活躍時期！重點監測",
+                late: "臨產前：胎動減少但保持規律，注意變化"
             }
         };
 
         // ==================== 数据存储 ====================
         let kickData = JSON.parse(localStorage.getItem('kickData') || '{}');
-        let settings = JSON.parse(localStorage.getItem('kickSettings') || '{"sound": false, "vibrate": true, "dueDate": ""}');
+        let settings = JSON.parse(localStorage.getItem('kickSettings') || '{"vibrate": true, "dueDate": ""}');
         let sessionData = { active: false, count: 0, startTime: null };
 
         // ==================== 工具函数 ====================
         function getToday() {
-            const now = new Date();
-            return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+            const d = new Date();
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
         }
 
         function getWeekFromDue(dueDateStr) {
             if (!dueDateStr) return null;
             const due = new Date(dueDateStr);
             const today = new Date();
-            const diffTime = due - today;
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            const diffDays = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
             const totalWeeks = 280 - diffDays;
-            const weeks = Math.floor(totalWeeks);
-            return { weeks, days: diffDays, totalWeeks };
+            return { weeks: Math.floor(totalWeeks), days: diffDays, totalWeeks };
         }
 
         function getStandard(week) {
@@ -999,39 +665,23 @@
         function assessStatus(count, week) {
             const std = getStandard(week);
             const ratio = count / std.per2h;
-            
-            if (ratio >= 1) return { status: 'normal', label: '✅ 正常', tip: `2小時內≥${std.per2h}次` };
-            if (ratio >= 0.5) return { status: 'warning', label: '⚠️ 略少', tip: '建議繼續觀察' };
+            if (ratio >= 1) return { status: 'normal', label: '✅ 正常', tip: `2h≥${std.per2h}次` };
+            if (ratio >= 0.5) return { status: 'warning', label: '⚠️ 略少', tip: '繼續觀察' };
             return { status: 'abnormal', label: '🚨 偏少', tip: '建議諮詢醫生' };
         }
 
         // ==================== 初始化 ====================
         function init() {
-            updateCurrentDate();
-            updateSettingsUI();
-            updatePregnancy();
-            updateTodayCount();
-            updateTimeline();
-            updateWeekStats();
-            updateStatusBadge();
-            document.getElementById('reportDate').value = getToday();
-            initCountTip();
-        }
-
-        function updateCurrentDate() {
-            document.getElementById('currentDate').textContent = new Date().toLocaleDateString('zh-TW', {
-                month: 'long',
-                day: 'numeric',
-                weekday: 'long'
-            });
-        }
-
-        function updateSettingsUI() {
-            document.getElementById('soundToggle').classList.toggle('active', settings.sound);
+            document.getElementById('currentDate').textContent = new Date().toLocaleDateString('zh-TW', { month: 'long', day: 'numeric', weekday: 'long' });
             document.getElementById('vibrateToggle').classList.toggle('active', settings.vibrate);
             if (settings.dueDate) {
                 document.getElementById('dueDate').value = settings.dueDate;
             }
+            document.getElementById('reportDate').value = getToday();
+            updatePregnancy();
+            updateTodayCount();
+            updateTimeline();
+            updateWeekStats();
         }
 
         function updatePregnancy() {
@@ -1040,64 +690,30 @@
             localStorage.setItem('kickSettings', JSON.stringify(settings));
 
             if (!dueDate) {
-                document.getElementById('pregnancyWeek').textContent = '--';
-                document.getElementById('pregnancyDays').textContent = '請先設置預產期';
-                document.getElementById('currentWeek').textContent = '--';
-                document.getElementById('daysToDue').textContent = '--';
-                document.getElementById('pregnancyTip').textContent = '請設置預產期，獲取孕期建議';
                 document.getElementById('displayWeek').textContent = '-- 周';
+                document.getElementById('countTip').textContent = '請先設置預產期';
                 return;
             }
 
-            const { weeks, days, totalWeeks } = getWeekFromDue(dueDate);
-            
-            if (weeks < 16) {
-                document.getElementById('pregnancyWeek').textContent = `${totalWeeks}周`;
-                document.getElementById('pregnancyDays').textContent = '寶寶還沒開始動哦';
-            } else if (weeks >= 40) {
-                document.getElementById('pregnancyWeek').textContent = '40+周';
-                document.getElementById('pregnancyDays').textContent = '期待寶寶降臨！';
-            } else {
-                document.getElementById('pregnancyWeek').textContent = `${weeks}周`;
-                document.getElementById('pregnancyDays').textContent = `${days}天後預產期`;
-            }
-
-            document.getElementById('currentWeek').textContent = weeks >= 16 ? weeks : '--';
-            document.getElementById('daysToDue').textContent = days > 0 ? days : '0';
+            const { weeks, days } = getWeekFromDue(dueDate);
             document.getElementById('displayWeek').textContent = weeks >= 16 ? `${weeks} 周` : '-- 周';
-            document.getElementById('pregnancyTip').textContent = getTip(weeks);
             
-            updateTodayCount();
-            updateStatusBadge();
-            initCountTip();
-        }
-
-        function initCountTip() {
-            const dueDate = settings.dueDate;
-            if (!dueDate) {
-                document.getElementById('countTip').textContent = '請先設置預產期，獲取適合您的計數標準';
-                return;
-            }
-            const { weeks } = getWeekFromDue(dueDate);
-            if (weeks < 16) {
-                document.getElementById('countTip').textContent = '寶寶還沒開始胎動，預計16-20周開始';
+            if (weeks >= 16) {
+                document.getElementById('countTip').textContent = `孕${weeks}周：2h內≥${getStandard(weeks).per2h}次為正常 - ${getTip(weeks)}`;
             } else {
-                const std = getStandard(weeks);
-                document.getElementById('countTip').textContent = `孕${weeks}周：2小時內≥${std.per2h}次（或1小時內≥${std.per1h}次）為正常`;
+                document.getElementById('countTip').textContent = '寶寶預計16-20周開始胎動';
             }
         }
 
         function updateTodayCount() {
-            const today = getToday();
-            const count = kickData[today]?.length || 0;
+            const count = kickData[getToday()]?.length || 0;
             document.getElementById('todayCount').textContent = count;
             updateStatusBadge();
         }
 
         function updateStatusBadge() {
             const dueDate = settings.dueDate;
-            const today = getToday();
-            const count = kickData[today]?.length || 0;
+            const count = kickData[getToday()]?.length || 0;
             const badge = document.getElementById('statusBadge');
             const tip = document.getElementById('statusTip');
 
@@ -1116,113 +732,74 @@
 
             const result = assessStatus(count, weeks);
             badge.innerHTML = `<span class="status-badge ${result.status}">${result.label}</span>`;
-            tip.textContent = `正常標準：${result.tip}`;
+            tip.textContent = result.tip;
         }
 
         function updateTimeline() {
-            const today = getToday();
-            const kicks = kickData[today] || [];
+            const kicks = kickData[getToday()] || [];
             const timeline = document.getElementById('timeline');
             
             if (kicks.length === 0) {
-                timeline.innerHTML = '<div class="empty-tip">還沒有記錄，點擊上方按鈕開始吧！</div>';
-                document.getElementById('lastKick').textContent = '還沒有記錄，點擊上方按鈕開始吧！';
+                timeline.innerHTML = '<div class="empty-tip">還沒記錄，點擊上方按鈕</div>';
+                document.getElementById('lastKick').textContent = '還沒記錄，點擊上方按鈕';
                 return;
             }
 
             let html = '';
-            kicks.slice().reverse().forEach((time, index) => {
-                const timeStr = new Date(time).toLocaleTimeString('zh-TW', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-                html += `
-                    <div class="timeline-item">
-                        <div class="timeline-time">${timeStr}</div>
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-count">第 ${kicks.length - index} 次胎動</div>
-                    </div>
-                `;
+            kicks.slice().reverse().forEach((time, i) => {
+                const t = new Date(time).toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' });
+                html += `<div class="timeline-item"><div class="timeline-time">${t}</div><div class="timeline-dot"></div><div class="timeline-count">第 ${kicks.length - i} 次</div></div>`;
             });
             timeline.innerHTML = html;
-
-            // 更新最后一次记录时间
-            if (kicks.length > 0) {
-                const lastTime = new Date(kicks[kicks.length - 1]).toLocaleTimeString('zh-TW', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-                document.getElementById('lastKick').textContent = `上次記錄：${lastTime}`;
-            }
+            document.getElementById('lastKick').textContent = `上次：${new Date(kicks[kicks.length-1]).toLocaleTimeString('zh-TW', {hour:'2-digit', minute:'2-digit'})}`;
         }
 
         function updateWeekStats() {
-            const weekStats = document.getElementById('weekStats');
             const days = ['日', '一', '二', '三', '四', '五', '六'];
             let html = '';
             const today = new Date();
             
             for (let i = 0; i < 7; i++) {
-                const date = new Date(today);
-                date.setDate(today.getDate() - (6 - i));
-                const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+                const d = new Date(today);
+                d.setDate(today.getDate() - (6 - i));
+                const dateStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
                 const count = kickData[dateStr]?.length || 0;
                 const isToday = i === 6;
-                
-                html += `
-                    <div class="week-day ${isToday ? 'today' : ''}">
-                        <div class="day">${days[date.getDay()]}</div>
-                        <div class="count">${count}</div>
-                    </div>
-                `;
+                html += `<div class="week-day ${isToday?'today':''}"><div class="day">${days[d.getDay()]}</div><div class="count">${count}</div></div>`;
             }
-            weekStats.innerHTML = html;
+            document.getElementById('weekStats').innerHTML = html;
         }
 
         // ==================== 记录功能 ====================
         document.getElementById('kickButton').addEventListener('click', function() {
-            const now = new Date();
             const today = getToday();
-            const timeStr = now.toISOString();
+            const timeStr = new Date().toISOString();
             
-            // 添加记录
-            if (!kickData[today]) {
-                kickData[today] = [];
-            }
+            if (!kickData[today]) kickData[today] = [];
             kickData[today].push(timeStr);
             localStorage.setItem('kickData', JSON.stringify(kickData));
             
-            // 显示心跳动画
-            const heartBeat = document.getElementById('heartBeat');
-            heartBeat.classList.remove('show');
-            void heartBeat.offsetWidth;
-            heartBeat.classList.add('show');
-            
-            // 震动反馈
+            // 震动
             if (settings.vibrate && navigator.vibrate) {
-                navigator.vibrate([100, 50, 100]);
+                navigator.vibrate([80, 40, 80]);
             }
             
             // 提示
             const { weeks } = getWeekFromDue(settings.dueDate);
             const std = weeks ? getStandard(weeks) : null;
-            const todayCount = (kickData[today] || []).length;
+            const count = kickData[today].length;
             let msg = '💗 記錄成功！';
-            if (std && todayCount >= std.per2h) {
-                msg = '💗 今日已達標！';
-            }
+            if (std && count >= std.per2h) msg = '🎉 今日達標！';
             showToast(msg);
             
-            // 更新显示
             updateTodayCount();
             updateTimeline();
             updateWeekStats();
         });
 
-        // ==================== 定时计数模式 ====================
+        // ==================== 定时计数 ====================
         function toggleSessionMode() {
-            const mode = document.getElementById('sessionMode');
-            mode.classList.toggle('active');
+            document.getElementById('sessionMode').classList.toggle('active');
         }
 
         function startSession() {
@@ -1230,27 +807,24 @@
             sessionData.count = 0;
             sessionData.startTime = new Date();
             document.getElementById('sessionCount').textContent = '0';
-            document.getElementById('sessionStartTime').textContent = sessionData.startTime.toLocaleTimeString('zh-TW', {hour: '2-digit', minute: '2-digit'});
+            document.getElementById('sessionStartTime').textContent = sessionData.startTime.toLocaleTimeString('zh-TW', {hour:'2-digit', minute:'2-digit'});
             document.getElementById('sessionStart').textContent = '記錄胎動';
             document.getElementById('sessionStart').onclick = recordSessionKick;
             showToast('⏱️ 開始計時');
         }
 
         function stopSession() {
-            if (sessionData.active) {
-                // 保存记录
-                if (sessionData.count > 0) {
-                    const today = getToday();
-                    const now = new Date();
-                    for (let i = 0; i < sessionData.count; i++) {
-                        if (!kickData[today]) kickData[today] = [];
-                        kickData[today].push(now.toISOString());
-                    }
-                    localStorage.setItem('kickData', JSON.stringify(kickData));
-                    updateTodayCount();
-                    updateTimeline();
-                    updateWeekStats();
+            if (sessionData.active && sessionData.count > 0) {
+                const today = getToday();
+                const now = new Date();
+                for (let i = 0; i < sessionData.count; i++) {
+                    if (!kickData[today]) kickData[today] = [];
+                    kickData[today].push(now.toISOString());
                 }
+                localStorage.setItem('kickData', JSON.stringify(kickData));
+                updateTodayCount();
+                updateTimeline();
+                updateWeekStats();
             }
             sessionData.active = false;
             sessionData.count = 0;
@@ -1265,170 +839,121 @@
             if (!sessionData.active) return;
             sessionData.count++;
             document.getElementById('sessionCount').textContent = sessionData.count;
-            
-            if (settings.vibrate && navigator.vibrate) {
-                navigator.vibrate(80);
-            }
+            if (settings.vibrate && navigator.vibrate) navigator.vibrate(60);
             
             const { weeks } = getWeekFromDue(settings.dueDate);
             const std = weeks ? getStandard(weeks) : { per2h: 10 };
-            
-            if (sessionData.count >= std.per2h) {
-                showToast('🎉 達標了！');
-            }
+            if (sessionData.count >= std.per2h) showToast('🎉 達標了！');
         }
 
         // ==================== 页面导航 ====================
         function showPage(page, evt) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            
             document.getElementById(page + 'Page').classList.add('active');
+            
             if (evt && evt.currentTarget) {
                 evt.currentTarget.classList.add('active');
             } else {
-                // Find the nav item for this page
-                const navItems = document.querySelectorAll('.nav-item');
-                navItems.forEach(item => {
-                    if (item.textContent.toLowerCase().includes(page === 'home' ? '首頁' : page === 'report' ? '報告' : '設置')) {
+                const items = document.querySelectorAll('.nav-item');
+                items.forEach(item => {
+                    if (item.textContent.includes(page === 'home' ? '首頁' : page === 'report' ? '報告' : '設置')) {
                         item.classList.add('active');
                     }
                 });
             }
         }
 
-        // ==================== 报告功能 ====================
+        // ==================== 报告 ====================
         function generateReport() {
             const date = document.getElementById('reportDate').value;
             const kicks = kickData[date] || [];
-            
             const reportCard = document.getElementById('dailyReport');
             const content = document.getElementById('reportContent');
-            
-            if (kicks.length === 0) {
-                content.innerHTML = '<p style="text-align: center; color: var(--text-light); padding: 40px;">該日沒有記錄</p>';
-            } else {
-                // 计算统计
-                const firstTime = new Date(kicks[0]);
-                const lastTime = new Date(kicks[kicks.length - 1]);
-                const duration = (lastTime - firstTime) / (1000 * 60 * 60); // 小时
-                const avgInterval = duration > 0 ? (kicks.length - 1) > 0 ? duration * 60 / (kicks.length - 1) : 0 : 0;
-                
-                // 计算12小时等效
-                const dayData = kicks.map(t => new Date(t).getHours());
-                const morning = dayData.filter(h => h >= 6 && h < 12).length;
-                const afternoon = dayData.filter(h => h >= 12 && h < 18).length;
-                const evening = dayData.filter(h => h >= 18 || h < 6).length;
-                const equivalent12h = (morning + afternoon + evening) * 4;
+            document.getElementById('reportTitle').textContent = `${date} 報告`;
 
-                // 状态评估
-                const dueDate = settings.dueDate;
+            if (kicks.length === 0) {
+                content.innerHTML = '<p style="text-align:center;color:var(--text-light);padding:30px;">該日沒有記錄</p>';
+            } else {
+                const first = new Date(kicks[0]);
+                const last = new Date(kicks[kicks.length-1]);
+                const dur = (last - first) / (1000*60*60);
+                const avg = dur > 0 && kicks.length > 1 ? dur*60/(kicks.length-1) : 0;
+                
+                // 12小时等效
+                const hours = kicks.map(t => new Date(t).getHours());
+                const m = hours.filter(h => h>=6 && h<12).length;
+                const a = hours.filter(h => h>=12 && h<18).length;
+                const e = hours.filter(h => h>=18 || h<6).length;
+                const eq12 = (m+a+e)*4;
+
+                // 状态
                 let statusHtml = '';
-                if (dueDate) {
-                    const { weeks } = getWeekFromDue(dueDate);
+                if (settings.dueDate) {
+                    const { weeks } = getWeekFromDue(settings.dueDate);
                     if (weeks >= 16) {
-                        const result = assessStatus(kicks.length, weeks);
-                        statusHtml = `<div class="report-item"><span class="report-label">狀態</span><span class="report-value" style="color: ${result.status === 'normal' ? 'var(--success)' : result.status === 'warning' ? '#F57F17' : 'var(--danger)'}">${result.label}</span></div>`;
+                        const r = assessStatus(kicks.length, weeks);
+                        const c = r.status==='normal'?'var(--success)':r.status==='warning'?'#F57F17':'var(--danger)';
+                        statusHtml = `<div class="report-item"><span class="report-label">狀態</span><span class="report-value" style="color:${c}">${r.label}</span></div>`;
                     }
                 }
-                
-                // 孕周提示
+
                 let weekTip = '';
-                if (dueDate) {
-                    const { weeks } = getWeekFromDue(dueDate);
-                    const std = getStandard(weeks);
-                    weekTip = `<div class="report-item"><span class="report-label">參考標準</span><span class="report-value">2h≥${std.per2h}次 / 1h≥${std.per1h}次</span></div>`;
+                if (settings.dueDate) {
+                    const { weeks } = getWeekFromDue(settings.dueDate);
+                    if (weeks >= 16) {
+                        const std = getStandard(weeks);
+                        weekTip = `<div class="report-item"><span class="report-label">參考標準</span><span class="report-value">2h≥${std.per2h}次</span></div>`;
+                    }
                 }
 
                 content.innerHTML = `
                     ${statusHtml}
-                    <div class="report-item">
-                        <span class="report-label">日期</span>
-                        <span class="report-value">${date}</span>
-                    </div>
-                    <div class="report-item">
-                        <span class="report-label">總次數</span>
-                        <span class="report-value">${kicks.length} 次</span>
-                    </div>
-                    <div class="report-item">
-                        <span class="report-label">12小時等效</span>
-                        <span class="report-value">≈${equivalent12h} 次</span>
-                    </div>
+                    <div class="report-item"><span class="report-label">總次數</span><span class="report-value">${kicks.length} 次</span></div>
+                    <div class="report-item"><span class="report-label">12h等效</span><span class="report-value">≈${eq12} 次</span></div>
                     ${weekTip}
-                    <div class="report-item">
-                        <span class="report-label">首次記錄</span>
-                        <span class="report-value">${firstTime.toLocaleTimeString('zh-TW', {hour: '2-digit', minute: '2-digit'})}</span>
-                    </div>
-                    <div class="report-item">
-                        <span class="report-label">最後記錄</span>
-                        <span class="report-value">${lastTime.toLocaleTimeString('zh-TW', {hour: '2-digit', minute: '2-digit'})}</span>
-                    </div>
-                    <div class="report-item">
-                        <span class="report-label">記錄時長</span>
-                        <span class="report-value">${duration > 0 ? duration.toFixed(1) : '-'} 小時</span>
-                    </div>
-                    <div class="report-item">
-                        <span class="report-label">平均間隔</span>
-                        <span class="report-value">${avgInterval > 0 ? avgInterval.toFixed(0) : '-'} 分鐘</span>
-                    </div>
-                    <div class="report-item">
-                        <span class="report-label">高峰時段</span>
-                        <span class="report-value">${morning >= afternoon && morning >= evening ? '上午' : afternoon >= evening ? '下午' : '晚上/凌晨'}</span>
-                    </div>
+                    <div class="report-item"><span class="report-label">首次</span><span class="report-value">${first.toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'})}</span></div>
+                    <div class="report-item"><span class="report-label">最後</span><span class="report-value">${last.toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'})}</span></div>
+                    <div class="report-item"><span class="report-label">平均間隔</span><span class="report-value">${avg>0?avg.toFixed(0):'-'} 分鐘</span></div>
+                    <div class="report-item"><span class="report-label">高峰</span><span class="report-value">${m>=a&&m>=e?'上午':a>=e?'下午':'晚上'}</span></div>
                 `;
             }
-            
             reportCard.style.display = 'block';
         }
 
-        // ==================== 设置功能 ====================
-        function toggleSound() {
-            settings.sound = !settings.sound;
-            localStorage.setItem('kickSettings', JSON.stringify(settings));
-            document.getElementById('soundToggle').classList.toggle('active', settings.sound);
-        }
-
+        // ==================== 设置 ====================
         function toggleVibrate() {
             settings.vibrate = !settings.vibrate;
             localStorage.setItem('kickSettings', JSON.stringify(settings));
             document.getElementById('vibrateToggle').classList.toggle('active', settings.vibrate);
         }
 
-        // ==================== 数据管理 ====================
         function exportData() {
-            const exportObj = {
-                records: kickData,
-                settings: settings,
-                exportDate: getToday()
-            };
-            const dataStr = JSON.stringify(exportObj, null, 2);
-            const blob = new Blob([dataStr], {type: 'application/json'});
-            const url = URL.createObjectURL(blob);
+            const blob = new Blob([JSON.stringify({records: kickData, settings: settings, exportDate: getToday()}, null, 2)], {type: 'application/json'});
             const a = document.createElement('a');
-            a.href = url;
+            a.href = URL.createObjectURL(blob);
             a.download = `胎動記錄_${getToday()}.json`;
             a.click();
-            showToast('📦 數據已導出');
+            showToast('📦 已導出');
         }
 
         function clearAllData() {
-            if (confirm('確定要清除所有數據嗎？此操作無法恢復！')) {
+            if (confirm('確定清除所有數據？')) {
                 kickData = {};
                 localStorage.removeItem('kickData');
                 init();
-                showToast('🗑️ 已清除所有數據');
+                showToast('🗑️ 已清除');
             }
         }
 
-        // ==================== 提示功能 ====================
         function showToast(msg) {
-            const toast = document.getElementById('toast');
-            toast.textContent = msg;
-            toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2500);
         }
 
-        // ==================== 启动 ====================
+        // 启动
         init();
     </script>
 </body>
