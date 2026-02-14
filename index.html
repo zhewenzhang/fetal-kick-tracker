@@ -170,12 +170,6 @@
             position: relative;
         }
 
-        .kick-button::before {
-            content: '👶';
-            font-size: 50px;
-            margin-bottom: 5px;
-        }
-
         .kick-button:active {
             transform: scale(0.95);
         }
@@ -707,6 +701,7 @@
 
             <!-- 记录按钮 -->
             <button class="kick-button" id="kickButton">
+                <span id="kickButtonIcon" style="font-size: 50px; display: block;"></span>
                 <span>點擊記錄</span>
                 <span style="font-size: 12px; margin-top: 4px;">胎動</span>
             </button>
@@ -2235,12 +2230,18 @@
             
             // 更新记录按钮图标
             const kickBtn = document.getElementById('kickButton');
-            if (kickBtn) {
+            const kickIcon = document.getElementById('kickButtonIcon');
+            
+            if (kickBtn && kickIcon) {
                 if (babyStyleSettings.style === 'custom' && babyStyleSettings.customImage) {
+                    // 自定义图片模式
                     kickBtn.classList.add('custom-img');
                     kickBtn.style.setProperty('--custom-bg', `url(${babyStyleSettings.customImage})`);
+                    kickIcon.textContent = '';
                 } else {
+                    // emoji图标模式
                     kickBtn.classList.remove('custom-img');
+                    kickIcon.textContent = babyStyleSettings.icon || '👶';
                 }
             }
             
