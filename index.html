@@ -1569,6 +1569,7 @@
                     } else if (event === 'SIGNED_OUT') {
                         authState.user = null;
                         authState.isAnonymous = true;
+                        authState.initialized = true;  // 必须设置为true
                         updateAuthUI();
                         showToast('👋 已退出登录');
                         
