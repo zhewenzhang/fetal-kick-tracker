@@ -1476,13 +1476,6 @@
                     } else {
                         headerDate.textContent = `👶 寶寶已出生${Math.abs(days)}天`;
                     }
-                    // 同时显示怀孕日期
-                    document.getElementById('conceivedDateDisplay')?.remove();
-                    const conceivedDisplay = document.createElement('div');
-                    conceivedDisplay.id = 'conceivedDateDisplay';
-                    conceivedDisplay.style.cssText = 'font-size: 12px; color: var(--text-light); margin-top: 4px;';
-                    conceivedDisplay.textContent = `👶 預產期倒數 ${days} 天（${conceivedStr}受孕）`;
-                    headerDate.parentNode.appendChild(conceivedDisplay);
                 } else {
                     headerDate.textContent = new Date().toLocaleDateString('zh-TW', { month: 'long', day: 'numeric', weekday: 'long' });
                     document.getElementById('conceivedDateDisplay')?.remove();
