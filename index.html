@@ -503,26 +503,6 @@
             margin-top: 10px;
         }
 
-        /* 按钮上的宝宝图标 */
-        .kick-button .baby-icon {
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            margin-bottom: 5px;
-            background: rgba(255,255,255,0.3);
-            overflow: hidden;
-        }
-
-        .kick-button .baby-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
         /* 记录按钮点击动画 */
         @keyframes kickPulse {
             0% { transform: scale(1); }
@@ -675,7 +655,7 @@
         <div class="container">
             <!-- 今日统计 -->
             <div class="stats-card">
-                <h2>今日胎动</h2>
+                <h2><span id="babyNamePrefix"></span>的今日胎动</h2>
                 <div class="stats-number" id="todayCount">0</div>
                 <div class="stats-label">次</div>
                 <div id="statusBadge"></div>
@@ -684,12 +664,10 @@
 
             <!-- 记录按钮 -->
             <button class="kick-button" id="kickButton">
-                <span class="baby-icon" id="kickButtonIcon"></span>
                 <span>點擊記錄</span>
                 <span style="font-size: 12px; margin-top: 4px;">胎動</span>
             </button>
             <div class="last-kick" id="lastKick">還沒記錄，點擊上方按鈕</div>
-            <div style="text-align: center; margin-top: 8px; font-size: 15px; color: var(--pink-dark);" id="babyNameDisplay"></div>
 
             <!-- 快速计数切换 -->
             <div style="text-align: center;">
@@ -1575,16 +1553,14 @@
             }
             
             updateBabyNameDisplay();
-            updateKickButtonStyle(); // 更新按钮显示
         }
 
         function updateBabyNameDisplay() {
-            const display = document.getElementById('babyNameDisplay');
+            const prefix = document.getElementById('babyNamePrefix');
             const aboutDisplay = document.getElementById('aboutBabyStyle');
             
             if (settings.babyName) {
-                display.textContent = `👶 ${settings.babyName}`;
-                display.style.display = 'block';
+                prefix.textContent = settings.babyName;
                 // 在关于页面添加宝宝名字信息
                 if (aboutDisplay) {
                     const styleText = aboutDisplay.textContent;
@@ -1595,11 +1571,7 @@
                     }
                 }
             } else {
-                display.style.display = 'none';
-                // 恢复只显示风格
-                if (aboutDisplay) {
-                    updateAboutStyle();
-                }
+                prefix.textContent = '';
             }
         }
 
@@ -2086,9 +2058,6 @@
             // 更新设置页显示
             updateStyleSelector();
             
-            // 更新记录按钮
-            updateKickButtonStyle();
-            
             // 更新关于页
             updateAboutStyle();
         }
@@ -2133,7 +2102,6 @@
             // 保存并更新UI
             saveBabyStyle();
             updateStylePreview();
-            updateKickButtonStyle();
             updateAboutStyle();
         }
 
@@ -2149,7 +2117,6 @@
             babyStyleSettings.icon = element.dataset.icon;
             saveBabyStyle();
             updateStylePreview();
-            updateKickButtonStyle();
             updateAboutStyle();
         }
 
@@ -2214,33 +2181,6 @@
             document.getElementById('stylePreview').textContent = previewText;
         }
 
-        // 更新记录按钮风格
-        function updateKickButtonStyle() {
-            const iconEl = document.getElementById('kickButtonIcon');
-            const displayEl = document.getElementById('babyNameDisplay');
-            const config = babyStyleConfig[babyStyleSettings.style];
-
-            if (babyStyleSettings.style === 'custom' && babyStyleSettings.customImage) {
-                // 显示自定义图片
-                iconEl.innerHTML = `<img src="${babyStyleSettings.customImage}" alt="宝宝">`;
-                // 如果有宝宝名字，也显示在下面
-                if (settings.babyName) {
-                    displayEl.textContent = `👶 ${settings.babyName}`;
-                } else {
-                    displayEl.textContent = config.name;
-                }
-            } else {
-                // 显示图标
-                iconEl.innerHTML = babyStyleSettings.icon;
-                // 如果有宝宝名字，显示名字 + 风格名称
-                if (settings.babyName) {
-                    displayEl.textContent = `👶 ${settings.babyName} · ${config.name}`;
-                } else {
-                    displayEl.textContent = config.name;
-                }
-            }
-        }
-
         // 更新关于页风格显示
         function updateAboutStyle() {
             const config = babyStyleConfig[babyStyleSettings.style];
@@ -2299,7 +2239,6 @@
                     
                     saveBabyStyle();
                     updateStylePreview();
-                    updateKickButtonStyle();
                     updateAboutStyle();
                     showToast('📷 照片已上传');
                 });
