@@ -185,6 +185,7 @@
             align-items: flex-end;
             height: 110px;
             padding: 0 5px;
+            overflow: hidden;
         }
         
         .hour-bar {
@@ -202,10 +203,11 @@
             background: linear-gradient(180deg, #FF69B4 0%, #FFB6C1 100%);
             border-radius: 4px 4px 0 0;
             transition: height 0.3s ease;
+            max-height: 100px;
         }
         
         .hour-bar.max .bar-fill {
-            background: linear-gradient(180deg, #FF1493 0%, #FF69B4 100());
+            background: linear-gradient(180deg, #FF1493 0%, #FF69B4 100%);
         }
         
         .bar-count {
@@ -1886,27 +1888,7 @@
                 }
             });
 
-            const maxCount = Math.max(...hourlyCounts, 1);
 
-            // 生成每个时段的点
-            const hourlyPoints = kicks.map(time => {
-                const date = new Date(time);
-                const hour = date.getHours();
-                const minute = date.getMinutes();
-                
-                if (hour < 6 || hour >= 24) return null;
-                
-                const hourIndex = hour - 6;
-                // SVG坐标：360x120，每小时19px宽
-                const x = hourIndex * 19 + 9 + (minute / 60) * 19;
-                const y = 15 + Math.random() * 90;
-                
-                // 计算颜色强度
-                const intensity = hourlyCounts[hourIndex] / maxCount;
-                const opacity = 0.5 + intensity * 0.5;
-                
-                return '';
-            }).filter(p => p).join('');
 
             return `
                 <div style="margin-top: 15px; padding: 15px; background: linear-gradient(135deg, var(--white) 0%, var(--pink-light) 100%); border-radius: 15px; box-shadow: 0 4px 15px rgba(255, 182, 193, 0.3);">
