@@ -1559,7 +1559,10 @@
                 } else if (data.user) {
                     // 需要邮箱验证
                     showAuthMessage('success', '注册成功！请查收邮箱验证邮件', 'register');
-                    document.getElementById('registerForm').reset();
+                    setTimeout(() => {
+                        const form = document.getElementById('registerForm');
+                        if (form) form.reset();
+                    }, 100);
                 }
             } catch (e) {
                 console.error('注册失败:', e);
