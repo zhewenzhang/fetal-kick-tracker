@@ -56,6 +56,280 @@
             color: var(--text-light);
         }
 
+        /* ==================== 用户认证样式 ==================== */
+        .auth-status {
+            position: absolute;
+            top: 12px;
+            right: 15px;
+        }
+
+        .auth-btn {
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 2px solid var(--pink);
+            background: var(--white);
+            color: var(--pink-dark);
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .auth-btn:hover {
+            background: var(--pink-light);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-dark);
+        }
+
+        .user-info .username {
+            font-weight: bold;
+            color: var(--pink-dark);
+        }
+
+        .user-info .logout-btn {
+            padding: 4px 10px;
+            border-radius: 12px;
+            border: 1px solid var(--pink);
+            background: var(--white);
+            color: var(--text-light);
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        /* 登录模态框 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 360px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--pink-light);
+        }
+
+        .modal-header h3 {
+            font-size: 16px;
+            color: var(--text-dark);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+
+        /* 标签页 */
+        .auth-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--pink-light);
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: none;
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .auth-tab.active {
+            color: var(--pink-dark);
+        }
+
+        .auth-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--pink-dark);
+        }
+
+        .auth-tab-content {
+            display: none;
+            padding: 20px;
+        }
+
+        .auth-tab-content.active {
+            display: block;
+        }
+
+        /* 表单样式 */
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .auth-input {
+            padding: 12px 15px;
+            border: 2px solid var(--pink-light);
+            border-radius: 12px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .auth-input:focus {
+            border-color: var(--pink);
+        }
+
+        .auth-btn-primary {
+            padding: 14px;
+            border-radius: 14px;
+            border: none;
+            background: linear-gradient(135deg, var(--pink) 0%, var(--pink-dark) 100%);
+            color: var(--white);
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .auth-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);
+        }
+
+        .auth-btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 10px 0;
+            color: var(--text-light);
+            font-size: 12px;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--pink-light);
+        }
+
+        /* 第三方登录按钮 */
+        .social-login {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 12px;
+            border: 2px solid var(--pink-light);
+            background: var(--white);
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .social-btn:hover {
+            border-color: var(--pink);
+            background: var(--pink-light);
+        }
+
+        .social-btn .icon {
+            font-size: 20px;
+        }
+
+        /* 匿名登录 */
+        .anonymous-login {
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .anonymous-login a {
+            color: var(--text-light);
+            font-size: 13px;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .anonymous-login a:hover {
+            color: var(--pink-dark);
+        }
+
+        .anonymous-note {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+
+        /* 提示消息 */
+        .auth-message {
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 13px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .auth-message.error {
+            background: rgba(239, 83, 80, 0.1);
+            color: var(--danger);
+        }
+
+        .auth-message.success {
+            background: rgba(129, 199, 132, 0.1);
+            color: var(--success);
+        }
+
         /* 装饰云朵 */
         .clouds {
             position: fixed;
@@ -715,6 +989,10 @@
     <div class="header">
         <h1>👶 胎动记录器</h1>
         <div class="subtitle" id="currentDate">记录宝宝每一次跳动</div>
+        <!-- 用户登录状态 -->
+        <div id="userAuthStatus" class="auth-status">
+            <button class="auth-btn" onclick="showLoginModal()">登录 / 注册</button>
+        </div>
     </div>
 
     <!-- 首页 -->
@@ -949,6 +1227,62 @@
     <!-- 提示 -->
     <div class="toast" id="toast"></div>
 
+    <!-- ==================== 登录模态框 ==================== -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>👤 用户登录</h3>
+                <button class="modal-close" onclick="hideLoginModal()">&times;</button>
+            </div>
+            
+            <!-- 标签页 -->
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login" onclick="switchAuthTab('login')">登录</button>
+                <button class="auth-tab" data-tab="register" onclick="switchAuthTab('register')">注册</button>
+            </div>
+            
+            <!-- 登录表单 -->
+            <div class="auth-tab-content active" id="loginTab">
+                <div class="auth-form" id="loginForm">
+                    <div id="loginMessage"></div>
+                    <input type="email" class="auth-input" id="loginEmail" placeholder="邮箱地址" required>
+                    <input type="password" class="auth-input" id="loginPassword" placeholder="密码" required>
+                    <button class="auth-btn-primary" onclick="handleEmailLogin()">登录</button>
+                </div>
+                
+                <div class="auth-divider">或使用第三方账号</div>
+                
+                <div class="social-login">
+                    <button class="social-btn" onclick="handleGoogleLogin()">
+                        <span class="icon">🔵</span>
+                        <span>Google 账号登录</span>
+                    </button>
+                </div>
+                
+                <div class="anonymous-login">
+                    <a onclick="handleAnonymousLogin()">暂不登录，先试试</a>
+                    <p class="anonymous-note">匿名使用功能受限，建议登录以获得完整体验和多设备同步</p>
+                </div>
+            </div>
+            
+            <!-- 注册表单 -->
+            <div class="auth-tab-content" id="registerTab">
+                <div class="auth-form" id="registerForm">
+                    <div id="registerMessage"></div>
+                    <input type="email" class="auth-input" id="registerEmail" placeholder="邮箱地址" required>
+                    <input type="password" class="auth-input" id="registerPassword" placeholder="设置密码（至少6位）" minlength="6" required>
+                    <input type="password" class="auth-input" id="registerPasswordConfirm" placeholder="确认密码" required>
+                    <button class="auth-btn-primary" onclick="handleRegister()">注册</button>
+                </div>
+                
+                <div class="anonymous-login">
+                    <a onclick="handleAnonymousLogin()">暂不注册，先试试</a>
+                    <p class="anonymous-note">注册后可享受多设备同步和数据备份</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- ==================== Supabase 配置 ==================== -->
     <script>
         // Supabase 配置
@@ -961,13 +1295,118 @@
         let isOnline = navigator.onLine;
         let syncPending = false;
 
-        // ==================== Supabase 初始化 ====================
+        // ==================== 用户认证状态管理 ====================
+        let authState = {
+            user: null,
+            isAnonymous: true,
+            initialized: false
+        };
+
+        // 更新用户界面显示
+        function updateAuthUI() {
+            const authStatus = document.getElementById('userAuthStatus');
+            const modal = document.getElementById('loginModal');
+            
+            if (authState.user && !authState.isAnonymous) {
+                // 已登录状态
+                const displayName = authState.user.email?.split('@')[0] || '用户';
+                authStatus.innerHTML = `
+                    <div class="user-info">
+                        <span>👤</span>
+                        <span class="username">${escapeHtml(displayName)}</span>
+                        <button class="logout-btn" onclick="handleLogout()">退出</button>
+                    </div>
+                `;
+                if (modal.classList.contains('show')) {
+                    hideLoginModal();
+                }
+            } else if (authState.isAnonymous && authState.initialized) {
+                // 匿名登录状态
+                const displayName = '访客';
+                authStatus.innerHTML = `
+                    <div class="user-info">
+                        <span>👤</span>
+                        <span class="username">${displayName}</span>
+                        <button class="auth-btn" onclick="showLoginModal()">升级</button>
+                    </div>
+                `;
+            } else {
+                // 未登录状态
+                authStatus.innerHTML = `
+                    <button class="auth-btn" onclick="showLoginModal()">登录 / 注册</button>
+                `;
+            }
+        }
+
+        // ==================== 模态框控制 ====================
+        function showLoginModal() {
+            document.getElementById('loginModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideLoginModal() {
+            document.getElementById('loginModal').classList.remove('show');
+            document.body.style.overflow = '';
+            
+            // 清空表单
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+            document.getElementById('registerEmail').value = '';
+            document.getElementById('registerPassword').value = '';
+            document.getElementById('registerPasswordConfirm').value = '';
+            document.getElementById('loginMessage').innerHTML = '';
+            document.getElementById('registerMessage').innerHTML = '';
+        }
+
+        // 切换标签页
+        function switchAuthTab(tab) {
+            document.querySelectorAll('.auth-tab').forEach(t => {
+                t.classList.toggle('active', t.dataset.tab === tab);
+            });
+            document.querySelectorAll('.auth-tab-content').forEach(c => {
+                c.classList.toggle('active', c.id === tab + 'Tab');
+            });
+        }
+
+        // 显示认证消息
+        function showAuthMessage(type, message, tab = 'login') {
+            const container = document.getElementById(tab + 'Message');
+            container.innerHTML = `<div class="auth-message ${type}">${escapeHtml(message)}</div>`;
+        }
+
+        // ==================== Supabase Auth 初始化 ====================
         async function initSupabase() {
             try {
                 supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
                     auth: {
                         persistSession: true,
                         autoRefreshToken: true
+                    }
+                });
+                
+                // 监听认证状态变化
+                supabase.auth.onAuthStateChange(async (event, session) => {
+                    console.log('Auth state changed:', event, session?.user?.id);
+                    
+                    if (event === 'SIGNED_IN' && session?.user) {
+                        authState.user = session.user;
+                        authState.isAnonymous = session.user.is_anonymous || false;
+                        authState.initialized = true;
+                        
+                        // 显示登录成功消息
+                        if (!authState.isAnonymous) {
+                            showToast('🎉 登录成功！');
+                        }
+                        
+                        updateAuthUI();
+                        
+                        // 同步用户数据
+                        await syncUserData();
+                    } else if (event === 'SIGNED_OUT') {
+                        authState.user = null;
+                        authState.isAnonymous = true;
+                        updateAuthUI();
+                        showToast('👋 已退出登录');
                     }
                 });
                 
@@ -982,8 +1421,8 @@
                     showToast('📴 離線模式');
                 });
                 
-                // 尝试匿名登录
-                await signInAnonymous();
+                // 检查现有会话
+                await checkExistingSession();
                 
                 // 确保表存在
                 await ensureTables();
@@ -995,51 +1434,183 @@
             } catch (e) {
                 console.error('Supabase 初始化失敗:', e);
                 // 使用本地模式
+                authState.initialized = true;
+                updateAuthUI();
                 return false;
+            }
+        }
+
+        // 检查现有会话
+        async function checkExistingSession() {
+            try {
+                const { data: { session }, error } = await supabase.auth.getSession();
+                
+                if (error && error.name !== 'AuthSessionMissingError') {
+                    throw error;
+                }
+                
+                if (session?.user) {
+                    authState.user = session.user;
+                    authState.isAnonymous = session.user.is_anonymous || false;
+                    authState.initialized = true;
+                    console.log('恢复会话:', authState.user.id);
+                    updateAuthUI();
+                    
+                    // 同步用户数据
+                    await syncUserData();
+                } else {
+                    // 没有会话，尝试匿名登录
+                    await signInAnonymous();
+                }
+            } catch (e) {
+                console.error('检查会话失败:', e);
+                await signInAnonymous();
             }
         }
 
         // ==================== 匿名登录 ====================
         async function signInAnonymous() {
             try {
-                // 检查现有会话
-                const { data: { session }, error } = await supabase.auth.getSession();
-                if (error && error.name !== 'AuthSessionMissingError') {
-                    throw error;
+                // 检查现有会话（已在前面的 checkExistingSession 中处理）
+                if (authState.user) {
+                    currentUser = authState.user;
+                    return true;
                 }
                 
-                if (session?.user) {
-                    currentUser = session.user;
-                    console.log('已有會話:', currentUser.id);
-                } else {
-                    // 尝试匿名登录
+                // 尝试匿名登录
+                if (supabase) {
                     const { data, error } = await supabase.auth.signInAnonymously();
                     if (error) throw error;
-                    currentUser = data.user;
-                    console.log('匿名登錄成功:', currentUser.id);
+                    // 匿名登录会自动触发 onAuthStateChange
+                    return true;
                 }
-                
-                // 监听认证状态变化
-                supabase.auth.onAuthStateChange((event, session) => {
-                    if (session?.user) {
-                        currentUser = session.user;
-                        console.log('用戶已登錄:', currentUser.id);
-                    }
-                });
-                
-                return true;
             } catch (e) {
-                console.error('登錄失敗:', e);
-                // 生成臨時用戶ID（離線模式）
-                currentUser = { id: localStorage.getItem('tempUserId') || generateTempUserId() };
+                console.error('匿名登录失敗:', e);
+                // 离线模式使用临时ID
+                authState.initialized = true;
+                updateAuthUI();
                 return false;
             }
         }
 
-        function generateTempUserId() {
-            const id = crypto.randomUUID();
-            localStorage.setItem('tempUserId', id);
-            return { id };
+        // ==================== 邮箱登录 ====================
+        async function handleEmailLogin() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!email) {
+                showAuthMessage('error', '请输入邮箱地址', 'login');
+                return;
+            }
+            
+            if (!password) {
+                showAuthMessage('error', '请输入密码', 'login');
+                return;
+            }
+            
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+                
+                if (error) throw error;
+                
+                // 登录成功，onAuthStateChange 会处理 UI 更新
+                console.log('邮箱登录成功:', data.user.id);
+            } catch (e) {
+                console.error('邮箱登录失败:', e);
+                showAuthMessage('error', e.message || '登录失败，请检查邮箱和密码', 'login');
+            }
+        }
+
+        // ==================== 注册 ====================
+        async function handleRegister() {
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const passwordConfirm = document.getElementById('registerPasswordConfirm').value;
+            
+            if (!email) {
+                showAuthMessage('error', '请输入邮箱地址', 'register');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showAuthMessage('error', '密码至少需要6位', 'register');
+                return;
+            }
+            
+            if (password !== passwordConfirm) {
+                showAuthMessage('error', '两次输入的密码不一致', 'register');
+                return;
+            }
+            
+            try {
+                const { data, error } = await supabase.auth.signUp({
+                    email: email,
+                    password: password
+                });
+                
+                if (error) throw error;
+                
+                if (data.session) {
+                    // 已自动登录
+                    console.log('注册并登录成功:', data.user.id);
+                } else if (data.user) {
+                    // 需要邮箱验证
+                    showAuthMessage('success', '注册成功！请查收邮箱验证邮件', 'register');
+                    document.getElementById('registerForm').reset();
+                }
+            } catch (e) {
+                console.error('注册失败:', e);
+                showAuthMessage('error', e.message || '注册失败，请稍后重试', 'register');
+            }
+        }
+
+        // ==================== Google 登录 ====================
+        async function handleGoogleLogin() {
+            try {
+                const { data, error } = await supabase.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                        redirectTo: window.location.href
+                    }
+                });
+                
+                if (error) throw error;
+            } catch (e) {
+                console.error('Google登录失败:', e);
+                showAuthMessage('error', 'Google登录失败，请稍后重试', 'login');
+            }
+        }
+
+        // ==================== 匿名使用 ====================
+        async function handleAnonymousLogin() {
+            hideLoginModal();
+            
+            if (!authState.user) {
+                await signInAnonymous();
+            } else if (authState.isAnonymous) {
+                showToast('👤 继续以访客身份使用');
+            }
+        }
+
+        // ==================== 退出登录 ====================
+        async function handleLogout() {
+            try {
+                if (supabase) {
+                    const { error } = await supabase.auth.signOut();
+                    if (error) throw error;
+                } else {
+                    // 离线模式
+                    authState.user = null;
+                    authState.isAnonymous = true;
+                    updateAuthUI();
+                }
+            } catch (e) {
+                console.error('退出失败:', e);
+                showToast('退出失败，请重试');
+            }
         }
 
         // ==================== 确保表存在 ====================
@@ -1074,7 +1645,7 @@
 
         // ==================== 数据同步 ====================
         async function syncAllData() {
-            if (!isOnline || !currentUser?.id) return;
+            if (!isOnline || !getCurrentUserId()) return;
             
             try {
                 // 同步设置
@@ -1090,16 +1661,44 @@
             }
         }
 
+        // ==================== 同步用户数据 ====================
+        async function syncUserData() {
+            if (!authState.user?.id) return;
+            
+            currentUser = authState.user;
+            
+            // 确保设置表有用户记录
+            try {
+                const { error } = await supabase
+                    .from('kick_settings')
+                    .upsert({
+                        user_id: authState.user.id,
+                        updated_at: new Date().toISOString()
+                    }, { onConflict: 'user_id' });
+                
+                if (error && error.code !== 'PGRST116') {
+                    console.error('创建用户设置记录失败:', error);
+                }
+            } catch (e) {
+                console.error('同步用户数据失败:', e);
+            }
+        }
+
+        // 获取当前用户ID
+        function getCurrentUserId() {
+            return authState.user?.id || localStorage.getItem('tempUserId');
+        }
+
         // ==================== 设置同步 ====================
         async function syncSettings() {
-            if (!isOnline || !currentUser?.id) return;
+            if (!isOnline || !getCurrentUserId()) return;
             
             try {
                 // 从云端获取设置
                 const { data: remoteSettings, error } = await supabase
                     .from('kick_settings')
                     .select('*')
-                    .eq('user_id', currentUser.id)
+                    .eq('user_id', getCurrentUserId())
                     .single();
                 
                 if (error && error.code !== 'PGRST116') throw error;
@@ -1148,11 +1747,11 @@
         }
 
         async function uploadSettings() {
-            if (!isOnline || !currentUser?.id) return;
+            if (!isOnline || !getCurrentUserId()) return;
             
             try {
                 const settingsData = {
-                    user_id: currentUser.id,
+                    user_id: getCurrentUserId(),
                     due_date: settings.dueDate || null,
                     vibrate: settings.vibrate !== false,
                     baby_name: settings.babyName || null,
@@ -1178,14 +1777,14 @@
 
         // ==================== 记录同步 ====================
         async function syncRecords() {
-            if (!isOnline || !currentUser?.id) return;
+            if (!isOnline || !getCurrentUserId()) return;
             
             try {
                 // 获取云端最新记录时间
                 const { data: latestRecord } = await supabase
                     .from('kick_records')
                     .select('created_at')
-                    .eq('user_id', currentUser.id)
+                    .eq('user_id', getCurrentUserId())
                     .order('created_at', { ascending: false })
                     .limit(1)
                     .single();
@@ -1211,7 +1810,7 @@
         }
 
         async function uploadNewRecords() {
-            if (!isOnline || !currentUser?.id) return;
+            if (!isOnline || !getCurrentUserId()) return;
             
             const recordsToUpload = [];
             const now = Date.now();
@@ -1222,7 +1821,7 @@
                     const recordTime = new Date(time).getTime();
                     if (recordTime > localStorage.getItem('lastSyncTime') || !localStorage.getItem('lastSyncTime')) {
                         recordsToUpload.push({
-                            user_id: currentUser.id,
+                            user_id: getCurrentUserId(),
                             record_date: date,
                             record_time: time,
                             created_at: new Date(recordTime).toISOString()
@@ -1249,13 +1848,13 @@
         }
 
         async function downloadNewRecords(since) {
-            if (!isOnline || !currentUser?.id) return;
+            if (!isOnline || !getCurrentUserId()) return;
             
             try {
                 const { data: newRecords, error } = await supabase
                     .from('kick_records')
                     .select('*')
-                    .eq('user_id', currentUser.id)
+                    .eq('user_id', getCurrentUserId())
                     .gt('created_at', new Date(since).toISOString())
                     .order('created_at', { ascending: false });
                 
@@ -1331,7 +1930,7 @@
 
         // ==================== 导入/导出 ====================
         async function importDataFromCloud() {
-            if (!isOnline || !currentUser?.id) {
+            if (!isOnline || !getCurrentUserId()) {
                 showToast('📴 離線模式，無法導入');
                 return;
             }
@@ -1341,7 +1940,7 @@
                 const { data: records, error } = await supabase
                     .from('kick_records')
                     .select('*')
-                    .eq('user_id', currentUser.id);
+                    .eq('user_id', getCurrentUserId());
                 
                 if (error) throw error;
                 
@@ -1367,7 +1966,7 @@
                 const { data: settingsData } = await supabase
                     .from('kick_settings')
                     .select('*')
-                    .eq('user_id', currentUser.id)
+                    .eq('user_id', getCurrentUserId())
                     .single();
                 
                 if (settingsData) {
@@ -1435,7 +2034,7 @@
                 showToast('📥 導入成功');
                 
                 // 如果在线，同步到云端
-                if (isOnline && currentUser?.id) {
+                if (isOnline && getCurrentUserId()) {
                     syncAllData();
                 }
                 
@@ -1506,6 +2105,13 @@
         function getToday() {
             const d = new Date();
             return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        }
+
+        // HTML转义（防止XSS）
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
         }
 
         function getWeekFromDue(dueDateStr) {
@@ -1599,7 +2205,7 @@
             localStorage.setItem('kickSettings', JSON.stringify(settings));
             
             // 同步到云端
-            if (supabase && currentUser?.id) {
+            if (supabase && getCurrentUserId()) {
                 uploadSettings();
             }
 
@@ -1629,7 +2235,7 @@
             localStorage.setItem('kickSettings', JSON.stringify(settings));
             
             // 同步到云端
-            if (supabase && currentUser?.id) {
+            if (supabase && getCurrentUserId()) {
                 uploadSettings();
             }
             
@@ -1723,7 +2329,7 @@
                     updateWeekStats();
                     
                     // 同步到云端
-                    if (supabase && currentUser?.id) {
+                    if (supabase && getCurrentUserId()) {
                         uploadRecords();
                     }
                 }
@@ -1762,9 +2368,9 @@
             }
             
             // 同步到云端
-            if (supabase && currentUser?.id) {
+            if (supabase && getCurrentUserId()) {
                 const record = {
-                    user_id: currentUser.id,
+                    user_id: getCurrentUserId(),
                     record_date: today,
                     record_time: timeStr,
                     created_at: timeStr
@@ -1820,7 +2426,7 @@
                     kickData[today].push(timeStr);
                     
                     recordsToSync.push({
-                        user_id: currentUser?.id,
+                        user_id: getCurrentUserId(),
                         record_date: today,
                         record_time: timeStr,
                         created_at: timeStr
@@ -1830,7 +2436,7 @@
                 localStorage.setItem('recordsUpdated', Date.now().toString());
                 
                 // 同步到云端
-                if (supabase && currentUser?.id) {
+                if (supabase && getCurrentUserId()) {
                     supabase.from('kick_records').insert(recordsToSync).then(({ error }) => {
                         if (error) {
                             addToSyncQueue({ type: 'records', data: recordsToSync });
@@ -2058,7 +2664,7 @@
             document.getElementById('vibrateToggle').classList.toggle('active', settings.vibrate);
             
             // 同步到云端
-            if (supabase && currentUser?.id) {
+            if (supabase && getCurrentUserId()) {
                 uploadSettings();
             }
         }
@@ -2313,9 +2919,9 @@
             localStorage.setItem('babyStyleSettings', JSON.stringify(babyStyleSettings));
             
             // 同步到云端
-            if (supabase && currentUser?.id) {
+            if (supabase && getCurrentUserId()) {
                 supabase.from('kick_settings').upsert({
-                    user_id: currentUser.id,
+                    user_id: getCurrentUserId(),
                     baby_style: babyStyleSettings.style,
                     baby_icon: babyStyleSettings.icon,
                     baby_custom_image: babyStyleSettings.customImage,
@@ -2394,13 +3000,13 @@
 
         // 从云端加载宝宝风格设置
         async function loadBabyStyleFromCloud() {
-            if (!supabase || !currentUser?.id) return;
+            if (!supabase || !getCurrentUserId()) return;
 
             try {
                 const { data, error } = await supabase
                     .from('kick_settings')
                     .select('baby_style, baby_icon, baby_custom_image')
-                    .eq('user_id', currentUser.id)
+                    .eq('user_id', getCurrentUserId())
                     .single();
 
                 if (error || !data) return;
