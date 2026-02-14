@@ -1571,6 +1571,13 @@
                         authState.isAnonymous = true;
                         updateAuthUI();
                         showToast('👋 已退出登录');
+                        
+                        // 清空本地数据，准备加载新账户数据
+                        localStorage.removeItem('kickData');
+                        localStorage.removeItem('kickSettings');
+                        localStorage.removeItem('recordsUpdated');
+                        localStorage.removeItem('settingsUpdated');
+                        kickData = {};
                     }
                 });
                 
@@ -1850,6 +1857,14 @@
             
             currentUser = authState.user;
             
+            // 登录新账户时：清空本地数据，准备加载新账户数据
+            const isNewLogin = kickData && Object.keys(kickData).length > 0;
+            if (isNewLogin) {
+                console.log('登录新账户，清空本地数据...');
+                kickData = {};
+                localStorage.removeItem('kickData');
+            }
+            
             // 确保设置表有用户记录
             try {
                 const { error } = await supabase
@@ -1868,6 +1883,13 @@
             
             // 同步设置和记录数据
             await syncSettings();
+            
+            // 强制刷新页面数据
+            if (isNewLogin) {
+                updateTodayCount();
+                updateTimeline();
+                updateWeekStats();
+            }
         }
 
         // 获取当前用户ID
@@ -1899,7 +1921,8 @@
                         Object.assign(settings, {
                             dueDate: remoteSettings.due_date || '',
                             vibrate: remoteSettings.vibrate !== false,
-                            babyName: remoteSettings.baby_name || ''
+                            babyName: remoteSettings.baby_name || '',
+                            theme: remoteSettings.theme || 'spring'
                         });
                         localStorage.setItem('kickSettings', JSON.stringify(settings));
                         updatePregnancyUI();
@@ -1912,6 +1935,16 @@
                             babyStyleSettings.customImage = remoteSettings.baby_custom_image || babyStyleSettings.customImage;
                             localStorage.setItem('babyStyleSettings', JSON.stringify(babyStyleSettings));
                             initBabyStyle();
+                        }
+                        
+                        // 同步主题设置
+                        if (remoteSettings.theme && themeConfig[remoteSettings.theme]) {
+                            applyTheme(remoteSettings.theme);
+                            // 更新主题选择器UI
+                            const themeContainer = document.getElementById('themeSelectorContainer');
+                            if (themeContainer) {
+                                themeContainer.innerHTML = createThemeSelector();
+                            }
                         }
                         
                         updateBabyNameDisplay();
@@ -1944,6 +1977,7 @@
                     baby_style: babyStyleSettings.style,
                     baby_icon: babyStyleSettings.icon,
                     baby_custom_image: babyStyleSettings.customImage || null,
+                    theme: settings.theme || 'spring',
                     updated_at: new Date().toISOString()
                 };
                 
