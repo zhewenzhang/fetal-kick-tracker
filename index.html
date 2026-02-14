@@ -2025,32 +2025,72 @@
             if (!isOnline || !getCurrentUserId()) return;
             
             try {
-                // 获取云端最新记录时间
-                const { data: latestRecord } = await supabase
+                // 获取所有云端记录
+                const { data: allRecords, error } = await supabase
                     .from('kick_records')
-                    .select('created_at')
-                    .eq('user_id', getCurrentUserId())
-                    .order('created_at', { ascending: false })
-                    .limit(1)
-                    .single();
+                    .select('*')
+                    .eq('user_id', getCurrentUserId());
                 
-                const localUpdated = parseInt(localStorage.getItem('recordsUpdated') || '0');
-                const lastSyncTime = latestRecord?.created_at ? new Date(latestRecord.created_at).getTime() : 0;
+                if (error) throw error;
                 
-                if (localUpdated > lastSyncTime) {
-                    // 有本地新记录需要上传
-                    await uploadNewRecords();
+                console.log('同步检查: 云端有', allRecords.length, '条记录');
+                
+                // 合并所有记录到本地
+                let uploadedCount = 0;
+                let downloadedCount = 0;
+                
+                // 处理上传：本地有但云端没有的
+                for (const [date, times] of Object.entries(kickData)) {
+                    for (const time of times) {
+                        const recordTime = new Date(time).getTime();
+                        const exists = allRecords.some(r => 
+                            r.record_date === date && 
+                            new Date(r.record_time).getTime() === recordTime
+                        );
+                        
+                        if (!exists) {
+                            // 需要上传
+                            const { error: insertError } = await supabase
+                                .from('kick_records')
+                                .insert({
+                                    user_id: getCurrentUserId(),
+                                    record_date: date,
+                                    record_time: time,
+                                    created_at: new Date(recordTime).toISOString()
+                                });
+                            
+                            if (!insertError) uploadedCount++;
+                        }
+                    }
                 }
                 
-                if (lastSyncTime > localUpdated) {
-                    // 有云端新记录需要下载
-                    await downloadNewRecords(lastSyncTime);
+                // 处理下载：云端有但本地没有的
+                for (const record of allRecords) {
+                    const date = record.record_date;
+                    if (!kickData[date]) kickData[date] = [];
+                    
+                    const timeStr = new Date(record.record_time).toISOString();
+                    if (!kickData[date].includes(timeStr)) {
+                        kickData[date].push(timeStr);
+                        downloadedCount++;
+                    }
                 }
                 
-                localStorage.setItem('recordsUpdated', Date.now().toString());
+                // 保存到localStorage
+                if (uploadedCount > 0 || downloadedCount > 0) {
+                    localStorage.setItem('kickData', JSON.stringify(kickData));
+                    localStorage.setItem('recordsUpdated', Date.now().toString());
+                    
+                    // 更新界面
+                    updateTodayCount();
+                    updateTimeline();
+                    updateWeekStats();
+                    
+                    console.log(`同步完成: 上传 ${uploadedCount} 条, 下载 ${downloadedCount} 条`);
+                }
                 
             } catch (e) {
-                console.error('記錄同步失敗:', e);
+                console.error('记录同步失败:', e);
             }
         }
 
