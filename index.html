@@ -7,6 +7,9 @@
     <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
     
+    <!-- 主题系统 -->
+    <script src="theme-system.js"></script>
+    
     <!-- 原有样式保持不变 -->
     <style>
         * {
@@ -1020,6 +1023,107 @@
 
         .pregnancy-reminder h4 { font-size: 13px; color: var(--pink-dark); margin-bottom: 6px; }
         .pregnancy-reminder p { font-size: 12px; color: var(--text-light); line-height: 1.5; }
+
+        /* ==================== 主题选择器 ==================== */
+        .theme-selector-section {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(255, 182, 193, 0.3);
+        }
+
+        .theme-selector-section h3 {
+            font-size: 15px;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .theme-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 14px 10px;
+            border-radius: 14px;
+            border: 2px solid #E0E0E0;
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .theme-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-option.selected {
+            border-color: var(--pink);
+            background: var(--pink-light);
+            box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
+        }
+
+        .theme-emoji {
+            font-size: 32px;
+            margin-bottom: 6px;
+        }
+
+        .theme-name {
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--text-dark);
+            margin-bottom: 2px;
+        }
+
+        .theme-desc {
+            font-size: 11px;
+            color: var(--text-light);
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        .theme-preview {
+            display: flex;
+            gap: 4px;
+        }
+
+        .theme-preview span {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+
+        .current-theme-info {
+            text-align: center;
+            padding: 10px;
+            background: var(--pink-light);
+            border-radius: 10px;
+            font-size: 13px;
+            color: var(--pink-dark);
+            font-weight: bold;
+        }
+
+        /* 主题切换动画 */
+        @keyframes fadeIn {
+            from { opacity: 0.5; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0.5; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
     </style>
 </head>
 <body>
@@ -1144,6 +1248,9 @@
                     </button>
                 </div>
             </div>
+
+            <!-- 主题皮肤设置 -->
+            <div id="themeSelectorContainer"></div>
 
             <!-- 宝宝风格设置 -->
             <div class="baby-style-section">
@@ -2174,7 +2281,7 @@
 
         // ==================== 数据存储 ====================
         let kickData = JSON.parse(localStorage.getItem('kickData') || '{}');
-        let settings = JSON.parse(localStorage.getItem('kickSettings') || '{"vibrate": true, "dueDate": "", "babyName": ""}');
+        let settings = JSON.parse(localStorage.getItem('kickSettings') || '{"vibrate": true, "dueDate": "", "babyName": "", "theme": "spring"}');
         let sessionData = { active: false, count: 0, startTime: null };
 
         // ==================== 工具函数 ====================
@@ -2250,6 +2357,15 @@
 
         // ==================== 初始化 ====================
         async function init() {
+            // 初始化主题系统
+            initTheme();
+            
+            // 渲染主题选择器
+            const themeContainer = document.getElementById('themeSelectorContainer');
+            if (themeContainer) {
+                themeContainer.innerHTML = createThemeSelector();
+            }
+            
             // 先初始化 UI - 更新顶部显示
             updateHeaderDisplay();
             document.getElementById('vibrateToggle').classList.toggle('active', settings.vibrate);
