@@ -776,13 +776,25 @@
         <div class="container">
             <div class="settings-card">
                 <h3>📋 查看報告</h3>
-                <input type="date" id="reportDate" class="setting-input" style="margin: 10px 0; width: 100%;">
-                <button class="export-btn" onclick="generateReport()">查看報告</button>
+                <input type="date" id="reportDate" class="setting-input" style="margin: 10px 0; width: 100%;" onchange="generateReport()">
             </div>
 
-            <div class="stats-card" id="dailyReport" style="display: none;">
-                <h2 id="reportTitle">每日報告</h2>
+            <!-- 每日报告 -->
+            <div class="stats-card" id="dailyReport">
+                <h2 id="reportTitle">今日報告</h2>
                 <div id="reportContent"></div>
+            </div>
+
+            <!-- 本周统计 -->
+            <div class="stats-card" id="weekReport">
+                <h3>📅 本週統計</h3>
+                <div id="weekReportContent"></div>
+            </div>
+
+            <!-- 本月统计 -->
+            <div class="stats-card" id="monthReport">
+                <h3>🗓️ 本月統計</h3>
+                <div id="monthReportContent"></div>
             </div>
 
             <!-- 计数说明 -->
@@ -1865,6 +1877,11 @@
                     }
                 });
             }
+            
+            // 切换到报告页时自动加载所有报告
+            if (page === 'report') {
+                loadAllReports();
+            }
         }
 
         // ==================== 报告 ====================
@@ -1919,7 +1936,6 @@
         function generateReport() {
             const date = document.getElementById('reportDate').value;
             const kicks = kickData[date] || [];
-            const reportCard = document.getElementById('dailyReport');
             const content = document.getElementById('reportContent');
             document.getElementById('reportTitle').textContent = `${date} 報告`;
 
@@ -1972,7 +1988,66 @@
                 // 添加散点图
                 content.innerHTML += generateScatterChart(kicks, date);
             }
-            reportCard.style.display = 'block';
+        }
+
+        // 生成周统计
+        function generateWeekReport() {
+            const today = new Date();
+            let weekKicks = [];
+            let weekDays = {};
+            
+            for (let i = 0; i < 7; i++) {
+                const d = new Date(today);
+                d.setDate(today.getDate() - (6 - i));
+                const dateStr = d.toISOString().split('T')[0];
+                const kicks = kickData[dateStr] || [];
+                weekKicks = weekKicks.concat(kicks);
+                weekDays[dateStr] = kicks.length;
+            }
+            
+            const maxDay = Object.values(weekDays).reduce((a, b) => a + b, 0);
+            const reportHtml = `
+                <div class="report-item"><span class="report-label">本週總次數</span><span class="report-value">${weekKicks.length} 次</span></div>
+                <div class="report-item"><span class="report-label">日均次數</span><span class="report-value">${(weekKicks.length/7).toFixed(1)} 次</span></div>
+                <div class="report-item"><span class="report-label">最多一天</span><span class="report-value">${maxDay} 次</span></div>
+            `;
+            document.getElementById('weekReportContent').innerHTML = reportHtml;
+        }
+
+        // 生成月统计
+        function generateMonthReport() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth();
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            
+            let monthKicks = [];
+            const daysInMonth = lastDay.getDate();
+            
+            for (let i = 1; i <= daysInMonth; i++) {
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                const kicks = kickData[dateStr] || [];
+                monthKicks = monthKicks.concat(kicks);
+            }
+            
+            const reportHtml = `
+                <div class="report-item"><span class="report-label">本月總次數</span><span class="report-value">${monthKicks.length} 次</span></div>
+                <div class="report-item"><span class="report-label">記錄天數</span><span class="report-value">${Object.values(kickData).filter(k => k.length > 0).length} 天</span></div>
+                <div class="report-item"><span class="report-label">日均次數</span><span class="report-value">${monthKicks.length > 0 ? (monthKicks.length / daysInMonth).toFixed(1) : 0} 次</span></div>
+            `;
+            document.getElementById('monthReportContent').innerHTML = reportHtml;
+        }
+
+        // 加载所有报告
+        function loadAllReports() {
+            // 确保日期输入框是当天
+            if (!document.getElementById('reportDate').value) {
+                document.getElementById('reportDate').value = getToday();
+            }
+            generateReport();
+            generateWeekReport();
+            generateMonthReport();
         }
 
         // ==================== 设置 ====================
