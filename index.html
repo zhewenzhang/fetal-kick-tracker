@@ -1882,8 +1882,11 @@
                 console.error('同步用户数据失败:', e);
             }
             
-            // 同步设置和记录数据
+            // 同步设置
             await syncSettings();
+            
+            // 同步记录（关键！之前漏了）
+            await syncRecords();
             
             // 强制刷新页面数据
             if (isNewLogin) {
