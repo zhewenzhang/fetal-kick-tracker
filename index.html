@@ -561,28 +561,7 @@
             animation: kickPulse 0.15s ease;
         }
 
-        /* 按钮图标 */
-        #kickButton::before {
-            content: '👶';
-            font-size: 50px;
-            display: block;
-            margin-bottom: 5px;
-        }
-        
-        /* 自定义图片模式 */
-        #kickButton.custom-img::before {
-            content: '';
-            font-size: 0;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-color: rgba(255,255,255,0.3);
-            background-image: var(--custom-bg, none);
-            margin: 0 auto 5px;
-        }
+
 
 
 
@@ -1874,7 +1853,7 @@
 
         // ==================== 报告 ====================
         // 生成散点图 HTML
-        function generateScatterChart(kicks) {
+        function generateScatterChart(kicks, date) {
             if (kicks.length === 0) {
                 return `
                     <div style="margin-top: 15px; padding: 15px; background: var(--pink-light); border-radius: 15px; text-align: center;">
@@ -1941,9 +1920,6 @@
             `;
         }
         
-        // 显示胎动时间
-
-        
         function generateReport() {
             const date = document.getElementById('reportDate').value;
             const kicks = kickData[date] || [];
@@ -1998,7 +1974,7 @@
                 `;
                 
                 // 添加散点图
-                content.innerHTML += generateScatterChart(kicks);
+                content.innerHTML += generateScatterChart(kicks, date);
             }
             reportCard.style.display = 'block';
         }
