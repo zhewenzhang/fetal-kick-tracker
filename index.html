@@ -1865,6 +1865,9 @@
             } catch (e) {
                 console.error('同步用户数据失败:', e);
             }
+            
+            // 同步设置和记录数据
+            await syncSettings();
         }
 
         // 获取当前用户ID
