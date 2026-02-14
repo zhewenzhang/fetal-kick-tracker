@@ -1788,15 +1788,20 @@
 
         // ==================== 退出登录 ====================
         async function handleLogout() {
+            console.log('handleLogout called, supabase:', supabase);
             try {
-                if (supabase) {
+                if (supabase && supabase.auth) {
                     const { error } = await supabase.auth.signOut();
+                    console.log('signOut result:', error);
                     if (error) throw error;
                 } else {
                     // 离线模式
+                    console.log('Offline mode, manually clearing auth state');
                     authState.user = null;
                     authState.isAnonymous = true;
+                    authState.initialized = true;
                     updateAuthUI();
+                    showToast('👋 已退出登录');
                 }
             } catch (e) {
                 console.error('退出失败:', e);
