@@ -1455,28 +1455,41 @@
             const due = new Date(dueDateStr);
             const today = new Date();
             const diffDays = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
-            const totalWeeks = 280 - diffDays;
-            return { weeks: Math.floor(totalWeeks), days: diffDays, totalWeeks };
+            const totalWeeks = (280 - diffDays) / 7; // 280天 = 40周
+            return { weeks: Math.floor(totalWeeks), days: diffDays, conceivedDate: due.getTime() - 280 * 24 * 60 * 60 * 1000 };
         }
 
         // 更新顶部显示（孕周+距离预产期天数）
         function updateHeaderDisplay() {
             const headerDate = document.getElementById('currentDate');
             if (settings.dueDate) {
-                const { weeks, days } = getWeekFromDue(settings.dueDate);
+                const { weeks, days, conceivedDate } = getWeekFromDue(settings.dueDate);
                 if (weeks !== undefined && weeks > 0) {
+                    // 怀孕开始日期
+                    const conceived = new Date(conceivedDate);
+                    const conceivedStr = `${conceived.getMonth() + 1}月${conceived.getDate()}日`;
+                    
                     if (days > 0) {
-                        headerDate.textContent = `🤰 孕${weeks}週 | 距預產期還有${days}天`;
+                        headerDate.textContent = `🤰 孕${weeks}週 | 距預產期${days}天`;
                     } else if (days === 0) {
                         headerDate.textContent = `🤰 孕${weeks}週 | 今天是預產期！`;
                     } else {
                         headerDate.textContent = `👶 寶寶已出生${Math.abs(days)}天`;
                     }
+                    // 同时显示怀孕日期
+                    document.getElementById('conceivedDateDisplay')?.remove();
+                    const conceivedDisplay = document.createElement('div');
+                    conceivedDisplay.id = 'conceivedDateDisplay';
+                    conceivedDisplay.style.cssText = 'font-size: 12px; color: var(--text-light); margin-top: 4px;';
+                    conceivedDisplay.textContent = `👶 預產期倒數 ${days} 天（${conceivedStr}受孕）`;
+                    headerDate.parentNode.appendChild(conceivedDisplay);
                 } else {
                     headerDate.textContent = new Date().toLocaleDateString('zh-TW', { month: 'long', day: 'numeric', weekday: 'long' });
+                    document.getElementById('conceivedDateDisplay')?.remove();
                 }
             } else {
                 headerDate.textContent = new Date().toLocaleDateString('zh-TW', { month: 'long', day: 'numeric', weekday: 'long' });
+                document.getElementById('conceivedDateDisplay')?.remove();
             }
         }
 
