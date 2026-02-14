@@ -183,7 +183,7 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            height: 120px;
+            height: 110px;
             padding: 0 5px;
         }
         
@@ -194,6 +194,7 @@
             flex: 1;
             min-width: 0;
             padding: 0 2px;
+            position: relative;
         }
         
         .bar-fill {
@@ -204,7 +205,7 @@
         }
         
         .hour-bar.max .bar-fill {
-            background: linear-gradient(180deg, #FF1493 0%, #FF69B4 100%);
+            background: linear-gradient(180deg, #FF1493 0%, #FF69B4 100());
         }
         
         .bar-count {
@@ -212,6 +213,19 @@
             font-weight: bold;
             color: var(--pink-dark);
             margin-top: 4px;
+        }
+        
+        .bar-count.over {
+            font-size: 9px;
+            color: #FF1493;
+        }
+        
+        .bar-over {
+            position: absolute;
+            top: -18px;
+            font-size: 8px;
+            color: #FF1493;
+            font-weight: bold;
         }
         
         .bar-hour {
