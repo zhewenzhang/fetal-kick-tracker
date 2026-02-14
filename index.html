@@ -1788,25 +1788,41 @@
 
         // ==================== 退出登录 ====================
         async function handleLogout() {
-            console.log('handleLogout called, supabase:', supabase);
+            console.log('handleLogout called');
             try {
                 if (supabase && supabase.auth) {
                     const { error } = await supabase.auth.signOut();
-                    console.log('signOut result:', error);
-                    if (error) throw error;
+                    if (error) {
+                        console.error('signOut error:', error);
+                        // 即使有错误，也强制清除本地状态
+                        forceLogout();
+                    }
                 } else {
-                    // 离线模式
-                    console.log('Offline mode, manually clearing auth state');
-                    authState.user = null;
-                    authState.isAnonymous = true;
-                    authState.initialized = true;
-                    updateAuthUI();
-                    showToast('👋 已退出登录');
+                    forceLogout();
                 }
             } catch (e) {
                 console.error('退出失败:', e);
-                showToast('退出失败，请重试');
+                forceLogout();
             }
+        }
+
+        function forceLogout() {
+            // 强制清除本地认证状态
+            authState.user = null;
+            authState.isAnonymous = true;
+            authState.initialized = true;
+            localStorage.removeItem('kickData');
+            localStorage.removeItem('kickSettings');
+            localStorage.removeItem('recordsUpdated');
+            localStorage.removeItem('settingsUpdated');
+            kickData = {};
+            updateAuthUI();
+            showToast('👋 已退出登录');
+            
+            // 强制刷新页面
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
         }
 
         // ==================== 确保表存在 ====================
