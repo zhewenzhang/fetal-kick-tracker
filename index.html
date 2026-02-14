@@ -1554,15 +1554,31 @@
                 if (error) throw error;
                 
                 if (data.session) {
-                    // 已自动登录
+                    // 已自动登录（关闭了邮箱验证）
                     console.log('注册并登录成功:', data.user.id);
+                    hideLoginModal();
+                    updateUserDisplay();
                 } else if (data.user) {
-                    // 需要邮箱验证
-                    showAuthMessage('success', '注册成功！请查收邮箱验证邮件', 'register');
-                    setTimeout(() => {
-                        const form = document.getElementById('registerForm');
-                        if (form) form.reset();
-                    }, 100);
+                    // 需要邮箱验证 - 自动登录
+                    console.log('注册成功，自动登录...');
+                    // 延迟后自动登录
+                    setTimeout(async () => {
+                        try {
+                            const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+                                email: email,
+                                password: password
+                            });
+                            
+                            if (signInError) throw signInError;
+                            
+                            console.log('自动登录成功:', signInData.user.id);
+                            hideLoginModal();
+                            updateUserDisplay();
+                        } catch (e) {
+                            console.error('自动登录失败:', e);
+                            showAuthMessage('success', '注册成功！请查收邮箱验证邮件', 'register');
+                        }
+                    }, 500);
                 }
             } catch (e) {
                 console.error('注册失败:', e);
