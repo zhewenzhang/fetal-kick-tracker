@@ -1581,6 +1581,7 @@
             updateTodayCount();
             updateTimeline();
             updateWeekStats();
+            loadAllReports(); // 加载报告数据
             
             // 初始化 Supabase（异步，不阻塞 UI）
             initSupabase().then(success => {
@@ -1896,7 +1897,7 @@
                 `;
             }
 
-            // 计算每小时胎动频率
+            // 计算每小时胎动次数
             const hourlyCounts = new Array(19).fill(0);
             kicks.forEach(time => {
                 const hour = new Date(time).getHours();
@@ -1905,7 +1906,7 @@
                 }
             });
 
-
+            const maxCount = Math.max(...hourlyCounts, 1);
 
             return `
                 <div style="margin-top: 15px; padding: 15px; background: linear-gradient(135deg, var(--white) 0%, var(--pink-light) 100%); border-radius: 15px; box-shadow: 0 4px 15px rgba(255, 182, 193, 0.3);">
@@ -2005,7 +2006,7 @@
                 weekDays[dateStr] = kicks.length;
             }
             
-            const maxDay = Object.values(weekDays).reduce((a, b) => a + b, 0);
+            const maxDay = Math.max(...Object.values(weekDays), 0);
             const reportHtml = `
                 <div class="report-item"><span class="report-label">本週總次數</span><span class="report-value">${weekKicks.length} 次</span></div>
                 <div class="report-item"><span class="report-label">日均次數</span><span class="report-value">${(weekKicks.length/7).toFixed(1)} 次</span></div>
