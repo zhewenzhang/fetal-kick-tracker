@@ -3584,11 +3584,20 @@
     <style>
         @media (max-width: 480px) {
             .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
             }
             
             .stat-number {
-                font-size: 24px;
+                font-size: 20px;
+            }
+            
+            .stat-card {
+                padding: 10px 8px;
+            }
+            
+            .stat-label {
+                font-size: 10px;
             }
             
             .horizontal-chart {
@@ -3640,15 +3649,20 @@
         
         @media (max-width: 360px) {
             .stats-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 6px;
             }
             
             .stat-card {
-                padding: 12px;
+                padding: 8px 4px;
             }
             
             .stat-number {
-                font-size: 22px;
+                font-size: 16px;
+            }
+            
+            .stat-label {
+                font-size: 9px;
             }
             
             .horizontal-chart {
