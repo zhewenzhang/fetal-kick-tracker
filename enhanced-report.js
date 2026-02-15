@@ -1,116 +1,224 @@
 /**
- * 增强版报告系统
- * 添加：趋势图、统计分析、智能建议、PDF导出
+ * 增强版报告系统 - Redesign方案A
+ * 1. 今日概览：24小时柱状图（暖色=活跃，冷色=安静）
+ * 2. 周对比：上周vs本周并排柱状图 + 趋势箭头 + 百分比
  */
 
-function generateEnhancedReport() {
-    const today = document.getElementById('reportDate').value || getToday();
-    const dateObj = new Date(today);
-    const weekStats = calculateWeekStats(dateObj);
+// ==================== 1. 今日概览 - 24小时柱状图 ====================
+function generateHourlyBarChart(date) {
+    const kicks = kickData[date] || [];
     
-    // 生成报告HTML
-    let html = `
-        <div class="enhanced-report">
-            <!-- 1. 今日概览 -->
-            <div class="report-section">
-                <h3>📅 今日概览</h3>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-number">${weekStats.todayCount}</div>
-                        <div class="stat-label">今日胎动</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">${weekStats.avgCount}</div>
-                        <div class="stat-label">周均次数</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number">${weekStats.activeDays}</div>
-                        <div class="stat-label">本周记录天数</div>
-                    </div>
+    // 统计每小时胎动次数
+    const hourlyCounts = new Array(24).fill(0);
+    kicks.forEach(time => {
+        const hour = new Date(time).getHours();
+        hourlyCounts[hour]++;
+    });
+    
+    const maxCount = Math.max(...hourlyCounts, 1);
+    const totalCount = kicks.length;
+    
+    // 找峰值时段
+    let peakHour = 0;
+    let peakCount = 0;
+    hourlyCounts.forEach((count, hour) => {
+        if (count > peakCount) {
+            peakCount = count;
+            peakHour = hour;
+        }
+    });
+    
+    // 生成柱状图HTML
+    let barsHtml = '';
+    for (let h = 0; h < 24; h++) {
+        const count = hourlyCounts[h];
+        const heightPercent = maxCount > 0 ? (count / maxCount * 100) : 0;
+        const isPeak = count === peakCount && count > 0;
+        
+        // 颜色判断：暖色=活跃(>15), 冷色=安静(<8), 中间=正常
+        let colorClass = 'bar-normal';
+        if (count > 15) colorClass = 'bar-warm';
+        else if (count > 0 && count < 8) colorClass = 'bar-cool';
+        else if (count >= 8) colorClass = 'bar-normal';
+        
+        barsHtml += `
+            <div class="hourly-bar-wrapper ${isPeak ? 'peak' : ''}">
+                ${isPeak && count > 0 ? `<span class="peak-badge">峰值</span>` : ''}
+                ${count > 0 ? `<span class="bar-value">${count}</span>` : ''}
+                <div class="hourly-bar ${colorClass}" style="height: ${Math.max(heightPercent, count > 0 ? 8 : 2)}%"></div>
+                ${h % 2 === 0 ? `<span class="hour-label">${h}</span>` : '<span class="hour-label-spacer"></span>'}
+            </div>
+        `;
+    }
+    
+    return `
+        <div class="report-section hourly-chart-section">
+            <h3>📅 今日概览</h3>
+            <div class="hourly-summary">
+                <div class="summary-item">
+                    <span class="summary-number">${totalCount}</span>
+                    <span class="summary-label">总次数</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-number">${peakCount > 0 ? peakHour + ':00' : '--'}</span>
+                    <span class="summary-label">峰值时段</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-number">${peakCount}</span>
+                    <span class="summary-label">峰值次数</span>
                 </div>
             </div>
-            
-            <!-- 2. 趋势分析 -->
-            <div class="report-section">
-                <h3>📈 本周趋势</h3>
-                <div class="trend-chart" id="trendChart">
-                    ${generateTrendChart(weekStats.weekData)}
+            <div class="hourly-chart-container">
+                <div class="hourly-chart-bars">
+                    ${barsHtml}
+                </div>
+                <div class="hourly-chart-xaxis">
+                    <span>0时</span>
+                    <span>6时</span>
+                    <span>12时</span>
+                    <span>18时</span>
+                    <span>23时</span>
                 </div>
             </div>
-            
-            <!-- 3. 健康评估 -->
-            <div class="report-section">
-                <h3>💊 健康评估</h3>
-                ${generateHealthAssessment(weekStats)}
-            </div>
-            
-            <!-- 4. 记录时间分布 -->
-            <div class="report-section">
-                <h3>🕐 活跃时段</h3>
-                ${generateTimeDistribution()}
-            </div>
-            
-            <!-- 5. 周对比 -->
-            <div class="report-section">
-                <h3>📊 周对比</h3>
-                ${generateWeekComparison()}
-            </div>
-            
-            <!-- 6. 导出按钮 -->
-            <div class="report-section export-section">
-                <button class="export-btn primary" onclick="exportReport('pdf')">
-                    📄 导出PDF报告
-                </button>
-                <button class="export-btn secondary" onclick="exportReport('excel')">
-                    📊 导出Excel
-                </button>
+            <div class="chart-color-legend">
+                <span class="legend-item"><span class="legend-dot warm"></span>活跃 (>15次/h)</span>
+                <span class="legend-item"><span class="legend-dot normal"></span>正常 (8-15次/h)</span>
+                <span class="legend-item"><span class="legend-dot cool"></span>安静 (<8次/h)</span>
             </div>
         </div>
     `;
-    
-    return html;
 }
 
-// 生成趋势图（横向条形图）
-function generateTrendChart(weekData) {
-    const days = ['日', '一', '二', '三', '四', '五', '六'];
-    const maxCount = Math.max(...weekData.map(d => d.count), 10);
+// ==================== 2. 周对比 - 上周vs本周 ====================
+function generateWeekComparisonChart() {
+    const today = new Date();
+    const dayOfWeek = today.getDay(); // 0=周日
     
-    let html = '<div class="horizontal-chart">';
+    // 本周数据（周一到周日）
+    const thisWeekData = [];
+    const lastWeekData = [];
+    const dayNames = ['一', '二', '三', '四', '五', '六', '日'];
     
-    weekData.forEach((day, i) => {
-        const percentage = day.count > 0 ? (day.count / maxCount * 100).toFixed(0) : 0;
-        const emoji = day.count > 0 ? getDayEmoji(day.count) : '💤';
+    // 计算本周一的日期
+    const mondayOffset = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+    const thisMonday = new Date(today);
+    thisMonday.setDate(today.getDate() - mondayOffset);
+    thisMonday.setHours(0, 0, 0, 0);
+    
+    // 上周一
+    const lastMonday = new Date(thisMonday);
+    lastMonday.setDate(thisMonday.getDate() - 7);
+    
+    let thisWeekTotal = 0;
+    let lastWeekTotal = 0;
+    
+    for (let i = 0; i < 7; i++) {
+        // 本周
+        const thisDay = new Date(thisMonday);
+        thisDay.setDate(thisMonday.getDate() + i);
+        const thisDateStr = `${thisDay.getFullYear()}-${String(thisDay.getMonth()+1).padStart(2,'0')}-${String(thisDay.getDate()).padStart(2,'0')}`;
+        const thisCount = kickData[thisDateStr]?.length || 0;
+        thisWeekData.push({ date: thisDateStr, count: thisCount, dayName: dayNames[i] });
+        thisWeekTotal += thisCount;
         
-        html += `
-            <div class="chart-row">
-                <span class="chart-day">${days[i]}</span>
-                <div class="chart-bar-container">
-                    <div class="chart-bar-fill" style="width: ${percentage}%">
+        // 上周
+        const lastDay = new Date(lastMonday);
+        lastDay.setDate(lastMonday.getDate() + i);
+        const lastDateStr = `${lastDay.getFullYear()}-${String(lastDay.getMonth()+1).padStart(2,'0')}-${String(lastDay.getDate()).padStart(2,'0')}`;
+        const lastCount = kickData[lastDateStr]?.length || 0;
+        lastWeekData.push({ date: lastDateStr, count: lastCount, dayName: dayNames[i] });
+        lastWeekTotal += lastCount;
+    }
+    
+    // 计算趋势
+    const percentChange = lastWeekTotal > 0 
+        ? ((thisWeekTotal - lastWeekTotal) / lastWeekTotal * 100).toFixed(0)
+        : (thisWeekTotal > 0 ? 100 : 0);
+    
+    let trendArrow = '→';
+    let trendClass = 'trend-stable';
+    if (percentChange > 5) {
+        trendArrow = '↑';
+        trendClass = 'trend-up';
+    } else if (percentChange < -5) {
+        trendArrow = '↓';
+        trendClass = 'trend-down';
+    }
+    
+    // 找最大值用于缩放
+    const allCounts = [...thisWeekData.map(d => d.count), ...lastWeekData.map(d => d.count)];
+    const maxCount = Math.max(...allCounts, 1);
+    
+    // 生成并排柱状图
+    let barsHtml = '';
+    for (let i = 0; i < 7; i++) {
+        const lastH = maxCount > 0 ? (lastWeekData[i].count / maxCount * 100) : 0;
+        const thisH = maxCount > 0 ? (thisWeekData[i].count / maxCount * 100) : 0;
+        
+        // 每日变化
+        const dailyChange = lastWeekData[i].count > 0
+            ? ((thisWeekData[i].count - lastWeekData[i].count) / lastWeekData[i].count * 100).toFixed(0)
+            : (thisWeekData[i].count > 0 ? 100 : 0);
+        let dailyArrow = '';
+        if (dailyChange > 5) dailyArrow = '↑';
+        else if (dailyChange < -5) dailyArrow = '↓';
+        
+        barsHtml += `
+            <div class="week-compare-day">
+                <div class="compare-bars">
+                    <div class="compare-bar last-week" style="height: ${Math.max(lastH, lastWeekData[i].count > 0 ? 8 : 2)}%" title="上周${dayNames[i]}: ${lastWeekData[i].count}次">
+                        ${lastWeekData[i].count > 0 ? `<span class="compare-bar-val">${lastWeekData[i].count}</span>` : ''}
+                    </div>
+                    <div class="compare-bar this-week" style="height: ${Math.max(thisH, thisWeekData[i].count > 0 ? 8 : 2)}%" title="本周${dayNames[i]}: ${thisWeekData[i].count}次">
+                        ${thisWeekData[i].count > 0 ? `<span class="compare-bar-val">${thisWeekData[i].count}</span>` : ''}
                     </div>
                 </div>
-                <span class="chart-count">${day.count} ${emoji}</span>
+                <span class="compare-day-label">${dayNames[i]}</span>
+                ${dailyArrow ? `<span class="daily-trend ${dailyArrow === '↑' ? 'trend-up' : 'trend-down'}">${dailyArrow}</span>` : ''}
             </div>
         `;
-    });
+    }
     
-    html += '</div>';
-    return html;
+    // 本周/上周日均
+    const thisAvg = (thisWeekTotal / 7).toFixed(1);
+    const lastAvg = (lastWeekTotal / 7).toFixed(1);
+    
+    return `
+        <div class="report-section week-compare-section">
+            <h3>📊 周对比</h3>
+            <div class="week-compare-header">
+                <div class="week-compare-summary">
+                    <div class="compare-total">
+                        <span class="compare-label">上周</span>
+                        <span class="compare-value last">${lastWeekTotal}次</span>
+                        <span class="compare-avg">日均${lastAvg}</span>
+                    </div>
+                    <div class="compare-trend ${trendClass}">
+                        <span class="trend-arrow">${trendArrow}</span>
+                        <span class="trend-percent">${Math.abs(percentChange)}%</span>
+                    </div>
+                    <div class="compare-total">
+                        <span class="compare-label">本周</span>
+                        <span class="compare-value current">${thisWeekTotal}次</span>
+                        <span class="compare-avg">日均${thisAvg}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="week-compare-chart">
+                ${barsHtml}
+            </div>
+            <div class="compare-legend">
+                <span class="legend-item"><span class="legend-dot last-week-color"></span>上周</span>
+                <span class="legend-item"><span class="legend-dot this-week-color"></span>本周</span>
+            </div>
+        </div>
+    `;
 }
 
-// 获取日期emoji
-function getDayEmoji(count) {
-    if (count === 0) return '💤';
-    if (count < 5) return '🌱';
-    if (count < 10) return '👍';
-    if (count < 20) return '🎉';
-    return '🔥';
-}
-
-// 生成健康评估
+// ==================== 3. 健康评估（保留） ====================
 function generateHealthAssessment(stats) {
     const dueDate = settings.dueDate;
-    const weeks = dueDate ? calculateWeeks(dueDate) : null;
+    const weeks = dueDate ? getWeekFromDue(dueDate)?.weeks : null;
     const normalRange = getNormalRange(weeks);
     
     let status = 'good';
@@ -130,52 +238,38 @@ function generateHealthAssessment(stats) {
     const statusEmoji = status === 'good' ? '✅' : '⚠️';
     
     return `
-        <div class="health-card ${status}">
-            <div class="health-header">
-                <span class="status-emoji">${statusEmoji}</span>
-                <span class="status-text">${weeks ? `孕${weeks}周` : '孕期'}</span>
-            </div>
-            <div class="health-info">
-                <p>参考范围：每小时 ${normalRange.perHour} 次</p>
-                <p>您的宝宝：${stats.avgCount > 0 ? '高于' : '接近'}平均水平</p>
-            </div>
-            <div class="health-tip">
-                💡 ${message}
+        <div class="report-section">
+            <h3>💊 健康评估</h3>
+            <div class="health-card ${status}">
+                <div class="health-header">
+                    <span class="status-emoji">${statusEmoji}</span>
+                    <span class="status-text">${weeks ? `孕${weeks}周` : '孕期'}</span>
+                </div>
+                <div class="health-info">
+                    <p>参考范围：每小时 ${normalRange.perHour} 次</p>
+                    <p>您的宝宝：${stats.avgCount > 0 ? '高于' : '接近'}平均水平</p>
+                </div>
+                <div class="health-tip">
+                    💡 ${message}
+                </div>
             </div>
         </div>
     `;
 }
 
-// 获取孕周正常范围
 function getNormalRange(weeks) {
     if (!weeks) return { min: 5, max: 15, perHour: '3-5' };
-    
-    if (weeks < 28) {
-        return { min: 3, max: 10, perHour: '2-4' };
-    } else if (weeks < 34) {
-        return { min: 5, max: 15, perHour: '3-5' };
-    } else if (weeks < 37) {
-        return { min: 3, max: 10, perHour: '2-4' };
-    } else {
-        return { min: 2, max: 8, perHour: '1-3' };
-    }
+    if (weeks < 28) return { min: 3, max: 10, perHour: '2-4' };
+    if (weeks < 34) return { min: 5, max: 15, perHour: '3-5' };
+    if (weeks < 37) return { min: 3, max: 10, perHour: '2-4' };
+    return { min: 2, max: 8, perHour: '1-3' };
 }
 
-// 计算孕周
-function calculateWeeks(dueDate) {
-    const due = new Date(dueDate);
-    const now = new Date();
-    const diffTime = due - now;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays > 0 ? Math.floor(diffDays / 7) : 40;
-}
-
-// 生成时间段分布
+// ==================== 4. 活跃时段分布（保留） ====================
 function generateTimeDistribution() {
     const timeSlots = {};
     for (let i = 0; i < 24; i++) timeSlots[i] = 0;
     
-    // 统计每个时段的胎动次数
     Object.values(kickData).forEach(times => {
         times.forEach(time => {
             const hour = new Date(time).getHours();
@@ -183,7 +277,6 @@ function generateTimeDistribution() {
         });
     });
     
-    // 找出最活跃时段
     let maxActivity = 0;
     let activePeriods = [];
     Object.entries(timeSlots).forEach(([hour, count]) => {
@@ -195,19 +288,6 @@ function generateTimeDistribution() {
         }
     });
     
-    let html = '<div class="time-distribution">';
-    html += '<p>宝宝最活跃时段：';
-    if (maxActivity === 0) {
-        html += '暂无数据';
-    } else {
-        activePeriods.forEach(h => {
-            const timeRange = `${h}:00 - ${parseInt(h)+1}:00`;
-            html += `<span class="active-period">${timeRange}</span>`;
-        });
-    }
-    html += '</p>';
-    
-    // 按时段显示简要分布
     const periods = [
         { name: '🌅 凌晨', hours: [0,1,2,3,4,5] },
         { name: '🌅 早上', hours: [6,7,8,9,10,11] },
@@ -215,50 +295,41 @@ function generateTimeDistribution() {
         { name: '🌆 晚上', hours: [18,19,20,21,22,23] }
     ];
     
+    let html = '<div class="report-section"><h3>🕐 活跃时段</h3>';
+    html += '<div class="time-distribution">';
+    html += '<p style="margin-bottom:12px;">宝宝最活跃时段：';
+    if (maxActivity === 0) {
+        html += '暂无数据';
+    } else {
+        activePeriods.forEach(h => {
+            html += `<span class="active-period">${h}:00 - ${parseInt(h)+1}:00</span>`;
+        });
+    }
+    html += '</p>';
+    
     html += '<div class="period-bars">';
     periods.forEach(period => {
         const total = period.hours.reduce((sum, h) => sum + (timeSlots[h] || 0), 0);
-        const maxPeriod = Math.max(...period.hours.map(h => timeSlots[h] || 0), 1);
-        const height = Math.max((total / (maxPeriod * 3 || 1)) * 100, 20);
+        const maxTotal = periods.reduce((max, p) => {
+            const t = p.hours.reduce((s, h) => s + (timeSlots[h] || 0), 0);
+            return Math.max(max, t);
+        }, 1);
+        const height = Math.max((total / maxTotal) * 100, 15);
         
         html += `
             <div class="period-bar-wrapper">
                 <div class="period-bar" style="height: ${Math.min(height, 100)}%"></div>
                 <span class="period-name">${period.name}</span>
+                <span class="period-count">${total}次</span>
             </div>
         `;
     });
-    html += '</div></div>';
+    html += '</div></div></div>';
     
     return html;
 }
 
-// 生成周对比
-function generateWeekComparison() {
-    const weeks = [];
-    for (let i = 3; i >= 1; i--) {
-        const weekStart = new Date();
-        weekStart.setDate(weekStart.getDate() - (i * 7));
-        weeks.push({ weekNum: `第${4-i}周`, stats: calculateWeekStats(weekStart) });
-    }
-    
-    let html = '<div class="week-comparison">';
-    weeks.forEach(w => {
-        html += `
-            <div class="week-item">
-                <span class="week-label">${w.weekNum}</span>
-                <div class="week-bar-wrapper">
-                    <div class="week-bar" style="width: ${Math.min(w.stats.avgCount * 5, 100)}%"></div>
-                </div>
-                <span class="week-count">${w.stats.totalCount}次</span>
-            </div>
-        `;
-    });
-    html += '</div>';
-    return html;
-}
-
-// 计算周统计
+// ==================== 5. 计算周统计 ====================
 function calculateWeekStats(date) {
     const dayOfWeek = date.getDay();
     const weekStart = new Date(date);
@@ -279,7 +350,7 @@ function calculateWeekStats(date) {
     }
     
     return {
-        todayCount: weekData[6].count,
+        todayCount: weekData[dayOfWeek]?.count || 0,
         weekData,
         totalCount,
         avgCount: Math.round(totalCount / 7),
@@ -287,12 +358,11 @@ function calculateWeekStats(date) {
     };
 }
 
-// 导出报告
+// ==================== 6. 导出报告 ====================
 function exportReport(type) {
     if (type === 'pdf') {
         window.print();
     } else if (type === 'excel') {
-        // 简化的CSV导出
         let csv = '日期,时间\n';
         Object.entries(kickData).forEach(([date, times]) => {
             times.forEach(time => {
@@ -309,228 +379,40 @@ function exportReport(type) {
     }
 }
 
-// 注入增强版报告样式
-function injectEnhancedReportStyles() {
-    const style = document.createElement('style');
-    style.textContent = `
-        .enhanced-report {
-            padding: 15px;
-        }
-        .report-section {
-            background: white;
-            border-radius: 16px;
-            padding: 18px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 15px rgba(255, 182, 193, 0.3);
-        }
-        .report-section h3 {
-            font-size: 16px;
-            color: var(--text-dark);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
-        .stat-card {
-            text-align: center;
-            padding: 12px;
-            background: linear-gradient(135deg, var(--pink-light) 0%, var(--white) 100%);
-            border-radius: 12px;
-        }
-        .stat-number {
-            font-size: 28px;
-            font-weight: bold;
-            color: var(--pink-dark);
-        }
-        .stat-label {
-            font-size: 12px;
-            color: var(--text-light);
-        }
-        .health-card {
-            padding: 15px;
-            border-radius: 12px;
-            border-left: 4px solid var(--success);
-        }
-        .health-card.warning {
-            border-left-color: var(--warning);
-            background: #FFF8E1;
-        }
-        .health-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-        .status-emoji {
-            font-size: 24px;
-        }
-        .status-text {
-            font-weight: bold;
-            color: var(--text-dark);
-        }
-        .health-info p {
-            font-size: 13px;
-            color: var(--text-light);
-            margin: 4px 0;
-        }
-        .health-tip {
-            margin-top: 10px;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 8px;
-            font-size: 13px;
-        }
-        .period-bars {
-            display: flex;
-            justify-content: space-around;
-            align-items: flex-end;
-            height: 60px;
-            margin-top: 15px;
-        }
-        .period-bar-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
-        .period-bar {
-            width: 24px;
-            background: linear-gradient(180deg, var(--pink) 0%, var(--pink-dark) 100%);
-            border-radius: 6px 6px 0 0;
-            min-height: 8px;
-        }
-        .period-name {
-            font-size: 10px;
-            color: var(--text-light);
-        }
-        .week-comparison {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .week-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .week-label {
-            width: 50px;
-            font-size: 13px;
-            color: var(--text-dark);
-        }
-        .week-bar-wrapper {
-            flex: 1;
-            height: 20px;
-            background: var(--pink-light);
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .week-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--pink) 0%, var(--pink-dark) 100%);
-            border-radius: 10px;
-            transition: width 0.5s ease;
-        }
-        .week-count {
-            width: 50px;
-            font-size: 12px;
-            color: var(--text-light);
-            text-align: right;
-        }
-        .export-section {
-            display: flex;
-            gap: 10px;
-        }
-        .export-btn {
-            flex: 1;
-            padding: 14px;
-            border-radius: 12px;
-            border: none;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .export-btn.primary {
-            background: linear-gradient(135deg, var(--pink-dark) 0%, var(--pink) 100%);
-            color: white;
-        }
-        .export-btn.secondary {
-            background: white;
-            border: 2px solid var(--pink);
-            color: var(--pink-dark);
-        }
-        .export-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
-        }
-        .active-period {
-            display: inline-block;
-            padding: 4px 12px;
-            background: var(--pink-light);
-            border-radius: 20px;
-            margin: 0 4px;
-            font-size: 13px;
-            color: var(--pink-dark);
-        }
-        @media print {
-            .export-section, .header, .page-tabs, .kick-button {
-                display: none !important;
-            }
-            .report-section {
-                break-inside: avoid;
-            }
-        }
-    `;
-    document.head.appendChild(style);
-}
-
-// 替换原报告生成函数
+// ==================== 7. 替换原报告生成 ====================
 function replaceReportGeneration() {
-    // 保存原函数
+    // 重写报告生成 - 注入到reportContent区域
     const originalGenerateReport = window.generateReport;
     
-    // 重写报告生成
     window.generateReport = function() {
-        // 确保样式已注入
-        if (!document.querySelector('.enhanced-report')) {
-            injectEnhancedReportStyles();
-        }
-        
         const date = document.getElementById('reportDate').value || getToday();
-        const count = kickData[date]?.length || 0;
-        
-        let html = `
-            <div class="enhanced-report">
-                <div class="report-section">
-                    <h3>📅 ${date} 胎动记录</h3>
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-number">${count}</div>
-                            <div class="stat-label">今日胎动</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number">${count >= 10 ? '✅' : count >= 6 ? '👍' : '⚠️'}</div>
-                            <div class="stat-label">${count >= 10 ? '非常活跃' : count >= 6 ? '正常' : '偏少'}</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number">${count > 0 ? '🔥' : '💤'}</div>
-                            <div class="stat-label">${count > 0 ? '有记录' : '无记录'}</div>
-                        </div>
-                    </div>
-                </div>
-                ${generateEnhancedReport().replace('<div class="enhanced-report">', '').replace('</div>', '')}
-            </div>
-        `;
+        const dateObj = new Date(date);
+        const weekStats = calculateWeekStats(dateObj);
         
         const container = document.getElementById('reportContent');
-        if (container) {
-            container.innerHTML = html;
+        if (!container) return;
+        
+        // 1. 今日概览 - 24小时柱状图
+        let html = generateHourlyBarChart(date);
+        
+        container.innerHTML = html;
+        
+        // 更新标题
+        document.getElementById('reportTitle').textContent = `${date} 報告`;
+    };
+    
+    // 重写周报告 - 注入到weekReportContent
+    const originalWeekReport = window.generateWeekReport;
+    
+    window.generateWeekReport = function() {
+        const container = document.getElementById('weekReportContent');
+        if (!container) return;
+        
+        // 直接用周对比图替换原来的简单统计
+        // 因为weekReport有自己的wrapper，我们需要替换整个weekReport的内容
+        const weekReportEl = document.getElementById('weekReport');
+        if (weekReportEl) {
+            weekReportEl.outerHTML = `<div id="weekReport">${generateWeekComparisonChart()}</div>`;
         }
     };
 }
@@ -543,6 +425,6 @@ if (document.readyState === 'loading') {
 }
 
 // 导出供全局使用
-window.generateEnhancedReport = generateEnhancedReport;
+window.generateEnhancedReport = generateHourlyBarChart;
 window.calculateWeekStats = calculateWeekStats;
 window.exportReport = exportReport;
