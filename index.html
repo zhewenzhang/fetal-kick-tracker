@@ -1030,6 +1030,251 @@
         .pregnancy-reminder h4 { font-size: 13px; color: var(--pink-dark); margin-bottom: 6px; }
         .pregnancy-reminder p { font-size: 12px; color: var(--text-light); line-height: 1.5; }
 
+        /* ==================== 增强报告系统样式 ==================== */
+        .enhanced-report { padding: 0; }
+        
+        .report-section {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(255, 182, 193, 0.3);
+        }
+        
+        .report-section h3 {
+            font-size: 15px;
+            color: var(--pink-dark);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--pink-light);
+        }
+        
+        /* 统计卡片网格 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, var(--pink-light) 0%, var(--white) 100%);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid var(--pink-light);
+        }
+        
+        .stat-number {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--pink-dark);
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+        
+        /* 趋势图（ASCII柱状图） */
+        .trend-chart {
+            background: var(--pink-light);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .ascii-chart {
+            display: flex;
+            gap: 8px;
+            height: 150px;
+            align-items: flex-end;
+        }
+        
+        .chart-y-axis {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-size: 10px;
+            color: var(--text-light);
+            padding-right: 8px;
+            border-right: 1px solid var(--pink);
+        }
+        
+        .chart-bars {
+            flex: 1;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            gap: 4px;
+        }
+        
+        .chart-bar-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+        }
+        
+        .chart-bar {
+            width: 100%;
+            max-width: 35px;
+            background: linear-gradient(180deg, var(--pink) 0%, var(--pink-dark) 100%);
+            border-radius: 6px 6px 0 0;
+            min-height: 4px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .chart-bar:hover {
+            opacity: 0.8;
+            transform: scaleY(1.05);
+            transform-origin: bottom;
+        }
+        
+        .bar-value {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            font-weight: bold;
+            color: var(--text-dark);
+        }
+        
+        .bar-label {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 6px;
+        }
+        
+        /* 健康评估卡片 */
+        .health-card {
+            background: linear-gradient(135deg, var(--white) 0%, var(--pink-light) 100%);
+            border-radius: 12px;
+            padding: 15px;
+            border-left: 4px solid var(--success);
+        }
+        
+        .health-card.warning {
+            border-left-color: var(--warning);
+        }
+        
+        .health-card.danger {
+            border-left-color: var(--danger);
+        }
+        
+        .health-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        
+        .status-emoji { font-size: 24px; }
+        .status-text { font-size: 14px; font-weight: bold; color: var(--text-dark); }
+        
+        .health-info {
+            background: var(--pink-light);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .health-info p {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+        
+        .health-info p:last-child { margin-bottom: 0; }
+        
+        .health-tip {
+            background: var(--blue-light);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 12px;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+        
+        /* 活跃时段分布 */
+        .time-distribution {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        
+        .time-slot {
+            background: var(--pink-light);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .time-slot-name {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 6px;
+        }
+        
+        .time-slot-count {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--pink-dark);
+        }
+        
+        /* 周对比 */
+        .week-comparison {
+            background: var(--pink-light);
+            border-radius: 12px;
+            padding: 15px;
+        }
+        
+        .week-stat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px dashed var(--pink);
+        }
+        
+        .week-stat:last-child { border-bottom: none; }
+        .week-label { font-size: 13px; color: var(--text-light); }
+        .week-value { font-size: 15px; font-weight: bold; color: var(--pink-dark); }
+        
+        /* 导出按钮 */
+        .export-section {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .export-btn {
+            flex: 1;
+            min-width: 140px;
+            padding: 14px 20px;
+            border-radius: 12px;
+            border: none;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        
+        .export-btn:active { transform: scale(0.98); }
+        .export-btn.primary {
+            background: linear-gradient(135deg, var(--pink-dark) 0%, #FF1493 100%);
+            color: var(--white);
+        }
+        .export-btn.secondary {
+            background: linear-gradient(135deg, var(--blue-light) 0%, #87CEEB 100%);
+            color: var(--text-dark);
+        }
+        
         /* ==================== 主题选择器 ==================== */
         .theme-selector-section {
             background: var(--white);
@@ -3340,5 +3585,80 @@
         // 添加导入按钮（在DOM加载后）
         setTimeout(addImportButton, 100);
     </script>
+    
+    /* ==================== 响应式设计 ==================== */
+    <style>
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stat-number {
+                font-size: 24px;
+            }
+            
+            .ascii-chart {
+                height: 120px;
+            }
+            
+            .chart-bars {
+                gap: 2px;
+            }
+            
+            .chart-bar {
+                max-width: 28px;
+            }
+            
+            .time-distribution {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .export-section {
+                flex-direction: column;
+            }
+            
+            .export-btn {
+                min-width: 100%;
+            }
+            
+            .report-section {
+                padding: 15px;
+            }
+            
+            .health-card {
+                padding: 12px;
+            }
+            
+            .week-comparison {
+                padding: 12px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stat-card {
+                padding: 12px;
+            }
+            
+            .stat-number {
+                font-size: 22px;
+            }
+            
+            .ascii-chart {
+                height: 100px;
+            }
+            
+            .time-distribution {
+                grid-template-columns: 1fr;
+            }
+            
+            .time-slot {
+                padding: 10px;
+            }
+        }
+    </style>
 </body>
 </html>
