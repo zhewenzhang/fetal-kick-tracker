@@ -71,33 +71,30 @@ function generateEnhancedReport() {
     return html;
 }
 
-// 生成趋势图（ASCII简化版）
+// 生成趋势图（横向条形图）
 function generateTrendChart(weekData) {
     const days = ['日', '一', '二', '三', '四', '五', '六'];
     const maxCount = Math.max(...weekData.map(d => d.count), 10);
     
-    let html = '<div class="ascii-chart">';
-    html += '<div class="chart-y-axis">';
-    html += `<span>${maxCount}</span>`;
-    html += `<span>${Math.round(maxCount/2)}</span>`;
-    html += '<span>0</span>';
-    html += '</div>';
-    html += '<div class="chart-bars">';
+    let html = '<div class="horizontal-chart">';
     
     weekData.forEach((day, i) => {
-        const height = (day.count / maxCount * 100).toFixed(0);
-        const emoji = getDayEmoji(day.count);
+        const percentage = day.count > 0 ? (day.count / maxCount * 100).toFixed(0) : 0;
+        const emoji = day.count > 0 ? getDayEmoji(day.count) : '💤';
+        
         html += `
-            <div class="chart-bar-wrapper">
-                <div class="chart-bar" style="height: ${height}%">
-                    <span class="bar-value">${day.count}</span>
+            <div class="chart-row">
+                <span class="chart-day">${days[i]}</span>
+                <div class="chart-bar-container">
+                    <div class="chart-bar-fill" style="width: ${percentage}%">
+                    </div>
                 </div>
-                <span class="bar-label">${days[i]}</span>
+                <span class="chart-count">${day.count} ${emoji}</span>
             </div>
         `;
     });
     
-    html += '</div></div>';
+    html += '</div>';
     return html;
 }
 

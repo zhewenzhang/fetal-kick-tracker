@@ -1077,7 +1077,7 @@
             margin-top: 5px;
         }
         
-        /* 趋势图（ASCII柱状图） */
+        /* 趋势图（横向条形图） */
         .trend-chart {
             background: var(--pink-light);
             border-radius: 12px;
@@ -1085,69 +1085,63 @@
             margin-bottom: 15px;
         }
         
-        .ascii-chart {
+        .horizontal-chart {
             display: flex;
+            flex-direction: column;
             gap: 8px;
-            height: 150px;
-            align-items: flex-end;
         }
         
-        .chart-y-axis {
+        .chart-row {
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            font-size: 10px;
-            color: var(--text-light);
-            padding-right: 8px;
-            border-right: 1px solid var(--pink);
-        }
-        
-        .chart-bars {
-            flex: 1;
-            display: flex;
-            justify-content: space-around;
-            align-items: flex-end;
-            gap: 4px;
-        }
-        
-        .chart-bar-wrapper {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
             align-items: center;
-            height: 100%;
+            gap: 10px;
         }
         
-        .chart-bar {
-            width: 100%;
-            max-width: 35px;
-            background: linear-gradient(180deg, var(--pink) 0%, var(--pink-dark) 100%);
-            border-radius: 6px 6px 0 0;
-            min-height: 4px;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-        
-        .chart-bar:hover {
-            opacity: 0.8;
-            transform: scaleY(1.05);
-            transform-origin: bottom;
-        }
-        
-        .bar-value {
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 11px;
+        .chart-day {
+            width: 20px;
+            font-size: 12px;
             font-weight: bold;
             color: var(--text-dark);
+            text-align: center;
         }
         
-        .bar-label {
-            font-size: 11px;
+        .chart-bar-container {
+            flex: 1;
+            height: 28px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .chart-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--pink) 0%, var(--pink-dark) 100%);
+            border-radius: 6px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+            min-width: 4px;
+        }
+        
+        .chart-bar-fill:hover {
+            opacity: 0.9;
+        }
+        
+        .chart-count {
+            font-size: 13px;
+            font-weight: bold;
+            color: var(--text-dark);
+            min-width: 30px;
+            text-align: right;
+        }
+        
+        .chart-no-data {
+            text-align: center;
+            padding: 20px;
             color: var(--text-light);
-            margin-top: 6px;
+            font-size: 13px;
         }
         
         /* 健康评估卡片 */
@@ -3597,16 +3591,26 @@
                 font-size: 24px;
             }
             
-            .ascii-chart {
-                height: 120px;
+            .horizontal-chart {
+                gap: 6px;
             }
             
-            .chart-bars {
-                gap: 2px;
+            .chart-row {
+                gap: 8px;
             }
             
-            .chart-bar {
-                max-width: 28px;
+            .chart-day {
+                width: 18px;
+                font-size: 11px;
+            }
+            
+            .chart-bar-container {
+                height: 24px;
+            }
+            
+            .chart-count {
+                font-size: 12px;
+                min-width: 25px;
             }
             
             .time-distribution {
@@ -3647,8 +3651,26 @@
                 font-size: 22px;
             }
             
-            .ascii-chart {
-                height: 100px;
+            .horizontal-chart {
+                gap: 4px;
+            }
+            
+            .chart-row {
+                gap: 6px;
+            }
+            
+            .chart-day {
+                width: 16px;
+                font-size: 10px;
+            }
+            
+            .chart-bar-container {
+                height: 22px;
+            }
+            
+            .chart-count {
+                font-size: 11px;
+                min-width: 22px;
             }
             
             .time-distribution {
