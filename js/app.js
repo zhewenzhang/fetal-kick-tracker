@@ -1,5 +1,5 @@
 /**
- * 主应用模块
+ * 主应用模块 - 增强版
  */
 
 const App = {
@@ -22,6 +22,9 @@ const App = {
         
         // 加载设置
         this.loadSettings();
+        
+        // 更新按钮状态
+        this.updateKickButton();
         
         console.log('App initialized');
     },
@@ -50,7 +53,7 @@ const App = {
                 changeEl.className = 'stat-change neutral';
             }
         } else {
-            changeEl.textContent = '';
+            changeEl.textContent = todayCount > 0 ? '🎉 第一天!' : '';
         }
         
         // 更新本周统计
@@ -71,15 +74,44 @@ const App = {
             const weeks = Math.floor((dueDate - now) / (7 * 24 * 60 * 60 * 1000));
             const days = Math.floor((dueDate - now) / (24 * 60 * 60 * 1000));
             
-            if (weeks > 0) {
+            if (weeks > 0 && weeks <= 40) {
                 document.getElementById('dueDateDisplay').textContent = 
                     `孕${40 - weeks}周 ${days}天后预产期`;
             }
         }
     },
     
-    // 记录胎动
+    // 更新按钮状态
+    updateKickButton() {
+        const button = document.getElementById('kickButton');
+        const hint = document.getElementById('kickHint');
+        
+        if (Auth.isLoggedIn()) {
+            button.classList.add('ready');
+            hint.textContent = '点击记录宝宝胎动';
+            hint.style.color = 'var(--primary)';
+        } else {
+            button.classList.remove('ready');
+            hint.textContent = '请先登录才能记录';
+            hint.style.color = 'var(--text-light)';
+        }
+    },
+    
+    // 检查是否可以记录
+    canRecordKick() {
+        if (!Auth.isLoggedIn()) {
+            this.showToast('请先登录才能记录胎动 ❤️', 'warning');
+            this.showLoginModal();
+            return false;
+        }
+        return true;
+    },
+    
+    // 记录胎动 - 增强版
     async recordKick() {
+        // 检查登录
+        if (!this.canRecordKick()) return;
+        
         const now = new Date();
         const dateStr = Storage.getTodayKey();
         const timeStr = now.toISOString();
@@ -87,7 +119,7 @@ const App = {
         // 本地存储
         Storage.addKick(timeStr);
         
-        // 云端存储（如果已登录）
+        // 云端存储
         if (Auth.isLoggedIn()) {
             await Data.saveKickRecord(dateStr, timeStr);
         }
@@ -95,24 +127,120 @@ const App = {
         // 震动反馈
         const settings = Storage.getSettings();
         if (settings.vibrate && navigator.vibrate) {
-            navigator.vibrate(50);
+            navigator.vibrate([50, 30, 50]); // 两次震动
         }
         
-        // 视觉反馈
-        this.showKickFeedback();
+        // 增强动效
+        this.showKickAnimation();
         
         // 更新统计
         this.updateStats();
     },
     
-    // 显示记录反馈
-    showKickFeedback() {
-        const feedback = document.getElementById('kickFeedback');
-        feedback.classList.add('show');
+    // 显示胎动动画 - 幸福版
+    showKickAnimation() {
+        const button = document.getElementById('kickButton');
+        
+        // 1. 按钮动画
+        button.classList.add('kicking');
+        button.style.transform = 'scale(0.9)';
+        
+        // 2. 涟漪效果
+        this.createRippleEffect();
+        
+        // 3. 数字跳动
+        this.animateCount();
+        
+        // 4. 幸福感消息
+        this.showHappyMessage();
+        
+        // 5. 恢复
+        setTimeout(() => {
+            button.classList.remove('kicking');
+            button.style.transform = '';
+        }, 500);
+    },
+    
+    // 创建涟漪效果
+    createRippleEffect() {
+        const button = document.getElementById('kickButton');
+        const rect = button.getBoundingClientRect();
+        
+        // 创建多个涟漪
+        for (let i = 0; i < 3; i++) {
+            setTimeout(() => {
+                const ripple = document.createElement('div');
+                ripple.className = 'kick-ripple';
+                ripple.innerHTML = '💕';
+                ripple.style.cssText = `
+                    position: fixed;
+                    left: ${rect.left + rect.width/2}px;
+                    top: ${rect.top + rect.height/2}px;
+                    font-size: ${20 + Math.random() * 20}px;
+                    pointer-events: none;
+                    z-index: 9999;
+                    animation: rippleOut 1s ease-out forwards;
+                    opacity: 0.8;
+                `;
+                document.body.appendChild(ripple);
+                
+                setTimeout(() => ripple.remove(), 1000);
+            }, i * 150);
+        }
+    },
+    
+    // 数字动画
+    animateCount() {
+        const countEl = document.getElementById('todayCount');
+        const current = parseInt(countEl.textContent) || 0;
+        
+        // 跳动效果
+        countEl.style.transform = 'scale(1.3)';
+        countEl.style.color = 'var(--success)';
         
         setTimeout(() => {
-            feedback.classList.remove('show');
-        }, 500);
+            countEl.textContent = current + 1;
+            countEl.style.transform = 'scale(1)';
+            countEl.style.color = '';
+        }, 200);
+    },
+    
+    // 幸福感消息
+    showHappyMessage() {
+        const messages = [
+            '❤️ 宝宝感受到了！',
+            '😊 幸福的互动',
+            '👶 宝宝在回应你',
+            '💕 甜蜜的时刻',
+            '✨ 爱的传递',
+            '🌟 小生命在跳动'
+        ];
+        
+        const message = messages[Math.floor(Math.random() * messages.length)];
+        
+        // 创建消息气泡
+        const bubble = document.createElement('div');
+        bubble.className = 'happy-bubble';
+        bubble.textContent = message;
+        bubble.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #FF69B4, #FFB6C1);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 24px;
+            font-size: 18px;
+            font-weight: 600;
+            z-index: 10000;
+            animation: bubbleFloat 1.5s ease-out forwards;
+            box-shadow: 0 8px 32px rgba(255, 105, 180, 0.4);
+        `;
+        
+        document.body.appendChild(bubble);
+        
+        setTimeout(() => bubble.remove(), 1500);
     },
     
     // 显示Toast
@@ -128,7 +256,8 @@ const App = {
     
     // 登录成功回调
     onLoginSuccess() {
-        this.showToast('🎉 登录成功！');
+        this.showToast('🎉 登录成功！开始记录幸福时刻', 'success');
+        this.updateKickButton();
         this.updateStats();
     },
     
@@ -152,6 +281,67 @@ const App = {
         document.getElementById('registerModal').classList.remove('show');
     }
 };
+
+// 添加涟漪动画CSS
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes rippleOut {
+        0% {
+            transform: translate(-50%, -50%) scale(0.5);
+            opacity: 1;
+        }
+        100% {
+            transform: translate(-50%, -50%) scale(3);
+            opacity: 0;
+        }
+    }
+    
+    @keyframes bubbleFloat {
+        0% {
+            transform: translate(-50%, -50%) scale(0.5);
+            opacity: 0;
+        }
+        20% {
+            transform: translate(-50%, -50%) scale(1.1);
+            opacity: 1;
+        }
+        80% {
+            transform: translate(-50%, -60%) scale(1);
+            opacity: 1;
+        }
+        100% {
+            transform: translate(-50%, -80%) scale(0.8);
+            opacity: 0;
+        }
+    }
+    
+    .kick-button.kicking {
+        animation: kickPulse 0.5s ease-out !important;
+    }
+    
+    @keyframes kickPulse {
+        0% { transform: scale(1); }
+        30% { transform: scale(0.85); }
+        60% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+    
+    .kick-button.ready {
+        box-shadow: 0 0 0 0 rgba(255, 105, 180, 0.7);
+        animation: readyPulse 2s infinite !important;
+    }
+    
+    @keyframes readyPulse {
+        0% { box-shadow: 0 0 0 0 rgba(255, 105, 180, 0.4); }
+        70% { box-shadow: 0 0 0 20px rgba(255, 105, 180, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(255, 105, 180, 0); }
+    }
+    
+    #todayCount {
+        transition: transform 0.2s, color 0.2s;
+    }
+`;
+document.head.appendChild(style);
 
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', () => {
@@ -214,6 +404,7 @@ window.handleLogout = async () => {
     App.showToast('已退出登录');
     Storage.clearAll();
     App.updateStats();
+    App.updateKickButton();
 };
 
 window.switchToLogin = () => {

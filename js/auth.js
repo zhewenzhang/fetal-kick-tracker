@@ -6,12 +6,16 @@ const Auth = {
     supabase: null,
     user: null,
     initialized: false,
+    callbacks: {
+        onLogin: null,
+        onLogout: null
+    },
     
     // 初始化
     async init() {
         this.supabase = window.supabase.createClient(
             CONFIG.SUPABASE.URL,
-            CONFIG.SUPABASE_ANON_KEY
+            CONFIG.SUPABASE.ANON_KEY
         );
         
         // 监听认证状态变化
@@ -30,10 +34,15 @@ const Auth = {
         if (event === 'SIGNED_IN' && session?.user) {
             this.user = session.user;
             this.updateUI();
-            App.onLoginSuccess();
+            if (this.callbacks.onLogin) {
+                this.callbacks.onLogin(this.user);
+            }
         } else if (event === 'SIGNED_OUT') {
             this.user = null;
             this.updateUI();
+            if (this.callbacks.onLogout) {
+                this.callbacks.onLogout();
+            }
         }
     },
     
@@ -101,7 +110,6 @@ const Auth = {
         try {
             const { error } = await this.supabase.auth.signOut();
             if (error) throw error;
-            Storage.clearAll();
             return { success: true };
         } catch (e) {
             return { success: false, error: e.message };
@@ -127,12 +135,12 @@ const Auth = {
         
         if (this.user) {
             userNameEl.textContent = this.user.email?.split('@')[0] || '用户';
-            userStatusEl.textContent = '已登录';
+            userStatusEl.textContent = '记录幸福时刻';
             loginBtn.style.display = 'none';
             logoutBtn.style.display = 'block';
         } else {
             userNameEl.textContent = '未登录';
-            userStatusEl.textContent = '登录后同步数据';
+            userStatusEl.textContent = '登录后记录胎动';
             loginBtn.style.display = 'block';
             logoutBtn.style.display = 'none';
         }
