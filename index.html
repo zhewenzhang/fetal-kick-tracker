@@ -17,7 +17,7 @@
             --shadow: 0 4px 20px rgba(255,105,180,0.1); --shadow-lg: 0 8px 32px rgba(255,105,180,0.12);
         }
         *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-        html,body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+        html,body{font-family:'Noto Sans Sans+TC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
         .bg{position:fixed;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at 20% 20%,rgba(255,182,193,0.2),transparent 50%),radial-gradient(circle at 80% 80%,rgba(255,182,193,0.15),transparent 50%);z-index:-1}
         .container{max-width:420px;margin:0 auto;min-height:100vh;padding:var(--space-md);padding-bottom:80px}
         
@@ -104,6 +104,14 @@
         .detail-delete{width:28px;height:28px;border:none;background:#FFF0F0;border-radius:50%;color:#FF6B6B;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
         
         .empty{text-align:center;padding:40px 20px;color:var(--text-light);font-size:13px}
+        
+        /* 散点图 */
+        .scatter-container{position:relative;height:180px;margin:16px 0}
+        .scatter-canvas{width:100%;height:100%}
+        .scatter-labels{position:absolute;bottom:20px;left:0;right:0;display:flex;justify-content:space-between;padding:0 10px}
+        .scatter-label{font-size:9px;color:var(--text-light)}
+        .scatter-y-labels{position:absolute;left:0;top:0;bottom:20px;display:flex;flex-direction:column;justify-content:space-between;padding:0 4px}
+        .scatter-y-label{font-size:9px;color:var(--text-light)}
         
         /* Modal */
         .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);z-index:1000;align-items:center;justify-content:center;padding:var(--space-md)}
@@ -224,6 +232,13 @@
                 <div class="chart-title">本周记录</div>
                 <div class="bar-chart" id="weekChart"></div>
             </div>
+            <div class="chart-card">
+                <div class="chart-title">24小时胎动分布</div>
+                <div class="scatter-container">
+                    <canvas id="scatterCanvas" class="scatter-canvas"></canvas>
+                </div>
+                <div style="font-size:11px;color:var(--text-light);text-align:center;margin-top:8px">横轴：时间（小时）· 纵轴：日期</div>
+            </div>
             <div class="stats-grid">
                 <div class="stats-col">
                     <div class="stats-col-value" id="weekAvg">0</div>
@@ -281,7 +296,7 @@
                         <svg class="settings-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
                         <span class="settings-label">版本</span>
                     </div>
-                    <span style="color:var(--text-light);font-size:12px">v6.1</span>
+                    <span style="color:var(--text-light);font-size:12px">v6.2</span>
                 </div>
             </div>
         </div>
@@ -404,7 +419,22 @@
                 }
             },
             getTodayCount(){return this.getData()[this.getToday()]?.length||0},
-            getWeek(){const d=this.getData();const w=[];const t=new Date();for(let i=6;i>=0;i--){const dt=new Date();dt.setDate(t.getDate()-i);const k=`${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;w.push({date:k,count:d[k]?.length||0});}return w}
+            getWeek(){const d=this.getData();const w=[];const t=new Date();for(let i=6;i>=0;i--){const dt=new Date();dt.setDate(t.getDate()-i);const k=`${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;w.push({date:k,count:d[k]?.length||0});}return w},
+            // 获取最近30天的散点数据
+            getScatterData(){
+                const d=this.getData();const points=[];const t=new Date();
+                for(let i=29;i>=0;i--){
+                    const dt=new Date();dt.setDate(t.getDate()-i);
+                    const k=`${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+                    if(d[k]){
+                        d[k].forEach(timeStr=>{
+                            const dt2=new Date(timeStr);
+                            points.push({hour:dt2.getHours(),dayIndex:29-i,date:k});
+                        });
+                    }
+                }
+                return points;
+            }
         };
         
         const Auth = {
@@ -573,9 +603,14 @@
                 document.getElementById('weekTotalStat').textContent = total;
                 document.getElementById('weekAvg').textContent = Math.round(total/7)||0;
                 document.getElementById('maxDay').textContent = max;
+                
+                // 周柱状图
                 const chart = document.getElementById('weekChart');
                 const maxH = 60;
                 chart.innerHTML = week.map(d=>{const h = max ? Math.max(d.count/max*maxH,2) : 2;return `<div class="bar-item"><div class="bar" style="height:${h}px"></div><div class="bar-label">${d.date.slice(-2)}日</div></div>`;}).join('');
+                
+                // 绘制散点图
+                this.drawScatter();
                 
                 // 历史记录列表
                 const history = document.getElementById('historyList');
@@ -592,6 +627,93 @@
                             </span>
                         </div>
                     `).join('');
+                }
+            },
+            drawScatter(){
+                const canvas = document.getElementById('scatterCanvas');
+                const ctx = canvas.getContext('2d');
+                const dpr = window.devicePixelRatio || 1;
+                const rect = canvas.getBoundingClientRect();
+                canvas.width = rect.width * dpr;
+                canvas.height = rect.height * dpr;
+                ctx.scale(dpr, dpr);
+                
+                const w = rect.width;
+                const h = rect.height;
+                const padding = {top:10, right:10, bottom:25, left:30};
+                const chartW = w - padding.left - padding.right;
+                const chartH = h - padding.top - padding.bottom;
+                
+                // 清空
+                ctx.clearRect(0,0,w,h);
+                
+                // 网格线
+                ctx.strokeStyle = '#FFE4EC';
+                ctx.lineWidth = 1;
+                
+                // 垂直网格(小时)
+                for(let i=0;i<=24;i+=6){
+                    const x = padding.left + (i/24)*chartW;
+                    ctx.beginPath();
+                    ctx.moveTo(x, padding.top);
+                    ctx.lineTo(x, h-padding.bottom);
+                    ctx.stroke();
+                }
+                
+                // 水平网格(天)
+                for(let i=0;i<=30;i+=5){
+                    const y = padding.top + (i/30)*chartH;
+                    ctx.beginPath();
+                    ctx.moveTo(padding.left, y);
+                    ctx.lineTo(w-padding.right, y);
+                    ctx.stroke();
+                }
+                
+                // X轴标签
+                ctx.fillStyle = '#AAA';
+                ctx.font = '9px Noto Sans TC';
+                ctx.textAlign = 'center';
+                for(let i=0;i<=24;i+=6){
+                    const x = padding.left + (i/24)*chartW;
+                    ctx.fillText(i+'时', x, h-5);
+                }
+                
+                // 绘制散点
+                const points = Store.getScatterData();
+                if(points.length===0){
+                    ctx.fillStyle = '#AAA';
+                    ctx.font = '12px Noto Sans TC';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('暂无数据', w/2, h/2);
+                    return;
+                }
+                
+                points.forEach(p=>{
+                    const x = padding.left + (p.hour/24)*chartW;
+                    const y = padding.top + (p.dayIndex/30)*chartH;
+                    
+                    // 渐变点
+                    const gradient = ctx.createRadialGradient(x,y,0,x,y,6);
+                    gradient.addColorStop(0,'#FF69B4');
+                    gradient.addColorStop(1,'#FFB6C1');
+                    
+                    ctx.beginPath();
+                    ctx.arc(x, y, 5, 0, Math.PI*2);
+                    ctx.fillStyle = gradient;
+                    ctx.fill();
+                });
+                
+                // 活跃时段标记
+                const hourCounts = new Array(24).fill(0);
+                points.forEach(p=>hourCounts[p.hour]++);
+                const activeHours = hourCounts.map((c,i)=>c>0?i:-1).filter(i=>i>=0);
+                if(activeHours.length>0){
+                    ctx.fillStyle = 'rgba(255,105,180,0.1)';
+                    const firstHour = Math.min(...activeHours);
+                    const lastHour = Math.max(...activeHours);
+                    const x1 = padding.left + (firstHour/24)*chartW;
+                    const x2 = padding.left + ((lastHour+1)/24)*chartW;
+                    ctx.fillRect(x1, padding.top, x2-x1, chartH);
                 }
             },
             async recordKick(){
@@ -662,7 +784,6 @@
             App.showToast('已删除');
             App.updateStats();
             
-            // 刷新面板
             if(currentDetailDate === date){
                 showDetail(date);
             }
