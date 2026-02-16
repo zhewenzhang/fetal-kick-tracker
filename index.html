@@ -856,7 +856,8 @@
                 document.getElementById('detailContent').innerHTML = '<div class="empty">暂无记录</div>';
             }else{
                 document.getElementById('detailContent').innerHTML = sortedTimes.map(time => {
-                    const dt = new const timeStr = dt.getHours(). Date(time);
+                    const dt = new const dt = new Date(time);
+                    const timeStr = dt.getHours()
                    toString().padStart(2,'0') + ':' + dt.getMinutes().toString().padStart(2,'0') + ':' + dt.getSeconds().toString().padStart(2,'0');
                     return `<div class="detail-item"><span class="detail-time">${timeStr}</span><button class="detail-delete" onclick="deleteRecord('${date}','${time}')">✕</button></div>`;
                 }).join('');
