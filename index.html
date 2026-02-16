@@ -2399,6 +2399,12 @@
                 if (error && error.code !== 'PGRST116') throw error;
                 
                 if (remoteSettings) {
+                    // 强制同步宝宝名字（不管时间戳）
+                    if (remoteSettings.baby_name) {
+                        settings.babyName = remoteSettings.baby_name;
+                        console.log('从云端加载宝宝名字:', settings.babyName);
+                    }
+                    
                     // 云端有数据，检查是否需要更新本地
                     const localSettings = JSON.parse(localStorage.getItem('kickSettings') || '{}');
                     const localUpdated = parseInt(localStorage.getItem('settingsUpdated') || '0');
@@ -2408,13 +2414,19 @@
                         Object.assign(settings, {
                             dueDate: remoteSettings.due_date || '',
                             vibrate: remoteSettings.vibrate !== false,
-                            babyName: remoteSettings.baby_name || '',
+                            babyName: remoteSettings.baby_name || settings.babyName || '',
                             theme: remoteSettings.theme || 'spring'
                         });
-                        localStorage.setItem('kickSettings', JSON.stringify(settings));
-                        updatePregnancyUI();
-                        document.getElementById('babyName').value = settings.babyName || '';
-                        updateBabyNameDisplay();
+                    } else if (remoteSettings.baby_name && !settings.babyName) {
+                        // 强制同步：如果云端有名字但本地没有
+                        settings.babyName = remoteSettings.baby_name;
+                    }
+                    
+                    // 保存到本地并更新UI
+                    localStorage.setItem('kickSettings', JSON.stringify(settings));
+                    updatePregnancyUI();
+                    document.getElementById('babyName').value = settings.babyName || '';
+                    updateBabyNameDisplay();
                         
                         // 同步宝宝风格设置
                         if (remoteSettings.baby_style || remoteSettings.baby_icon) {
