@@ -27,7 +27,7 @@
         
         .user-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-lg)}
         .user-info{display:flex;align-items:center;gap:var(--space-sm)}
-        .avatar{width:40px;height:40px;border-radius:var(--radius-full);background:var(--gradient);display:flex;align-items:center;justify-content:center;font-size:18px}
+        .avatar{width:40px;height:40px;border-radius:var(--radius-full);background:var(--gradient);display:flex;align-items:center;justify-content:center;font-size:20px}
         .user-name{font-size:14px;font-weight:600}
         .user-name span{color:var(--pink-500)}
         .btn-login{background:var(--gradient);color:white;border:none;padding:8px 18px;border-radius:var(--radius-full);font-size:12px;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(255,105,180,0.3)}
@@ -45,7 +45,7 @@
         .kick-btn.kick{animation:kick 0.6s}
         @keyframes kick{0%{transform:scale(1)}30%{transform:scale(0.85)}60%{transform:scale(1.1)}100%{transform:scale(1)}}
         
-        .ripples{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:140px;height:140px;pointer-events:none}
+        .ripples{position:absolute;top:50%;left:50%;transform:translate(-50%,:140px;-50%);widthheight:140px;pointer-events:none}
         .ripple{position:absolute;top:50%;left:50%;width:100%;height:100%;border-radius:50%;border:2px solid var(--pink-300);transform:translate(-50%,-50%) scale(0);opacity:0}
         .ripple.active{animation:ripple 2s ease-out infinite}
         .ripple:nth-child(2){animation-delay:0.5s}.ripple:nth-child(3){animation-delay:1s}
@@ -56,14 +56,14 @@
         
         .stats-row{display:flex;justify-content:center;gap:var(--space-xl);margin-top:var(--space-xl);padding:0 var(--space-md)}
         .stat-box{flex:1;max-width:140px;background:var(--card);border-radius:var(--radius-lg);padding:var(--space-lg) var(--space-md);box-shadow:var(--shadow);text-align:center}
-        .stat-icon{font-size:18px;margin-bottom:var(--space-xs)}
+        .stat-icon{font-size:22px;color:var(--pink-500);margin-bottom:var(--space-xs)}
         .stat-value{font-size:32px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
         .stat-label{font-size:12px;color:var(--text-light);margin-top:2px}
         
         .nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-top:1px solid var(--pink-100);display:flex;justify-content:space-around;padding:var(--space-sm);padding-bottom:calc(var(--space-sm)+env(safe-area-inset-bottom));z-index:100}
         .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:var(--space-sm);color:var(--text-light);text-decoration:none;border-radius:var(--radius-sm);transition:0.3s}
         .nav-item:hover,.nav-item.active{color:var(--pink-500);background:var(--pink-50)}
-        .nav-icon{font-size:20px}
+        .nav-icon{font-size:22px}
         .nav-label{font-size:10px;font-weight:500}
         
         .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);z-index:1000;align-items:center;justify-content:center;padding:var(--space-md)}
@@ -117,7 +117,7 @@
         .settings-item{display:flex;align-items:center;justify-content:space-between;padding:14px;background:var(--pink-50);border-radius:var(--radius-md);margin-bottom:var(--space-sm);cursor:pointer}
         .settings-item:active{background:var(--pink-100)}
         .settings-left{display:flex;align-items:center;gap:var(--space-md)}
-        .settings-icon{font-size:16px}
+        .settings-icon{font-size:18px;color:var(--pink-500)}
         .settings-label{font-size:14px;font-weight:500}
         .toggle{width:44px;height:24px;background:var(--pink-200);border-radius:var(--radius-full);position:relative;cursor:pointer;transition:0.3s}
         .toggle.active{background:var(--pink-500)}
@@ -135,7 +135,7 @@
 
         <div class="user-bar">
             <div class="user-info">
-                <div class="avatar" id="userAvatar"></div>
+                <div class="avatar" id="userAvatar">♥</div>
                 <div class="user-name"><span id="babyNickname">宝宝</span></div>
             </div>
             <button class="btn-login" id="loginBtn" onclick="showLogin()">登录</button>
@@ -156,19 +156,19 @@
                         <div class="ripple" id="ripple2"></div>
                         <div class="ripple" id="ripple3"></div>
                     </div>
-                    <button class="kick-btn" id="kickBtn" onclick="recordKick()"></button>
+                    <button class="kick-btn" id="kickBtn" onclick="recordKick()">♥</button>
                 </div>
                 <p class="kick-hint" id="kickHint">点击记录宝宝胎动</p>
             </div>
 
             <div class="stats-row">
                 <div class="stat-box">
-                    <div class="stat-icon" style="color:var(--pink-500)">●</div>
+                    <div class="stat-icon">★</div>
                     <div class="stat-value" id="todayCount">0</div>
                     <div class="stat-label">今日次数</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-icon" style="color:var(--pink-500)">◆</div>
+                    <div class="stat-icon">♦</div>
                     <div class="stat-value" id="weekTotal">0</div>
                     <div class="stat-label">本周总数</div>
                 </div>
@@ -207,23 +207,23 @@
             <div class="chart-card">
                 <div class="chart-title">设置</div>
                 <div class="settings-item" onclick="showNickname()">
-                    <div class="settings-left"><span class="settings-icon" style="color:var(--pink-500)">○</span><span class="settings-label">宝宝小名</span></div>
+                    <div class="settings-left"><span class="settings-icon">☆</span><span class="settings-label">宝宝小名</span></div>
                     <span style="color:var(--pink-500)" id="settingsNickname">未设置</span>
                 </div>
                 <div class="settings-item" onclick="showDueDate()">
-                    <div class="settings-left"><span class="settings-icon" style="color:var(--pink-500)">□</span><span class="settings-label">预产期</span></div>
+                    <div class="settings-left"><span class="settings-icon">□</span><span class="settings-label">预产期</span></div>
                     <span style="color:var(--pink-500)" id="settingsDueDate">未设置</span>
                 </div>
                 <div class="settings-item">
-                    <div class="settings-left"><span class="settings-icon" style="color:var(--pink-500)">◎</span><span class="settings-label">震动反馈</span></div>
+                    <div class="settings-left"><span class="settings-icon">◉</span><span class="settings-label">震动反馈</span></div>
                     <div class="toggle active" id="vibrateToggle" onclick="toggleVibrate()"></div>
                 </div>
             </div>
             <div class="chart-card">
                 <div class="chart-title">关于</div>
                 <div class="settings-item" style="cursor:default">
-                    <div class="settings-left"><span class="settings-icon" style="color:var(--pink-500)">❤</span><span class="settings-label">版本</span></div>
-                    <span style="color:var(--text-light)">v2.5</span>
+                    <div class="settings-left"><span class="settings-icon">♥</span><span class="settings-label">版本</span></div>
+                    <span style="color:var(--text-light)">v2.6</span>
                 </div>
             </div>
         </div>
@@ -231,16 +231,16 @@
 
     <nav class="nav">
         <a class="nav-item active" href="#" data-page="home" onclick="switchPage('home')">
-            <span class="nav-icon" style="color:var(--pink-500)">—</span><span class="nav-label">首页</span>
+            <span class="nav-icon" style="color:var(--pink-500)">♥</span><span class="nav-label">首页</span>
         </a>
         <a class="nav-item" href="#" data-page="stats" onclick="switchPage('stats')">
-            <span class="nav-icon" style="color:var(--pink-500)">≈</span><span class="nav-label">统计</span>
+            <span class="nav-icon" style="color:var(--pink-500)">★</span><span class="nav-label">统计</span>
         </a>
         <a class="nav-item" href="#" data-page="history" onclick="switchPage('history')">
-            <span class="nav-icon" style="color:var(--pink-500)">≡</span><span class="nav-label">历史</span>
+            <span class="nav-icon" style="color:var(--pink-500)">♦</span><span class="nav-label">历史</span>
         </a>
         <a class="nav-item" href="#" data-page="settings" onclick="switchPage('settings')">
-            <span class="nav-icon" style="color:var(--pink-500)">○</span><span class="nav-label">设置</span>
+            <span class="nav-icon" style="color:var(--pink-500)">☆</span><span class="nav-label">设置</span>
         </a>
     </nav>
 
@@ -450,7 +450,7 @@
                 this.showHeart(msgs[Math.floor(Math.random()*msgs.length)]);
                 this.updateStats();
             },
-            showHeart(msg){document.querySelectorAll('.heart-bubble').forEach(e=>e.remove());const b=document.createElement('div');b.className='heart-bubble';b.textContent='❤ '+msg;document.body.appendChild(b);setTimeout(()=>b.remove(),2000)},
+            showHeart(msg){document.querySelectorAll('.heart-bubble').forEach(e=>e.remove());const b=document.createElement('div');b.className='heart-bubble';b.textContent='♥ '+msg;document.body.appendChild(b);setTimeout(()=>b.remove(),2000)},
             showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000)},
             onLogin(){this.showToast('登录成功！');this.updateUI();this.updateStats()}
         };
