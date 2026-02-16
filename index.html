@@ -2414,6 +2414,7 @@
                         localStorage.setItem('kickSettings', JSON.stringify(settings));
                         updatePregnancyUI();
                         document.getElementById('babyName').value = settings.babyName || '';
+                        updateBabyNameDisplay();
                         
                         // 同步宝宝风格设置
                         if (remoteSettings.baby_style || remoteSettings.baby_icon) {
@@ -3678,6 +3679,7 @@
             if (supabase && getCurrentUserId()) {
                 supabase.from('kick_settings').upsert({
                     user_id: getCurrentUserId(),
+                    baby_name: settings.babyName || null,
                     baby_style: babyStyleSettings.style,
                     baby_icon: babyStyleSettings.icon,
                     baby_custom_image: babyStyleSettings.customImage,
