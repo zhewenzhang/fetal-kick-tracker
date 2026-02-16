@@ -25,50 +25,48 @@
         .logo{font-size:10px;font-weight:500;letter-spacing:4px;color:var(--pink-500);margin-bottom:2px}
         .header h1{font-size:18px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
         
-        /* 用户信息条 */
-        .user-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-md);background:var(--card);padding:10px 14px;border-radius:var(--radius-md);box-shadow:var(--shadow)}
-        .user-info{display:flex;align-items:center;gap:var(--space-sm)}
-        .user-name{font-size:15px;font-weight:600}
+        /* 用户信息条 - 精简版 */
+        .user-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-md);background:var(--card);padding:14px 16px;border-radius:var(--radius-lg);box-shadow:var(--shadow-lg)}
+        .user-info{flex:1}
+        .user-name{font-size:16px;font-weight:600;margin-bottom:4px}
         .user-name .name{color:var(--pink-500)}
-        .user-name .weeks{font-size:13px;color:var(--pink-400);font-weight:500}
-        .btn-login{background:var(--gradient);color:white;border:none;padding:6px 14px;border-radius:var(--radius-full);font-size:11px;font-weight:600;cursor:pointer}
+        .user-name .sub{font-size:12px;color:var(--text-light)}
+        .user-name .sub .days{color:var(--pink-400);font-weight:600}
+        .btn-login{background:var(--gradient);color:white;border:none;padding:8px 16px;border-radius:var(--radius-full);font-size:12px;font-weight:600;cursor:pointer}
         
-        /* 倒计时卡片 */
-        .countdown-card{background:var(--card);border-radius:var(--radius-lg);padding:var(--space-lg);text-align:center;box-shadow:var(--shadow-lg);margin-bottom:var(--space-md)}
-        .countdown-days{font-size:48px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
-        .countdown-days span{font-size:16px;font-weight:400;color:var(--text-light)}
-        .countdown-label{font-size:12px;color:var(--text-light);margin-top:var(--space-xs)}
-        
-        /* 鼓励语滚动 */
-        .tips-section{background:var(--card);border-radius:var(--radius-lg);padding:14px;box-shadow:var(--shadow);margin-bottom:var(--space-md);overflow:hidden}
-        .tips-track{display:flex;animation:scrollTips 30s linear infinite}
-        .tips-track.paused{animation-play-state:paused}
-        @keyframes scrollTips{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-        .tip-item{padding:8px 16px;white-space:nowrap;font-size:13px;color:var(--text);display:flex;align-items:center;gap:6px}
-        .tip-item::before{content:'💪';font-size:14px}
+        /* 鼓励语卡片 */
+        .tips-card{background:var(--card);border-radius:var(--radius-lg);padding:var(--space-lg);box-shadow:var(--shadow-lg);margin-bottom:var(--space-md);position:relative;overflow:hidden}
+        .tips-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--gradient)}
+        .tip-quote{font-size:22px;margin-bottom:var(--space-sm);line-height:1.5}
+        .tip-quote::before{content:'"';font-size:28px;color:var(--pink-300);font-family:Georgia,serif}
+        .tip-quote::after{content:'"';font-size:28px;color:var(--pink-300);font-family:Georgia,serif}
+        .tip-author{font-size:12px;color:var(--text-light);text-align:right}
+        .tip-nav{display:flex;justify-content:center;gap:6px;margin-top:var(--space-md)}
+        .tip-dot{width:8px;height:8px;border-radius:50%;background:var(--pink-200);cursor:pointer;transition:0.3s}
+        .tip-dot.active{background:var(--pink-500);width:20px;border-radius:4px}
         
         /* 记录按钮 */
-        .kick-section{text-align:center;padding:var(--space-md) 0}
-        .kick-btn{width:120px;height:120px;border-radius:var(--radius-full);border:none;background:var(--gradient);color:white;cursor:pointer;box-shadow:0 10px 30px rgba(255,105,180,0.35),inset 0 -6px 16px rgba(0,0,0,0.1),inset 0 6px 16px rgba(255,255,255,0.3);transition:0.3s;position:relative;z-index:2;display:flex;align-items:center;justify-content:center}
-        .kick-btn svg{width:44px;height:44px}
+        .kick-section{text-align:center;padding:var(--space-lg) 0}
+        .kick-btn{width:130px;height:130px;border-radius:var(--radius-full);border:none;background:var(--gradient);color:white;cursor:pointer;box-shadow:0 12px 40px rgba(255,105,180,0.35),inset 0 -8px 20px rgba(0,0,0,0.1),inset 0 8px 20px rgba(255,255,255,0.3);transition:0.3s;position:relative;z-index:2;display:flex;align-items:center;justify-content:center}
+        .kick-btn svg{width:48px;height:48px}
         .kick-btn:hover{transform:scale(1.05)}
         .kick-btn:active{transform:scale(0.95)}
         .kick-btn.kick{animation:kick 0.6s}
         @keyframes kick{0%{transform:scale(1)}30%{transform:scale(0.85)}60%{transform:scale(1.1)}100%{transform:scale(1)}}
         
-        .ripples{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:120px;height:120px;pointer-events:none}
+        .ripples{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:130px;height:130px;pointer-events:none}
         .ripple{position:absolute;top:50%;left:50%;width:100%;height:100%;border-radius:50%;border:2px solid var(--pink-300);transform:translate(-50%,-50%) scale(0);opacity:0}
         .ripple.active{animation:ripple 2s ease-out infinite}
         .ripple:nth-child(2){animation-delay:0.5s}.ripple:nth-child(3){animation-delay:1s}
         @keyframes ripple{0%{transform:translate(-50%,-50%) scale(0.5);opacity:0.8}100%{transform:translate(-50%,-50%) scale(2);opacity:0}}
         
-        .kick-hint{margin-top:var(--space-md);font-size:13px;color:var(--text-light)}
+        .kick-hint{margin-top:var(--space-md);font-size:14px;color:var(--text-light)}
         .kick-hint.active{color:var(--pink-500);font-weight:500}
         
         /* 统计 */
-        .stats-row{display:flex;justify-content:center;gap:var(--space-md);margin-top:var(--space-md)}
-        .stat-box{flex:1;max-width:120px;background:var(--card);border-radius:var(--radius-md);padding:var(--space-md);box-shadow:var(--shadow);text-align:center}
-        .stat-value{font-size:26px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .stats-row{display:flex;justify-content:center;gap:var(--space-md);margin-top:var(--space-lg)}
+        .stat-box{flex:1;max-width:130px;background:var(--card);border-radius:var(--radius-md);padding:var(--space-md);box-shadow:var(--shadow);text-align:center}
+        .stat-value{font-size:28px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
         .stat-label{font-size:11px;color:var(--text-light);margin-top:2px}
         
         /* 底部导航 */
@@ -104,7 +102,7 @@
         .toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--card);color:var(--text);padding:10px 18px;border-radius:var(--radius-full);font-size:12px;font-weight:500;opacity:0;visibility:hidden;transition:0.3s;z-index:2000;box-shadow:var(--shadow-lg);border:1px solid var(--pink-100)}
         .toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
         
-        .heart-bubble{position:fixed;top:42%;left:50%;transform:translate(-50%,-50%);background:var(--gradient);color:white;padding:10px 18px;border-radius:16px;font-size:13px;font-weight:600;z-index:9999;animation:heartFloat 2s forwards;box-shadow:0 10px 30px rgba(255,105,180,0.4)}
+        .heart-bubble{position:fixed;top:42%;left:50%;transform:translate(-50%,-50%);background:var(--gradient);color:white;padding:12px 20px;border-radius:20px;font-size:14px;font-weight:600;z-index:9999;animation:heartFloat 2s forwards;box-shadow:0 12px 40px rgba(255,105,180,0.4)}
         @keyframes heartFloat{0%{opacity:0;transform:translate(-50%,-30%) scale(0.5)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}40%{transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-80%) scale(0.8)}}
         
         .page{display:none}
@@ -149,27 +147,23 @@
         <!-- 用户信息条 -->
         <div class="user-bar">
             <div class="user-info">
-                <span class="user-name">
+                <div class="user-name">
                     <span class="name" id="userDisplayName">宝宝</span>
-                    <span class="weeks" id="userWeeks"></span>
-                </span>
+                </div>
+                <div class="sub" id="userSub">
+                    <span id="userWeeks">14周</span> · <span class="days" id="userDays">距离见面还有180天</span>
+                </div>
             </div>
             <button class="btn-login" id="loginBtn" onclick="showLogin()">登录</button>
             <button class="btn-login" id="logoutBtn" onclick="handleLogout()" style="display:none;">退出</button>
         </div>
 
         <div class="page active" id="page-home">
-            <!-- 倒计时 -->
-            <div class="countdown-card">
-                <div class="countdown-days"><span id="countdownDays">--</span> <span>天</span></div>
-                <div class="countdown-label">距离宝宝出生</div>
-            </div>
-
-            <!-- 鼓励语滚动 -->
-            <div class="tips-section">
-                <div class="tips-track" id="tipsTrack">
-                    <!-- 鼓励语内容 -->
-                </div>
+            <!-- 鼓励语卡片 -->
+            <div class="tips-card">
+                <div class="tip-quote" id="tipQuote">宝宝能感受到你的爱，保持心情愉快很重要</div>
+                <div class="tip-author" id="tipAuthor">—— 孕期关怀</div>
+                <div class="tip-nav" id="tipNav"></div>
             </div>
 
             <!-- 记录按钮 -->
@@ -263,7 +257,7 @@
                         <svg class="settings-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
                         <span class="settings-label">版本</span>
                     </div>
-                    <span style="color:var(--text-light);font-size:12px">v5.0</span>
+                    <span style="color:var(--text-light);font-size:12px">v6.0</span>
                 </div>
             </div>
         </div>
@@ -334,23 +328,23 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
     <script>
-        // 鼓励语和孕期知识
+        // 精选鼓励语
         const TIPS = [
-            '宝宝能感受到你的爱，保持心情愉快很重要',
-            '每天和宝宝说说话，建立最初的亲子连接',
-            '适当的运动有助于顺产，妈妈要坚持下去哦',
-            '均衡营养摄入，让宝宝健康成长',
-            '保持充足睡眠，对自己和宝宝都重要',
-            '记录胎动是了解宝宝健康的好方法',
-            '妈妈坚强，宝宝也会感受到力量',
-            '孕期不适是暂时的，坚持就是胜利',
-            '定期产检，关注宝宝发育情况',
-            '保持室内空气流通，对妈妈和宝宝都好',
-            '多喝水有助于羊水充足，宝宝更舒适',
-            '听听轻柔的音乐，有助于宝宝情绪稳定',
-            '爸爸的参与能让孕期更加幸福',
-            '不要担心体型变化，这是最美的印记',
-            '每一天的坚持都是对宝宝的爱'
+            {text:'宝宝能感受到你的爱，保持心情愉快很重要',author:'孕期关怀'},
+            {text:'每天和宝宝说说话，建立最初的亲子连接',author:'亲子时光'},
+            {text:'适当的运动有助于顺产，妈妈要坚持下去哦',author:'健康孕期'},
+            {text:'均衡营养摄入，让宝宝健康成长',author:'营养师建议'},
+            {text:'记录胎动是了解宝宝健康的好方法',author:'医生提醒'},
+            {text:'妈妈坚强，宝宝也会感受到力量',author:'力量传递'},
+            {text:'孕期不适是暂时的，坚持就是胜利',author:'加油妈妈'},
+            {text:'定期产检，关注宝宝发育情况',author:'产科提醒'},
+            {text:'保持室内空气流通，对妈妈和宝宝都好',author:'健康生活'},
+            {text:'多喝水有助于羊水充足，宝宝更舒适',author:'孕期贴士'},
+            {text:'听听轻柔的音乐，有助于宝宝情绪稳定',author:'音乐胎教'},
+            {text:'爸爸的参与能让孕期更加幸福',author:'家庭温暖'},
+            {text:'不要担心体型变化，这是最美的印记',author:'美丽孕期'},
+            {text:'每一天的坚持都是对宝宝的爱',author:'爱与期待'},
+            {text:'相信自己和宝宝，我们一起努力',author:'信心之源'}
         ];
 
         const CFG = { SUPABASE:{ URL:'https://uwvlduprxppwdkjkvwby.supabase.co', ANON_KEY:'sb_publishable_NCyVuDM0d_Nkn50QvKdY-Q_OCQJsN5L'}};
@@ -451,6 +445,8 @@
             }
         };
         
+        let currentTip = 0;
+        
         const App = {
             async init(){
                 Auth.supabase = window.supabase.createClient(CFG.SUPABASE.URL,CFG.SUPABASE.ANON_KEY);
@@ -464,9 +460,28 @@
                 document.getElementById('ripple1').classList.add('active');
             },
             initTips(){
-                const track = document.getElementById('tipsTrack');
-                // 复制内容实现无缝滚动
-                track.innerHTML = TIPS.map(tip => `<div class="tip-item">${tip}</div>`).join('') + TIPS.map(tip => `<div class="tip-item">${tip}</div>`).join('');
+                // 初始化导航点
+                const nav = document.getElementById('tipNav');
+                TIPS.forEach((_,i) => {
+                    const dot = document.createElement('div');
+                    dot.className = 'tip-dot' + (i===0?' active':'');
+                    dot.onclick = () => this.showTip(i);
+                    nav.appendChild(dot);
+                });
+                // 自动切换
+                setInterval(() => {
+                    currentTip = (currentTip + 1) % TIPS.length;
+                    this.showTip(currentTip);
+                }, 5000);
+            },
+            showTip(index){
+                currentTip = index;
+                const tip = TIPS[index];
+                document.getElementById('tipQuote').textContent = tip.text;
+                document.getElementById('tipAuthor').textContent = '—— ' + tip.author;
+                document.querySelectorAll('.tip-dot').forEach((dot,i) => {
+                    dot.className = 'tip-dot' + (i===index?' active':'');
+                });
             },
             loadSettings(){
                 const s = Store.getSet();
@@ -476,18 +491,17 @@
                 document.getElementById('settingsNickname').textContent = s.nickname || '未设置';
                 document.getElementById('settingsDueDate').textContent = s.dueDate || '未设置';
                 
-                // 倒计时和周数
                 if(s.dueDate){
                     const due = new Date(s.dueDate);
                     const today = new Date();
                     const daysTotal = Math.ceil((due - today) / (1000*60*60*24));
-                    const weeks = Math.floor((280 - daysTotal) / 7); // 假设40周
+                    const weeks = Math.floor((280 - daysTotal) / 7);
                     
-                    document.getElementById('countdownDays').textContent = daysTotal > 0 ? daysTotal : 0;
-                    document.getElementById('userWeeks').textContent = weeks > 0 ? `${weeks}周` : '';
+                    document.getElementById('userWeeks').textContent = weeks + '周';
+                    document.getElementById('userDays').textContent = '距离见面还有' + (daysTotal > 0 ? daysTotal : 0) + '天';
                 }else{
-                    document.getElementById('countdownDays').textContent = '--';
-                    document.getElementById('userWeeks').textContent = '';
+                    document.getElementById('userWeeks').textContent = '14周';
+                    document.getElementById('userDays').textContent = '距离见面还有180天';
                 }
                 
                 const vibrateToggle = document.getElementById('vibrateToggle');
