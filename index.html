@@ -17,7 +17,7 @@
             --shadow: 0 4px 20px rgba(255,105,180,0.1); --shadow-lg: 0 8px 32px rgba(255,105,180,0.12);
         }
         *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-        html,body{font-family:'Noto Sans Sans+TC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+        html,body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
         .bg{position:fixed;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at 20% 20%,rgba(255,182,193,0.2),transparent 50%),radial-gradient(circle at 80% 80%,rgba(255,182,193,0.15),transparent 50%);z-index:-1}
         .container{max-width:420px;margin:0 auto;min-height:100vh;padding:var(--space-md);padding-bottom:80px}
         
@@ -69,6 +69,12 @@
         .stat-value{font-size:28px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
         .stat-label{font-size:11px;color:var(--text-light);margin-top:2px}
         
+        /* 徽章区域 */
+        .badges{display:flex;justify-content:center;gap:var(--space-sm);margin-top:var(--space-md);flex-wrap:wrap}
+        .badge{background:var(--pink-50);padding:6px 12px;border-radius:var(--radius-full);font-size:11px;color:var(--pink-500);display:flex;align-items:center;gap:4px;opacity:0.5;filter:grayscale(1);transition:0.3s}
+        .badge.earned{opacity:1;filter:grayscale(0);background:var(--gradient);color:white}
+        .badge-icon{font-size:14px}
+        
         /* 底部导航 */
         .nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-top:1px solid var(--pink-100);display:flex;justify-content:space-around;padding:8px;padding-bottom:calc(8px + env(safe-area-inset-bottom));z-index:100}
         .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px;color:var(--text-light);text-decoration:none;border-radius:var(--radius-sm);transition:0.3s}
@@ -108,15 +114,30 @@
         /* 散点图 */
         .scatter-container{position:relative;height:180px;margin:16px 0}
         .scatter-canvas{width:100%;height:100%}
-        .scatter-labels{position:absolute;bottom:20px;left:0;right:0;display:flex;justify-content:space-between;padding:0 10px}
-        .scatter-label{font-size:9px;color:var(--text-light)}
-        .scatter-y-labels{position:absolute;left:0;top:0;bottom:20px;display:flex;flex-direction:column;justify-content:space-between;padding:0 4px}
-        .scatter-y-label{font-size:9px;color:var(--text-light)}
+        
+        /* 庆祝弹窗 */
+        .celebration-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);z-index:3000;display:none;align-items:center;justify-content:center}
+        .celebration-overlay.show{display:flex;animation:fadeIn 0.3s}
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+        
+        .celebration-box{background:white;border-radius:28px;padding:30px;text-align:center;max-width:280px;animation:celebratePop 0.5s cubic-bezier(0.68,-0.55,0.265,1.55);position:relative;overflow:hidden}
+        @keyframes celebratePop{0%{transform:scale(0);opacity:0}50%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+        
+        .celebration-icon{font-size:60px;margin-bottom:16px;animation:bounce 1s infinite}
+        @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+        
+        .celebration-title{font-size:22px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+        .celebration-msg{font-size:14px;color:var(--text-light);margin-bottom:20px;line-height:1.5}
+        .celebration-btn{background:var(--gradient);color:white;border:none;padding:12px 32px;border-radius:var(--radius-full);font-size:14px;font-weight:600;cursor:pointer}
+        
+        /* 庆祝彩带 */
+        .confetti{position:absolute;top:0;left:0;right:0;height:100%;pointer-events:none;overflow:hidden}
+        .confetti-piece{position:absolute;width:10px;height:10px;top:-20px;animation:confettiFall 3s linear forwards}
+        @keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1}100%{transform:translateY(400px) rotate(720deg);opacity:0}}
         
         /* Modal */
         .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);z-index:1000;align-items:center;justify-content:center;padding:var(--space-md)}
         .modal-overlay.show{display:flex;animation:fadeIn 0.3s}
-        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
         .modal{background:var(--card);border-radius:var(--radius-lg);width:100%;max-width:280px;animation:slideUp 0.4s}
         @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
         .modal-header{padding:var(--space-md);border-bottom:1px solid var(--pink-50);display:flex;align-items:center;justify-content:space-between}
@@ -191,7 +212,7 @@
         </div>
 
         <div class="page active" id="page-home">
-            <!-- 鼓励语卡片 - 固定高度 -->
+            <!-- 鼓励语卡片 -->
             <div class="tips-card">
                 <div class="tip-quote" id="tipQuote">宝宝能感受到你的爱，保持心情愉快很重要</div>
                 <div class="tip-author" id="tipAuthor">—— 孕期关怀</div>
@@ -222,6 +243,22 @@
                 <div class="stat-box">
                     <div class="stat-value" id="weekTotal">0</div>
                     <div class="stat-label">本周总数</div>
+                </div>
+            </div>
+
+            <!-- 徽章 -->
+            <div class="badges" id="badges">
+                <div class="badge" id="badge-10">
+                    <span class="badge-icon">🌟</span>
+                    <span>10次达成</span>
+                </div>
+                <div class="badge" id="badge-streak">
+                    <span class="badge-icon">🔥</span>
+                    <span>连续3天</span>
+                </div>
+                <div class="badge" id="badge-50">
+                    <span class="badge-icon">💪</span>
+                    <span>50次 total</span>
                 </div>
             </div>
         </div>
@@ -296,13 +333,13 @@
                         <svg class="settings-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
                         <span class="settings-label">版本</span>
                     </div>
-                    <span style="color:var(--text-light);font-size:12px">v6.2</span>
+                    <span style="color:var(--text-light);font-size:12px">v6.3</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 底部滑出面板 - 历史详情 -->
+    <!-- 底部滑出面板 -->
     <div class="slide-panel" id="detailPanel">
         <div class="slide-panel-overlay" onclick="closeDetailPanel()"></div>
         <div class="slide-panel-content">
@@ -313,6 +350,17 @@
             <div class="slide-panel-body">
                 <div id="detailContent"></div>
             </div>
+        </div>
+    </div>
+
+    <!-- 庆祝弹窗 -->
+    <div class="celebration-overlay" id="celebrationOverlay">
+        <div class="celebration-box" id="celebrationBox">
+            <div class="confetti" id="confetti"></div>
+            <div class="celebration-icon" id="celebrationIcon">🎉</div>
+            <div class="celebration-title" id="celebrationTitle">太棒了！</div>
+            <div class="celebration-msg" id="celebrationMsg">今日胎动达到10次！</div>
+            <button class="celebration-btn" onclick="closeCelebration()">谢谢宝宝~</button>
         </div>
     </div>
 
@@ -336,7 +384,7 @@
         </a>
     </nav>
 
-    <!-- 登录/注册 Modals -->
+    <!-- Modals -->
     <div class="modal-overlay" id="loginModal">
         <div class="modal">
             <div class="modal-header"><h3>登录</h3><button class="modal-close" onclick="hideLogin()">×</button></div>
@@ -381,7 +429,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
     <script>
-        // 精选鼓励语
+        // 鼓励语
         const TIPS = [
             {text:'宝宝能感受到你的爱，保持心情愉快很重要',author:'孕期关怀'},
             {text:'每天和宝宝说说话，建立最初的亲子连接',author:'亲子时光'},
@@ -403,11 +451,13 @@
         const CFG = { SUPABASE:{ URL:'https://uwvlduprxppwdkjkvwby.supabase.co', ANON_KEY:'sb_publishable_NCyVuDM0d_Nkn50QvKdY-Q_OCQJsN5L'}};
         
         const Store = {
-            KICK: 'kickData', SETTINGS: 'appSettings',
+            KICK: 'kickData', SETTINGS: 'appSettings', BADGES: 'kickBadges',
             getData(){try{return JSON.parse(localStorage.getItem(this.KICK))||{}}catch(e){return{}}},
             save(d){localStorage.setItem(this.KICK,JSON.stringify(d))},
             getSet(){try{return JSON.parse(localStorage.getItem(this.SETTINGS))||{}}catch(e){return{}}},
             saveSet(s){localStorage.setItem(this.SETTINGS,JSON.stringify(s))},
+            getBadges(){try{return JSON.parse(localStorage.getItem(this.BADGES))||{}}catch(e){return{}}},
+            saveBadges(b){localStorage.setItem(this.BADGES,JSON.stringify(b))},
             getToday(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`},
             addKick(t){const d=this.getData();const k=this.getToday();if(!d[k])d[k]=[];d[k].push(t);this.save(d)},
             deleteKick(date, time){
@@ -420,7 +470,16 @@
             },
             getTodayCount(){return this.getData()[this.getToday()]?.length||0},
             getWeek(){const d=this.getData();const w=[];const t=new Date();for(let i=6;i>=0;i--){const dt=new Date();dt.setDate(t.getDate()-i);const k=`${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;w.push({date:k,count:d[k]?.length||0});}return w},
-            // 获取最近30天的散点数据
+            getTotal(){return Object.values(this.getData()).reduce((s,a)=>s+a.length,0)},
+            getStreak(){
+                const d=this.getData();let streak=0;const t=new Date();
+                for(let i=0;i<365;i++){
+                    const dt=new Date();dt.setDate(t.getDate()-i);
+                    const k=`${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+                    if(d[k]?.length>0)streak++;else if(i>0)break;
+                }
+                return streak;
+            },
             getScatterData(){
                 const d=this.getData();const points=[];const t=new Date();
                 for(let i=29;i>=0;i--){
@@ -597,6 +656,9 @@
                 const today = Store.getTodayCount();
                 const week = Store.getWeek();
                 const total = week.reduce((s,d)=>s+d.count,0);
+                const totalAll = Store.getTotal();
+                const streak = Store.getStreak();
+                
                 document.getElementById('todayCount').textContent = today;
                 document.getElementById('weekTotal').textContent = total;
                 const max = Math.max(...week.map(d=>d.count));
@@ -604,15 +666,17 @@
                 document.getElementById('weekAvg').textContent = Math.round(total/7)||0;
                 document.getElementById('maxDay').textContent = max;
                 
+                // 更新徽章
+                this.updateBadges(today, totalAll, streak);
+                
                 // 周柱状图
                 const chart = document.getElementById('weekChart');
                 const maxH = 60;
                 chart.innerHTML = week.map(d=>{const h = max ? Math.max(d.count/max*maxH,2) : 2;return `<div class="bar-item"><div class="bar" style="height:${h}px"></div><div class="bar-label">${d.date.slice(-2)}日</div></div>`;}).join('');
                 
-                // 绘制散点图
                 this.drawScatter();
                 
-                // 历史记录列表
+                // 历史记录
                 const history = document.getElementById('historyList');
                 const sorted = Object.entries(Store.getData()).sort((a,b)=>b[0].localeCompare(a[0]));
                 if(sorted.length===0){
@@ -629,6 +693,48 @@
                     `).join('');
                 }
             },
+            updateBadges(today, total, streak){
+                const badges = Store.getBadges();
+                const todayStr = Store.getToday();
+                
+                // 检查今日10次成就
+                if(today >= 10 && !badges['today10']){
+                    badges['today10'] = true;
+                    badges['today10Date'] = todayStr;
+                    Store.saveBadges(badges);
+                    this.showCelebration('🎉', '太棒了！', `今日胎动达到${today}次！\n宝宝今天特别活跃~`);
+                }
+                
+                // 更新徽章显示
+                const badge10 = document.getElementById('badge-10');
+                const badgeStreak = document.getElementById('badge-streak');
+                const badge50 = document.getElementById('badge-50');
+                
+                if(badges['today10']) badge10.classList.add('earned');
+                if(streak >= 3) badgeStreak.classList.add('earned');
+                if(total >= 50) badge50.classList.add('earned');
+            },
+            showCelebration(icon, title, msg){
+                document.getElementById('celebrationIcon').textContent = icon;
+                document.getElementById('celebrationTitle').textContent = title;
+                document.getElementById('celebrationMsg').textContent = msg;
+                
+                // 生成彩带
+                const confetti = document.getElementById('confetti');
+                confetti.innerHTML = '';
+                const colors = ['#FF69B4','#FFB6C1','#FFC0CB','#FFE4EC','#FFD700'];
+                for(let i=0;i<30;i++){
+                    const piece = document.createElement('div');
+                    piece.className = 'confetti-piece';
+                    piece.style.left = Math.random()*100 + '%';
+                    piece.style.background = colors[Math.floor(Math.random()*colors.length)];
+                    piece.style.animationDelay = Math.random()*2 + 's';
+                    piece.style.borderRadius = Math.random()>0.5?'50%':'0';
+                    confetti.appendChild(piece);
+                }
+                
+                document.getElementById('celebrationOverlay').classList.add('show');
+            },
             drawScatter(){
                 const canvas = document.getElementById('scatterCanvas');
                 const ctx = canvas.getContext('2d');
@@ -644,14 +750,10 @@
                 const chartW = w - padding.left - padding.right;
                 const chartH = h - padding.top - padding.bottom;
                 
-                // 清空
                 ctx.clearRect(0,0,w,h);
-                
-                // 网格线
                 ctx.strokeStyle = '#FFE4EC';
                 ctx.lineWidth = 1;
                 
-                // 垂直网格(小时)
                 for(let i=0;i<=24;i+=6){
                     const x = padding.left + (i/24)*chartW;
                     ctx.beginPath();
@@ -660,7 +762,6 @@
                     ctx.stroke();
                 }
                 
-                // 水平网格(天)
                 for(let i=0;i<=30;i+=5){
                     const y = padding.top + (i/30)*chartH;
                     ctx.beginPath();
@@ -669,7 +770,6 @@
                     ctx.stroke();
                 }
                 
-                // X轴标签
                 ctx.fillStyle = '#AAA';
                 ctx.font = '9px Noto Sans TC';
                 ctx.textAlign = 'center';
@@ -678,7 +778,6 @@
                     ctx.fillText(i+'时', x, h-5);
                 }
                 
-                // 绘制散点
                 const points = Store.getScatterData();
                 if(points.length===0){
                     ctx.fillStyle = '#AAA';
@@ -692,7 +791,6 @@
                     const x = padding.left + (p.hour/24)*chartW;
                     const y = padding.top + (p.dayIndex/30)*chartH;
                     
-                    // 渐变点
                     const gradient = ctx.createRadialGradient(x,y,0,x,y,6);
                     gradient.addColorStop(0,'#FF69B4');
                     gradient.addColorStop(1,'#FFB6C1');
@@ -703,7 +801,6 @@
                     ctx.fill();
                 });
                 
-                // 活跃时段标记
                 const hourCounts = new Array(24).fill(0);
                 points.forEach(p=>hourCounts[p.hour]++);
                 const activeHours = hourCounts.map((c,i)=>c>0?i:-1).filter(i=>i>=0);
@@ -733,6 +830,10 @@
             onLogin(){this.showToast('登录成功！');this.updateUI();this.updateStats()}
         };
         
+        function closeCelebration(){
+            document.getElementById('celebrationOverlay').classList.remove('show');
+        }
+        
         function switchPage(p){
             document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));
             document.getElementById('page-'+p).classList.add('active');
@@ -743,7 +844,6 @@
             if(p!=='home')App.updateStats();
         }
         
-        // 底部滑出面板
         function showDetail(date){
             currentDetailDate = date;
             const data = Store.getData();
@@ -756,14 +856,9 @@
                 document.getElementById('detailContent').innerHTML = '<div class="empty">暂无记录</div>';
             }else{
                 document.getElementById('detailContent').innerHTML = sortedTimes.map(time => {
-                    const dt = new Date(time);
-                    const timeStr = dt.getHours().toString().padStart(2,'0') + ':' + dt.getMinutes().toString().padStart(2,'0') + ':' + dt.getSeconds().toString().padStart(2,'0');
-                    return `
-                        <div class="detail-item">
-                            <span class="detail-time">${timeStr}</span>
-                            <button class="detail-delete" onclick="deleteRecord('${date}','${time}')">✕</button>
-                        </div>
-                    `;
+                    const dt = new const timeStr = dt.getHours(). Date(time);
+                   toString().padStart(2,'0') + ':' + dt.getMinutes().toString().padStart(2,'0') + ':' + dt.getSeconds().toString().padStart(2,'0');
+                    return `<div class="detail-item"><span class="detail-time">${timeStr}</span><button class="detail-delete" onclick="deleteRecord('${date}','${time}')">✕</button></div>`;
                 }).join('');
             }
             
@@ -777,16 +872,11 @@
         
         async function deleteRecord(date, time){
             if(!confirm('确定删除这条记录吗？')) return;
-            
             Store.deleteKick(date, time);
             await Data.delete(date, time);
-            
             App.showToast('已删除');
             App.updateStats();
-            
-            if(currentDetailDate === date){
-                showDetail(date);
-            }
+            if(currentDetailDate === date) showDetail(date);
         }
         
         function showLogin(){document.getElementById('loginModal').classList.add('show')}
