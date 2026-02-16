@@ -11,8 +11,8 @@
             --pink-50: #FFF0F5; --pink-100: #FFE4EC; --pink-200: #FFD6E0;
             --pink-300: #FFC0CB; --pink-400: #FFB6C1; --pink-500: #FF69B4;
             --gradient: linear-gradient(135deg, #FFB6C1 0%, #FF69B4 100%);
-            --bg: #FFFBFC; --card: #FFFFFF; --text: #4A4A4A; --text-light: #999;
-            --space-xs:4px; --space-sm:8px; --space-md:16px; --space-lg:24px;
+            --bg: #FFFBFC; --card: #FFFFFF; --text: #4A4A4A; --text-light: #AAA;
+            --space-xs:4px; --space-sm:8px; --space-md:16px; --space-lg:24px; --space-xl:32px;
             --radius-sm:12px; --radius-md:20px; --radius-lg:28px; --radius-full:999px;
             --shadow: 0 4px 20px rgba(255,105,180,0.1); --shadow-lg: 0 8px 32px rgba(255,105,180,0.12);
         }
@@ -21,50 +21,58 @@
         .bg{position:fixed;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at 20% 20%,rgba(255,182,193,0.2),transparent 50%),radial-gradient(circle at 80% 80%,rgba(255,182,193,0.15),transparent 50%);z-index:-1}
         .container{max-width:420px;margin:0 auto;min-height:100vh;padding:var(--space-md);padding-bottom:90px}
         
+        /* Header */
         .header{text-align:center;padding:var(--space-lg) 0 var(--space-md)}
         .logo{font-size:11px;font-weight:500;letter-spacing:4px;color:var(--pink-500);margin-bottom:var(--space-xs)}
-        .header h1{font-size:24px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .header h1{font-size:22px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
         
+        /* User Bar */
         .user-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-lg)}
         .user-info{display:flex;align-items:center;gap:var(--space-sm)}
         .avatar{width:40px;height:40px;border-radius:var(--radius-full);background:var(--gradient);display:flex;align-items:center;justify-content:center;font-size:18px}
         .user-name{font-size:14px;font-weight:600}
         .user-name span{color:var(--pink-500)}
-        .btn-login{background:var(--gradient);color:white;border:none;padding:8px 16px;border-radius:var(--radius-full);font-size:12px;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(255,105,180,0.3)}
+        .btn-login{background:var(--gradient);color:white;border:none;padding:8px 18px;border-radius:var(--radius-full);font-size:12px;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(255,105,180,0.3)}
         
-        .countdown-card{background:var(--card);border-radius:var(--radius-lg);padding:var(--space-lg);text-align:center;box-shadow:var(--shadow-lg);margin-bottom:var(--space-md)}
+        /* Countdown Card */
+        .countdown-card{background:var(--card);border-radius:var(--radius-lg);padding:var(--space-xl) var(--space-lg);text-align:center;box-shadow:var(--shadow-lg);margin-bottom:var(--space-lg)}
         .countdown-label{font-size:12px;color:var(--text-light);margin-bottom:var(--space-xs)}
-        .countdown-days{font-size:42px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1}
-        .countdown-days span{font-size:16px;font-weight:400;color:var(--text-light)}
-        .countdown-due{font-size:13px;color:var(--text-light);margin-top:var(--space-xs)}
+        .countdown-days{font-size:52px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+        .countdown-days span{font-size:18px;font-weight:400;color:var(--text-light)}
+        .countdown-due{font-size:13px;color:var(--text-light);margin-top:var(--space-sm)}
         
-        .kick-section{text-align:center;padding:var(--space-xl) 0}
-        .kick-btn{width:150px;height:150px;border-radius:var(--radius-full);border:none;background:var(--gradient);color:white;font-size:52px;cursor:pointer;box-shadow:0 12px 40px rgba(255,105,180,0.35),inset 0 -6px 16px rgba(0,0,0,0.1),inset 0 6px 16px rgba(255,255,255,0.3);transition:0.3s;position:relative;z-index:2}
+        /* Kick Section */
+        .kick-section{text-align:center;padding:var(--space-lg) 0 var(--space-xl)}
+        .kick-btn{width:140px;height:140px;border-radius:var(--radius-full);border:none;background:var(--gradient);color:white;font-size:48px;cursor:pointer;box-shadow:0 12px 40px rgba(255,105,180,0.35),inset 0 -6px 16px rgba(0,0,0,0.1),inset 0 6px 16px rgba(255,255,255,0.3);transition:0.3s;position:relative;z-index:2}
         .kick-btn:hover{transform:scale(1.05)}
         .kick-btn:active{transform:scale(0.95)}
         .kick-btn.kick{animation:kick 0.6s}
         @keyframes kick{0%{transform:scale(1)}30%{transform:scale(0.85)}60%{transform:scale(1.1)}100%{transform:scale(1)}}
         
-        .ripples{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:150px;height:150px;pointer-events:none}
+        .ripples{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:140px;height:140px;pointer-events:none}
         .ripple{position:absolute;top:50%;left:50%;width:100%;height:100%;border-radius:50%;border:2px solid var(--pink-300);transform:translate(-50%,-50%) scale(0);opacity:0}
         .ripple.active{animation:ripple 2s ease-out infinite}
         .ripple:nth-child(2){animation-delay:0.5s}.ripple:nth-child(3){animation-delay:1s}
         @keyframes ripple{0%{transform:translate(-50%,-50%) scale(0.5);opacity:0.8}100%{transform:translate(-50%,-50%) scale(2);opacity:0}}
         
-        .kick-hint{margin-top:var(--space-md);font-size:14px;color:var(--text-light)}
+        .kick-hint{margin-top:var(--space-lg);font-size:14px;color:var(--text-light)}
         .kick-hint.active{color:var(--pink-500);font-weight:500}
         
-        .stats-mini{display:flex;justify-content:center;gap:var(--space-xl);margin-top:var(--space-md)}
-        .stat-mini{text-align:center}
-        .stat-mini-value{font-size:24px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        .stat-mini-label{font-size:11px;color:var(--text-light)}
+        /* Stats Row - 横向排列 */
+        .stats-row{display:flex;justify-content:center;gap:var(--space-xl);margin-top:var(--space-xl);padding:0 var(--space-md)}
+        .stat-box{flex:1;max-width:140px;background:var(--card);border-radius:var(--radius-lg);padding:var(--space-lg) var(--space-md);box-shadow:var(--shadow);text-align:center}
+        .stat-icon{font-size:20px;margin-bottom:var(--space-xs)}
+        .stat-value{font-size:32px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .stat-label{font-size:12px;color:var(--text-light);margin-top:2px}
         
+        /* Nav */
         .nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-top:1px solid var(--pink-100);display:flex;justify-content:space-around;padding:var(--space-sm);padding-bottom:calc(var(--space-sm)+env(safe-area-inset-bottom));z-index:100}
         .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:var(--space-sm);color:var(--text-light);text-decoration:none;border-radius:var(--radius-sm);transition:0.3s}
         .nav-item:hover,.nav-item.active{color:var(--pink-500);background:var(--pink-50)}
-        .nav-icon{font-size:20px}
+        .nav-icon{font-size:22px}
         .nav-label{font-size:10px;font-weight:500}
         
+        /* Modal */
         .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);z-index:1000;align-items:center;justify-content:center;padding:var(--space-md)}
         .modal-overlay.show{display:flex;animation:fadeIn 0.3s}
         @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -96,6 +104,7 @@
         .page{display:none}
         .page.active{display:block}
         
+        /* Stats Page */
         .chart-card{background:var(--card);border-radius:var(--radius-lg);padding:var(--space-lg);box-shadow:var(--shadow-lg);margin-bottom:var(--space-md)}
         .chart-title{font-size:13px;font-weight:600;color:var(--text-light);margin-bottom:var(--space-md)}
         .bar-chart{display:flex;align-items:flex-end;justify-content:space-between;height:100px;gap:3px}
@@ -103,16 +112,18 @@
         .bar{width:100%;background:var(--gradient);border-radius:3px 3px 0 0;min-height:3px;transition:height 0.5s}
         .bar-label{font-size:9px;color:var(--text-light);margin-top:4px}
         
-        .stats-row{display:flex;gap:var(--space-md)}
+        .stats-grid{display:flex;gap:var(--space-md)}
         .stats-col{flex:1;background:var(--pink-50);border-radius:var(--radius-md);padding:var(--space-md);text-align:center}
         .stats-col-value{font-size:28px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
         .stats-col-label{font-size:11px;color:var(--text-light)}
         
-        .history-item{display:flex;align-items:center;justify-content:space-between;padding:12px;background:var(--pink-50);border-radius:var(--radius-md);margin-bottom:var(--space-sm)}
+        /* History */
+        .history-item{display:flex;align-items:center;justify-content:space-between;padding:14px;background:var(--pink-50);border-radius:var(--radius-md);margin-bottom:var(--space-sm)}
         .history-date{font-size:13px;font-weight:500}
         .history-count{font-size:18px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
         .empty{text-align:center;padding:40px 20px;color:var(--text-light)}
         
+        /* Settings */
         .settings-item{display:flex;align-items:center;justify-content:space-between;padding:14px;background:var(--pink-50);border-radius:var(--radius-md);margin-bottom:var(--space-sm);cursor:pointer}
         .settings-item:active{background:var(--pink-100)}
         .settings-left{display:flex;align-items:center;gap:var(--space-md)}
@@ -129,7 +140,7 @@
     <div class="container">
         <header class="header">
             <div class="logo">BABY LOVE</div>
-            <h1 id="pageTitle">💗 胎动记录</h1>
+            <h1 id="pageTitle">胎动记录</h1>
         </header>
 
         <div class="user-bar">
@@ -142,12 +153,14 @@
         </div>
 
         <div class="page active" id="page-home">
+            <!-- Countdown -->
             <div class="countdown-card">
                 <div class="countdown-label">距离宝宝出生还有</div>
                 <div class="countdown-days"><span id="countdownDays">--</span> <span>天</span></div>
                 <div class="countdown-due" id="countdownDue">请设置预产期</div>
             </div>
 
+            <!-- Kick Button -->
             <div class="kick-section">
                 <div style="position:relative;display:inline-block">
                     <div class="ripples">
@@ -158,26 +171,30 @@
                     <button class="kick-btn" id="kickBtn" onclick="recordKick()">👶</button>
                 </div>
                 <p class="kick-hint" id="kickHint">点击记录宝宝胎动</p>
-                
-                <div class="stats-mini">
-                    <div class="stat-mini">
-                        <div class="stat-mini-value" id="todayCount">0</div>
-                        <div class="stat-mini-label">今日</div>
-                    </div>
-                    <div class="stat-mini">
-                        <div class="stat-mini-value" id="weekTotal">0</div>
-                        <div class="stat-mini-label">本周</div>
-                    </div>
+            </div>
+
+            <!-- Stats Row - 分开排列 -->
+            <div class="stats-row">
+                <div class="stat-box">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-value" id="todayCount">0</div>
+                    <div class="stat-label">今日次数</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-icon">📆</div>
+                    <div class="stat-value" id="weekTotal">0</div>
+                    <div class="stat-label">本周总数</div>
                 </div>
             </div>
         </div>
 
+        <!-- Stats Page -->
         <div class="page" id="page-stats">
             <div class="chart-card">
                 <div class="chart-title">本周记录</div>
                 <div class="bar-chart" id="weekChart"></div>
             </div>
-            <div class="stats-row">
+            <div class="stats-grid">
                 <div class="stats-col">
                     <div class="stats-col-value" id="weekAvg">0</div>
                     <div class="stats-col-label">日均</div>
@@ -193,6 +210,7 @@
             </div>
         </div>
 
+        <!-- History Page -->
         <div class="page" id="page-history">
             <div class="chart-card">
                 <div class="chart-title">历史记录</div>
@@ -200,6 +218,7 @@
             </div>
         </div>
 
+        <!-- Settings Page -->
         <div class="page" id="page-settings">
             <div class="chart-card">
                 <div class="chart-title">设置</div>
@@ -220,12 +239,13 @@
                 <div class="chart-title">关于</div>
                 <div class="settings-item" style="cursor:default">
                     <div class="settings-left"><span class="settings-icon">💕</span><span class="settings-label">版本</span></div>
-                    <span style="color:var(--text-light)">v2.3</span>
+                    <span style="color:var(--text-light)">v2.4</span>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Bottom Nav - 统一单色图标 -->
     <nav class="nav">
         <a class="nav-item active" href="#" data-page="home" onclick="switchPage('home')">
             <span class="nav-icon">🏠</span><span class="nav-label">首页</span>
@@ -245,7 +265,7 @@
     <div class="modal-overlay" id="loginModal">
         <div class="modal">
             <div class="modal-header">
-                <h3>💕 登录</h3>
+                <h3>登录</h3>
                 <button class="modal-close" onclick="hideLogin()">×</button>
             </div>
             <div class="modal-body">
@@ -270,7 +290,7 @@
     <div class="modal-overlay" id="registerModal">
         <div class="modal">
             <div class="modal-header">
-                <h3>💗 注册</h3>
+                <h3>注册</h3>
                 <button class="modal-close" onclick="hideRegister()">×</button>
             </div>
             <div class="modal-body">
@@ -295,7 +315,7 @@
     <div class="modal-overlay" id="nicknameModal">
         <div class="modal">
             <div class="modal-header">
-                <h3>👶 宝宝小名</h3>
+                <h3>宝宝小名</h3>
                 <button class="modal-close" onclick="hideNickname()">×</button>
             </div>
             <div class="modal-body">
@@ -313,7 +333,7 @@
     <div class="modal-overlay" id="dueDateModal">
         <div class="modal">
             <div class="modal-header">
-                <h3>📅 预产期</h3>
+                <h3>预产期</h3>
                 <button class="modal-close" onclick="hideDueDate()">×</button>
             </div>
             <div class="modal-body">
@@ -353,7 +373,7 @@
                     if(e==='SIGNED_IN'&&s?.user){
                         this.user=s.user;
                         await Data.syncFromCloud();
-                        await Settings.syncFromCloud(); // 新增：同步用户设置
+                        await Settings.syncFromCloud();
                         App.onLogin();
                     }else if(e==='SIGNED_OUT'){
                         this.user=null;
@@ -367,141 +387,65 @@
                     await Settings.syncFromCloud();
                 }
             },
-            async login(e,p){
-                try{
-                    const{data,error}=await this.supabase.auth.signInWithPassword({email:e,password:p});
-                    if(error)throw error;
-                    return{ok:true};
-                }catch(err){return{ok:false,msg:err.message}}
-            },
-            async register(e,p){
-                try{
-                    const{data,error}=await this.supabase.auth.signUp({email:e,password:p});
-                    if(error)throw error;
-                    return{ok:true};
-                }catch(err){return{ok:false,msg:err.message}}
-            },
+            async login(e,p){try{const{data,error}=await this.supabase.auth.signInWithPassword({email:e,password:p});if(error)throw error;return{ok:true}}catch(err){return{ok:false,msg:err.message}}},
+            async register(e,p){try{const{data,error}=await this.supabase.auth.signUp({email:e,password:p});if(error)throw error;return{ok:true}}catch(err){return{ok:false,msg:err.message}}},
             async logout(){await this.supabase.auth.signOut()},
             isLoggedIn(){return this.user!==null},
             getId(){return this.user?.id||null}
         };
         
-        // 用户设置管理
         const Settings = {
-            supabase:null,
-            init(s){this.supabase=s},
-            
-            // 从云端同步用户设置
+            supabase:null, init(s){this.supabase=s},
             async syncFromCloud(){
                 if(!this.supabase || !Auth.getId()) return;
-                
                 try{
-                    const {data,error} = await this.supabase
-                        .from('kick_settings')
-                        .select('*')
-                        .eq('user_id', Auth.getId())
-                        .single();
-                    
+                    const {data,error} = await this.supabase.from('kick_settings').select('*').eq('user_id', Auth.getId()).single();
                     if(error) throw error;
-                    
                     if(data){
-                        // 同步到本地存储
                         const localSet = Store.getSet();
                         localSet.nickname = data.baby_name || localSet.nickname;
                         localSet.dueDate = data.due_date || localSet.dueDate;
                         localSet.vibrate = data.vibrate !== null ? data.vibrate : localSet.vibrate;
                         Store.saveSet(localSet);
-                        
                         App.loadSettings();
-                        console.log('✅ 设置同步完成:', data);
                     }
-                }catch(err){
-                    console.log('设置同步失败或无数据:', err.message);
-                }
+                }catch(err){console.log('设置同步:', err.message);}
             },
-            
-            // 保存设置到云端
             async saveToCloud(settings){
                 if(!this.supabase || !Auth.getId()) return;
-                
                 try{
-                    // 先查询是否存在
-                    const {data:existing} = await this.supabase
-                        .from('kick_settings')
-                        .select('id')
-                        .eq('user_id', Auth.getId())
-                        .single();
-                    
+                    const {data:existing} = await this.supabase.from('kick_settings').select('id').eq('user_id', Auth.getId()).single();
                     if(existing){
-                        // 更新
-                        await this.supabase
-                            .from('kick_settings')
-                            .update({
-                                baby_name: settings.nickname,
-                                due_date: settings.dueDate,
-                                vibrate: settings.vibrate,
-                                updated_at: new Date().toISOString()
-                            })
-                            .eq('user_id', Auth.getId());
+                        await this.supabase.from('kick_settings').update({baby_name:settings.nickname,due_date:settings.dueDate,vibrate:settings.vibrate,updated_at:new Date().toISOString()}).eq('user_id',Auth.getId());
                     }else{
-                        // 创建
-                        await this.supabase
-                            .from('kick_settings')
-                            .insert({
-                                user_id: Auth.getId(),
-                                baby_name: settings.nickname,
-                                due_date: settings.dueDate,
-                                vibrate: settings.vibrate
-                            });
+                        await this.supabase.from('kick_settings').insert({user_id:Auth.getId(),baby_name:settings.nickname,due_date:settings.dueDate,vibrate:settings.vibrate});
                     }
-                    console.log('✅ 设置已保存到云端');
-                }catch(err){
-                    console.error('保存设置失败:', err);
-                }
+                }catch(err){console.error('保存设置失败:', err);}
             }
         };
         
         const Data = {
-            supabase:null,
-            init(s){this.supabase=s},
-            
+            supabase:null, init(s){this.supabase=s},
             async syncFromCloud(){
                 if(!this.supabase || !Auth.getId()) return;
-                
                 try{
-                    const {data,error} = await this.supabase
-                        .from('kick_records')
-                        .select('record_date,record_time')
-                        .eq('user_id', Auth.getId())
-                        .order('record_date', {ascending:false});
-                    
+                    const {data,error} = await this.supabase.from('kick_records').select('record_date,record_time').eq('user_id', Auth.getId()).order('record_date',{ascending:false});
                     if(error) throw error;
-                    
-                    if(data && data.length > 0){
+                    if(data && data.length>0){
                         const localData = Store.getData();
-                        data.forEach(row => {
-                            const date = row.record_date;
-                            if(!localData[date]) localData[date] = [];
-                            if(!localData[date].includes(row.record_time)){
-                                localData[date].push(row.record_time);
-                            }
+                        data.forEach(row=>{
+                            const date=row.record_date;
+                            if(!localData[date])localData[date]=[];
+                            if(!localData[date].includes(row.record_time))localData[date].push(row.record_time);
                         });
                         Store.save(localData);
                         App.updateStats();
-                        console.log('✅ 云端数据同步完成:', data.length, '条');
                     }
-                }catch(err){
-                    console.error('数据同步失败:', err);
-                }
+                }catch(err){console.error('数据同步失败:', err);}
             },
-            
             async save(date,time){
                 if(!this.supabase || !Auth.getId()) return;
-                await this.supabase.from('kick_records').insert({
-                    user_id: Auth.getId(),
-                    record_date: date,
-                    record_time: time
-                });
+                await this.supabase.from('kick_records').insert({user_id:Auth.getId(),record_date:date,record_time:time});
             }
         };
         
@@ -529,63 +473,48 @@
                     document.getElementById('countdownDays').textContent = days > 0 ? days : 0;
                     document.getElementById('countdownDue').textContent = s.dueDate;
                 }
-                // 震动开关状态
                 const vibrateToggle = document.getElementById('vibrateToggle');
-                if(s.vibrate === false){
-                    vibrateToggle.classList.remove('active');
-                }else{
-                    vibrateToggle.classList.add('active');
-                }
+                if(s.vibrate === false)vibrateToggle.classList.remove('active');else vibrateToggle.classList.add('active');
             },
             updateUI(){
                 const logged = Auth.isLoggedIn();
                 document.getElementById('loginBtn').style.display = logged ? 'none' : 'block';
                 document.getElementById('logoutBtn').style.display = logged ? 'block' : 'none';
                 const hint = document.getElementById('kickHint');
-                if(logged){hint.classList.add('active');hint.textContent='点击记录宝宝胎动 💕'}else{hint.classList.remove('active');hint.textContent='登录后记录'}
+                if(logged){hint.classList.add('active');hint.textContent='点击记录宝宝胎动'}else{hint.classList.remove('active');hint.textContent='登录后记录'}
             },
             updateStats(){
                 const today = Store.getTodayCount();
                 const week = Store.getWeek();
                 const total = week.reduce((s,d)=>s+d.count,0);
-                
                 document.getElementById('todayCount').textContent = today;
                 document.getElementById('weekTotal').textContent = total;
-                
                 const max = Math.max(...week.map(d=>d.count));
                 document.getElementById('weekTotalStat').textContent = total;
                 document.getElementById('weekAvg').textContent = Math.round(total/7)||0;
                 document.getElementById('maxDay').textContent = max;
-                
                 const chart = document.getElementById('weekChart');
                 const maxH = 80;
-                chart.innerHTML = week.map(d=>{
-                    const h = max ? Math.max(d.count/max*maxH,3) : 3;
-                    return `<div class="bar-item"><div class="bar" style="height:${h}px"></div><div class="bar-label">${d.date.slice(-2)}日</div></div>`;
-                }).join('');
-                
+                chart.innerHTML = week.map(d=>{const h = max ? Math.max(d.count/max*maxH,3) : 3;return `<div class="bar-item"><div class="bar" style="height:${h}px"></div><div class="bar-label">${d.date.slice(-2)}日</div></div>`;}).join('');
                 const history = document.getElementById('historyList');
                 const sorted = Object.entries(Store.getData()).sort((a,b)=>b[0].localeCompare(a[0]));
-                if(sorted.length===0){history.innerHTML='<div class="empty">暂无记录</div>'}else{history.innerHTML=sorted.slice(0,30).map(([date,times])=>`<div class="history-item"><span class="history-date">${date}</span><span class="history-count">${times.length}次</span></div>`).join('')}
+                if(sorted.length===0){history.innerHTML='<div class="empty">暂无记录</divhistory.innerHTML=sorted.slice(0>'}else{,30).map(([date,times])=>`<div class="history-item"><span class="history-date">${date}</span><span class="history-count">${times.length}次</span></div>`).join('')}
             },
             async recordKick(){
-                if(!Auth.isLoggedIn()){this.showToast('请先登录哦 💕');showLogin();return}
+                if(!Auth.isLoggedIn()){this.showToast('请先登录');showLogin();return}
                 const time = new Date().toISOString();
                 Store.addKick(time);
                 await Data.save(Store.getToday(),time);
-                
                 const btn = document.getElementById('kickBtn');
                 btn.classList.add('kick');setTimeout(()=>btn.classList.remove('kick'),600);
                 if(navigator.vibrate && this.settings.vibrate!==false)navigator.vibrate([50,30,50]);
-                
-                const msgs = ['💕宝宝感受到！','❤️幸福互动','👶在回应你','✨甜蜜时刻'];
+                const msgs = ['宝宝感受到！','幸福互动','在回应你','甜蜜时刻'];
                 this.showHeart(msgs[Math.floor(Math.random()*msgs.length)]);
-                
                 this.updateStats();
             },
-            showHeart(msg){document.querySelectorAll('.heart-bubble').forEach(e=>e.remove());const b=document.createElement('div');b.className='heart-bubble';b.textContent=msg;document.body.appendChild(b);setTimeout(()=>b.remove(),2000)},
+            showHeart(msg){document.querySelectorAll('.heart-bubble').forEach(e=>e.remove());const b=document.createElement('div');b.className='heart-bubble';b.textContent='💕 '+msg;document.body.appendChild(b);setTimeout(()=>b.remove(),2000)},
             showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000)},
-            onLogin(){this.showToast('登录成功！同步中... 💕');this.updateUI();this.updateStats()}
+            onLogin(){this.showToast('登录成功！');this.updateUI();this.updateStats()}
         };
         
         function switchPage(p){
@@ -593,7 +522,7 @@
             document.getElementById('page-'+p).classList.add('active');
             document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active'));
             document.querySelector(`[data-page="${p}"]`).classList.add('active');
-            const titles={home:'💗 胎动记录',stats:'📊 数据统计',history:'📖 历史记录',settings:'⚙️ 设置'};
+            const titles={home:'胎动记录',stats:'数据统计',history:'历史记录',settings:'设置'};
             document.getElementById('pageTitle').textContent=titles[p];
             if(p!=='home')App.updateStats();
         }
@@ -616,30 +545,22 @@
             const p=document.getElementById('regPw').value;
             if(!e||!p||p.length<6){document.getElementById('regMsg').textContent='请检查输入';document.getElementById('regMsg').className='form-msg error';return}
             const r=await Auth.register(e,p);
-            if(r.ok){App.showToast('注册成功！请登录 💕');hideRegister();setTimeout(showLogin,500)}else{document.getElementById('regMsg').textContent=r.msg;document.getElementById('regMsg').className='form-msg error'}
+            if(r.ok){App.showToast('注册成功！请登录');hideRegister();setTimeout(showLogin,500)}else{document.getElementById('regMsg').textContent=r.msg;document.getElementById('regMsg').className='form-msg error'}
         }
         
         async function handleLogout(){await Auth.logout();App.showToast('已退出')}
-        
         function recordKick(){App.recordKick()}
         
-        function showNickname(){
-            document.getElementById('nicknameInput').value = Store.getSet().nickname || '';
-            document.getElementById('nicknameModal').classList.add('show');
-        }
+        function showNickname(){document.getElementById('nicknameInput').value=Store.getSet().nickname||'';document.getElementById('nicknameModal').classList.add('show')}
         function hideNickname(){document.getElementById('nicknameModal').classList.remove('show')}
-        function showDueDate(){
-            document.getElementById('dueDateInput').value = Store.getSet().dueDate || '';
-            document.getElementById('dueDateModal').classList.add('show');
-        }
+        function showDueDate(){document.getElementById('dueDateInput').value=Store.getSet().dueDate||'';document.getElementById('dueDateModal').classList.add('show')}
         function hideDueDate(){document.getElementById('dueDateModal').classList.remove('show')}
         
         async function saveNickname(){
             const v=document.getElementById('nicknameInput').value.trim();
             if(!v)return;
             const s=Store.getSet();s.nickname=v;Store.saveSet(s);
-            App.loadSettings();hideNickname();
-            App.showToast('小名已保存 💕');
+            App.loadSettings();hideNickname();App.showToast('小名已保存');
             await Settings.saveToCloud(s);
         }
         
@@ -647,8 +568,7 @@
             const v=document.getElementById('dueDateInput').value;
             if(!v)return;
             const s=Store.getSet();s.dueDate=v;Store.saveSet(s);
-            App.loadSettings();hideDueDate();
-            App.showToast('预产期已设置 💕');
+            App.loadSettings();hideDueDate();App.showToast('预产期已设置');
             await Settings.saveToCloud(s);
         }
         
