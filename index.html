@@ -25,7 +25,7 @@
         .logo{font-size:10px;font-weight:500;letter-spacing:4px;color:var(--pink-500);margin-bottom:2px}
         .header h1{font-size:18px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
         
-        /* 用户信息条 - 精简版 */
+        /* 用户信息条 */
         .user-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-md);background:var(--card);padding:14px 16px;border-radius:var(--radius-lg);box-shadow:var(--shadow-lg)}
         .user-info{flex:1}
         .user-name{font-size:16px;font-weight:600;margin-bottom:4px}
@@ -34,13 +34,13 @@
         .user-name .sub .days{color:var(--pink-400);font-weight:600}
         .btn-login{background:var(--gradient);color:white;border:none;padding:8px 16px;border-radius:var(--radius-full);font-size:12px;font-weight:600;cursor:pointer}
         
-        /* 鼓励语卡片 */
-        .tips-card{background:var(--card);border-radius:var(--radius-lg);padding:var(--space-lg);box-shadow:var(--shadow-lg);margin-bottom:var(--space-md);position:relative;overflow:hidden}
+        /* 鼓励语卡片 - 固定高度 */
+        .tips-card{background:var(--card);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-lg);margin-bottom:var(--space-md);position:relative;overflow:hidden;min-height:140px;display:flex;flex-direction:column;justify-content:center}
         .tips-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--gradient)}
-        .tip-quote{font-size:22px;margin-bottom:var(--space-sm);line-height:1.5}
-        .tip-quote::before{content:'"';font-size:28px;color:var(--pink-300);font-family:Georgia,serif}
-        .tip-quote::after{content:'"';font-size:28px;color:var(--pink-300);font-family:Georgia,serif}
-        .tip-author{font-size:12px;color:var(--text-light);text-align:right}
+        .tip-quote{font-size:18px;line-height:1.6;min-height:60px}
+        .tip-quote::before{content:'"';font-size:24px;color:var(--pink-300);font-family:Georgia,serif}
+        .tip-quote::after{content:'"';font-size:24px;color:var(--pink-300);font-family:Georgia,serif}
+        .tip-author{font-size:12px;color:var(--text-light);text-align:right;margin-top:var(--space-sm)}
         .tip-nav{display:flex;justify-content:center;gap:6px;margin-top:var(--space-md)}
         .tip-dot{width:8px;height:8px;border-radius:50%;background:var(--pink-200);cursor:pointer;transition:0.3s}
         .tip-dot.active{background:var(--pink-500);width:20px;border-radius:4px}
@@ -75,6 +75,35 @@
         .nav-item:hover,.nav-item.active{color:var(--pink-500);background:var(--pink-50)}
         .nav-icon{width:20px;height:20px}
         .nav-label{font-size:9px;font-weight:500}
+        
+        /* 底部滑出面板 */
+        .slide-panel{position:fixed;top:0;left:0;right:0;bottom:0;z-index:2000;visibility:hidden;opacity:0;transition:0.3s}
+        .slide-panel.show{visibility:visible;opacity:1}
+        .slide-panel-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.4)}
+        .slide-panel-content{position:absolute;bottom:0;left:0;right:0;background:var(--card);border-radius:28px 28px 0 0;max-height:80vh;transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.32,0.72,0,1)}
+        .slide-panel.show .slide-panel-content{transform:translateY(0)}
+        .slide-panel-header{padding:20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--pink-50)}
+        .slide-panel-header h3{font-size:16px;font-weight:600}
+        .slide-panel-close{width:28px;height:28px;border:none;background:var(--pink-50);border-radius:50%;font-size:14px;color:var(--text-light);cursor:pointer}
+        .slide-panel-body{padding:16px;max-height:calc(80vh - 70px);overflow-y:auto;padding-bottom:calc(16px + env(safe-area-inset-bottom))}
+        
+        /* 历史记录项 */
+        .history-item{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--pink-50);border-radius:var(--radius-sm);margin-bottom:8px;cursor:pointer;transition:0.2s}
+        .history-item:active{background:var(--pink-100)}
+        .history-date{font-size:13px;font-weight:500}
+        .history-count{font-size:14px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .history-arrow{color:var(--pink-300);font-size:12px}
+        
+        /* 详细记录 */
+        .detail-header{padding:16px;background:var(--pink-50);border-radius:var(--radius-md);margin-bottom:12px;text-align:center}
+        .detail-date{font-size:18px;font-weight:600;color:var(--pink-500)}
+        .detail-count{font-size:13px;color:var(--text-light);margin-top:4px}
+        
+        .detail-item{display:flex;align-items:center;justify-content:space-between;padding:12px;background:white;border:1px solid var(--pink-100);border-radius:var(--radius-sm);margin-bottom:8px}
+        .detail-time{font-size:15px;font-weight:500}
+        .detail-delete{width:28px;height:28px;border:none;background:#FFF0F0;border-radius:50%;color:#FF6B6B;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+        
+        .empty{text-align:center;padding:40px 20px;color:var(--text-light);font-size:13px}
         
         /* Modal */
         .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);z-index:1000;align-items:center;justify-content:center;padding:var(--space-md)}
@@ -120,11 +149,6 @@
         .stats-col-value{font-size:22px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
         .stats-col-label{font-size:10px;color:var(--text-light)}
         
-        .history-item{display:flex;align-items:center;justify-content:space-between;padding:10px;background:var(--pink-50);border-radius:var(--radius-sm);margin-bottom:6px}
-        .history-date{font-size:12px;font-weight:500}
-        .history-count{font-size:14px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        .empty{text-align:center;padding:30px 20px;color:var(--text-light);font-size:13px}
-        
         .settings-item{display:flex;align-items:center;justify-content:space-between;padding:12px;background:var(--pink-50);border-radius:var(--radius-sm);margin-bottom:6px;cursor:pointer}
         .settings-item:active{background:var(--pink-100)}
         .settings-left{display:flex;align-items:center;gap:var(--space-sm)}
@@ -159,7 +183,7 @@
         </div>
 
         <div class="page active" id="page-home">
-            <!-- 鼓励语卡片 -->
+            <!-- 鼓励语卡片 - 固定高度 -->
             <div class="tips-card">
                 <div class="tip-quote" id="tipQuote">宝宝能感受到你的爱，保持心情愉快很重要</div>
                 <div class="tip-author" id="tipAuthor">—— 孕期关怀</div>
@@ -257,8 +281,22 @@
                         <svg class="settings-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
                         <span class="settings-label">版本</span>
                     </div>
-                    <span style="color:var(--text-light);font-size:12px">v6.0</span>
+                    <span style="color:var(--text-light);font-size:12px">v6.1</span>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部滑出面板 - 历史详情 -->
+    <div class="slide-panel" id="detailPanel">
+        <div class="slide-panel-overlay" onclick="closeDetailPanel()"></div>
+        <div class="slide-panel-content">
+            <div class="slide-panel-header">
+                <h3 id="detailTitle">2024-01-01</h3>
+                <button class="slide-panel-close" onclick="closeDetailPanel()">×</button>
+            </div>
+            <div class="slide-panel-body">
+                <div id="detailContent"></div>
             </div>
         </div>
     </div>
@@ -283,7 +321,7 @@
         </a>
     </nav>
 
-    <!-- Modals -->
+    <!-- 登录/注册 Modals -->
     <div class="modal-overlay" id="loginModal">
         <div class="modal">
             <div class="modal-header"><h3>登录</h3><button class="modal-close" onclick="hideLogin()">×</button></div>
@@ -357,6 +395,14 @@
             saveSet(s){localStorage.setItem(this.SETTINGS,JSON.stringify(s))},
             getToday(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`},
             addKick(t){const d=this.getData();const k=this.getToday();if(!d[k])d[k]=[];d[k].push(t);this.save(d)},
+            deleteKick(date, time){
+                const d=this.getData();
+                if(d[date]){
+                    d[date] = d[date].filter(t => t !== time);
+                    if(d[date].length === 0) delete d[date];
+                    this.save(d);
+                }
+            },
             getTodayCount(){return this.getData()[this.getToday()]?.length||0},
             getWeek(){const d=this.getData();const w=[];const t=new Date();for(let i=6;i>=0;i--){const dt=new Date();dt.setDate(t.getDate()-i);const k=`${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;w.push({date:k,count:d[k]?.length||0});}return w}
         };
@@ -442,10 +488,15 @@
             async save(date,time){
                 if(!this.supabase || !Auth.getId()) return;
                 await this.supabase.from('kick_records').insert({user_id:Auth.getId(),record_date:date,record_time:time});
+            },
+            async delete(date,time){
+                if(!this.supabase || !Auth.getId()) return;
+                await this.supabase.from('kick_records').delete().eq('user_id',Auth.getId()).eq('record_date',date).eq('record_time',time);
             }
         };
         
         let currentTip = 0;
+        let currentDetailDate = null;
         
         const App = {
             async init(){
@@ -460,7 +511,6 @@
                 document.getElementById('ripple1').classList.add('active');
             },
             initTips(){
-                // 初始化导航点
                 const nav = document.getElementById('tipNav');
                 TIPS.forEach((_,i) => {
                     const dot = document.createElement('div');
@@ -468,7 +518,6 @@
                     dot.onclick = () => this.showTip(i);
                     nav.appendChild(dot);
                 });
-                // 自动切换
                 setInterval(() => {
                     currentTip = (currentTip + 1) % TIPS.length;
                     this.showTip(currentTip);
@@ -527,9 +576,23 @@
                 const chart = document.getElementById('weekChart');
                 const maxH = 60;
                 chart.innerHTML = week.map(d=>{const h = max ? Math.max(d.count/max*maxH,2) : 2;return `<div class="bar-item"><div class="bar" style="height:${h}px"></div><div class="bar-label">${d.date.slice(-2)}日</div></div>`;}).join('');
+                
+                // 历史记录列表
                 const history = document.getElementById('historyList');
                 const sorted = Object.entries(Store.getData()).sort((a,b)=>b[0].localeCompare(a[0]));
-                if(sorted.length===0){history.innerHTML='<div class="empty">暂无记录</div>'}else{history.innerHTML=sorted.slice(0,30).map(([date,times])=>`<div class="history-item"><span class="history-date">${date}</span><span class="history-count">${times.length}次</span></div>`).join('')}
+                if(sorted.length===0){
+                    history.innerHTML='<div class="empty">暂无记录</div>';
+                }else{
+                    history.innerHTML=sorted.map(([date,times])=>`
+                        <div class="history-item" onclick="showDetail('${date}')">
+                            <span class="history-date">${date}</span>
+                            <span style="display:flex;align-items:center;gap:8px">
+                                <span class="history-count">${times.length}次</span>
+                                <span class="history-arrow">›</span>
+                            </span>
+                        </div>
+                    `).join('');
+                }
             },
             async recordKick(){
                 if(!Auth.isLoggedIn()){this.showToast('请先登录');showLogin();return}
@@ -556,6 +619,53 @@
             const titles={home:'胎动记录',stats:'数据统计',history:'历史记录',settings:'设置'};
             document.getElementById('pageTitle').textContent=titles[p];
             if(p!=='home')App.updateStats();
+        }
+        
+        // 底部滑出面板
+        function showDetail(date){
+            currentDetailDate = date;
+            const data = Store.getData();
+            const times = data[date] || [];
+            const sortedTimes = [...times].sort().reverse();
+            
+            document.getElementById('detailTitle').textContent = date + ' · ' + times.length + '次记录';
+            
+            if(times.length === 0){
+                document.getElementById('detailContent').innerHTML = '<div class="empty">暂无记录</div>';
+            }else{
+                document.getElementById('detailContent').innerHTML = sortedTimes.map(time => {
+                    const dt = new Date(time);
+                    const timeStr = dt.getHours().toString().padStart(2,'0') + ':' + dt.getMinutes().toString().padStart(2,'0') + ':' + dt.getSeconds().toString().padStart(2,'0');
+                    return `
+                        <div class="detail-item">
+                            <span class="detail-time">${timeStr}</span>
+                            <button class="detail-delete" onclick="deleteRecord('${date}','${time}')">✕</button>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            document.getElementById('detailPanel').classList.add('show');
+        }
+        
+        function closeDetailPanel(){
+            document.getElementById('detailPanel').classList.remove('show');
+            currentDetailDate = null;
+        }
+        
+        async function deleteRecord(date, time){
+            if(!confirm('确定删除这条记录吗？')) return;
+            
+            Store.deleteKick(date, time);
+            await Data.delete(date, time);
+            
+            App.showToast('已删除');
+            App.updateStats();
+            
+            // 刷新面板
+            if(currentDetailDate === date){
+                showDetail(date);
+            }
         }
         
         function showLogin(){document.getElementById('loginModal').classList.add('show')}
