@@ -2,795 +2,300 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Baby Love - 胎动记录</title>
-    <meta name="description" content="记录与宝宝每一次的幸福互动">
     <meta name="theme-color" content="#FFE4EC">
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
     <style>
-        /* ==================== 粉色甜美设计系统 ==================== */
         :root {
-            /* 粉色主题 */
-            --pink-50: #FFF0F5;
-            --pink-100: #FFE4EC;
-            --pink-200: #FFD6E0;
-            --pink-300: #FFC0CB;
-            --pink-400: #FFB6C1;
-            --pink-500: #FF69B4;
-            --pink-600: #DB7093;
-            
-            /* 温暖渐变 */
-            --gradient-sweet: linear-gradient(135deg, #FFB6C1 0%, #FF69B4 50%, #FFB6C1 100%);
-            --gradient-warm: linear-gradient(135deg, #FFE4EC 0%, #FFD6E0 50%, #FFC0CB 100%);
-            --gradient-heart: radial-gradient(circle at 30% 30%, #FFB6C1, #FF69B4);
-            --gradient-glow: radial-gradient(circle at 50% 0%, rgba(255, 182, 193, 0.3), transparent 50%);
-            
-            /* 背景 */
-            --bg-primary: #FFF5F8;
-            --bg-card: #FFFFFF;
-            --bg-soft: #FFF0F5;
-            
-            /* 文字 */
-            --text-primary: #4A4A4A;
-            --text-secondary: #7A7A7A;
-            --text-light: #A0A0A0;
-            
-            /* 强调色 */
-            --accent: #FF69B4;
-            --accent-light: #FFB6C1;
-            --accent-soft: #FFE4EC;
-            
-            /* 功能色 */
-            --success: #81C784;
-            --warning: #FFD54F;
-            --danger: #EF5350;
-            
-            /* 间距 */
-            --space-xs: 4px;
-            --space-sm: 8px;
-            --space-md: 16px;
-            --space-lg: 24px;
-            --space-xl: 32px;
-            --space-2xl: 48px;
-            
-            /* 圆角 */
-            --radius-sm: 12px;
-            --radius-md: 20px;
-            --radius-lg: 28px;
-            --radius-xl: 40px;
-            --radius-full: 9999px;
-            
-            /* 阴影 */
-            --shadow-soft: 0 4px 20px rgba(255, 105, 180, 0.1);
-            --shadow-card: 0 8px 32px rgba(255, 105, 180, 0.12);
-            --shadow-button: 0 8px 24px rgba(255, 105, 180, 0.25);
-            
-            /* 过渡 */
-            --ease: cubic-bezier(0.4, 0, 0.2, 1);
-            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        /* ==================== 基础 ==================== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        html, body {
-            font-family: 'Noto Sans TC', -apple-system, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            line-height: 1.6;
-        }
-
-        /* ==================== 背景 ==================== */
-        .bg-pattern {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 10% 20%, rgba(255, 182, 193, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(255, 182, 193, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 50% 50%, rgba(255, 105, 180, 0.05) 0%, transparent 60%);
-            z-index: -1;
-        }
-
-        .floating-shapes {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: -1;
-            overflow: hidden;
-            pointer-events: none;
-        }
-
-        .shape {
-            position: absolute;
-            border-radius: 50%;
-            opacity: 0.4;
-            animation: float 20s ease-in-out infinite;
-        }
-
-        .shape-1 {
-            width: 120px;
-            height: 120px;
-            background: linear-gradient(135deg, rgba(255, 182, 193, 0.3), rgba(255, 105, 180, 0.1));
-            top: 10%;
-            left: -30px;
-            animation-delay: 0s;
-        }
-
-        .shape-2 {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, rgba(255, 192, 203, 0.3), rgba(255, 105, 180, 0.1));
-            top: 60%;
-            right: -20px;
-            animation-delay: -5s;
-        }
-
-        .shape-3 {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, rgba(255, 182, 193, 0.2), rgba(255, 105, 180, 0.1));
-            bottom: 20%;
-            left: 10%;
-            animation-delay: -10s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            25% { transform: translateY(-20px) rotate(5deg); }
-            50% { transform: translateY(0) rotate(0deg); }
-            75% { transform: translateY(20px) rotate(-5deg); }
-        }
-
-        /* ==================== 容器 ==================== */
-        .container {
-            max-width: 420px;
-            margin: 0 auto;
-            min-height: 100vh;
-            padding: var(--space-md);
-            padding-bottom: 100px;
-        }
-
-        /* ==================== 头部 ==================== */
-        .header {
-            text-align: center;
-            padding: var(--space-xl) 0 var(--space-lg);
-        }
-
-        .logo {
-            font-size: 13px;
-            font-weight: 500;
-            letter-spacing: 3px;
-            color: var(--accent);
-            margin-bottom: var(--space-sm);
-        }
-
-        .header h1 {
-            font-size: 32px;
-            font-weight: 700;
-            background: var(--gradient-sweet);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: var(--space-xs);
-        }
-
-        .header .subtitle {
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-
-        /* ==================== 用户卡片 ==================== */
-        .user-card {
-            background: var(--bg-card);
-            border-radius: var(--radius-lg);
-            padding: var(--space-md);
-            display: flex;
-            align-items: center;
-            gap: var(--space-md);
-            box-shadow: var(--shadow-soft);
-            margin-bottom: var(--space-lg);
-        }
-
-        .user-avatar {
-            width: 52px;
-            height: 52px;
-            border-radius: var(--radius-full);
-            background: var(--gradient-sweet);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
-            flex-shrink: 0;
-        }
-
-        .user-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .user-name {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .user-status {
-            font-size: 13px;
-            color: var(--text-light);
-        }
-
-        .btn {
-            padding: var(--space-sm) var(--space-md);
-            border: none;
-            border-radius: var(--radius-full);
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s var(--ease);
-        }
-
-        .btn-primary {
-            background: var(--gradient-sweet);
-            color: white;
-            box-shadow: var(--shadow-button);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(255, 105, 180, 0.35);
-        }
-
-        .btn-secondary {
-            background: var(--bg-soft);
-            color: var(--text-secondary);
-        }
-
-        .btn-secondary:hover {
-            background: var(--accent-soft);
-            color: var(--accent);
-        }
-
-        .btn:active {
-            transform: scale(0.95);
-        }
-
-        /* ==================== 统计卡片 ==================== */
-        .stats-card {
-            background: var(--bg-card);
-            border-radius: var(--radius-lg);
-            padding: var(--space-lg);
-            box-shadow: var(--shadow-card);
-            margin-bottom: var(--space-lg);
-        }
-
-        .stats-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-bottom: var(--space-md);
-            display: flex;
-            align-items: center;
-            gap: var(--space-sm);
-        }
-
-        .stats-title::before {
-            content: '💕';
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: var(--space-md);
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 36px;
-            font-weight: 700;
-            background: var(--gradient-sweet);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.2;
-        }
-
-        .stat-label {
-            font-size: 12px;
-            color: var(--text-light);
-            margin-top: var(--space-xs);
-        }
-
-        .stat-change {
-            font-size: 11px;
-            margin-top: 2px;
-        }
-
-        .stat-change.up { color: var(--success); }
-        .stat-change.down { color: var(--danger); }
-
-        /* ==================== 胎动按钮 ==================== */
-        .kick-area {
-            text-align: center;
-            padding: var(--space-2xl) 0;
-            position: relative;
-        }
-
-        .kick-button-wrap {
-            position: relative;
-            display: inline-block;
-        }
-
-        .kick-button {
-            width: 180px;
-            height: 180px;
-            border-radius: var(--radius-full);
-            border: none;
-            background: var(--gradient-heart);
-            color: white;
-            font-size: 64px;
-            cursor: pointer;
-            position: relative;
-            z-index: 2;
-            box-shadow: 
-                0 12px 40px rgba(255, 105, 180, 0.35),
-                inset 0 -8px 20px rgba(0, 0, 0, 0.1),
-                inset 0 8px 20px rgba(255, 255, 255, 0.3);
-            transition: all 0.3s var(--ease-spring);
-            overflow: hidden;
-        }
-
-        .kick-button::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 60%);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .kick-button:hover::before {
-            opacity: 1;
-        }
-
-        .kick-button:hover {
-            transform: scale(1.05);
-            box-shadow: 
-                0 20px 60px rgba(255, 105, 180, 0.4),
-                inset 0 -8px 20px rgba(0, 0, 0, 0.1),
-                inset 0 8px 20px rgba(255, 255, 255, 0.3);
-        }
-
-        .kick-button:active {
-            transform: scale(0.95);
-        }
-
-        .kick-button.kick {
-            animation: kickAnim 0.6s var(--ease-spring);
-        }
-
-        @keyframes kickAnim {
-            0% { transform: scale(1); }
-            30% { transform: scale(0.85); }
-            60% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        /* 涟漪 */
-        .ripples {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 180px;
-            height: 180px;
-            pointer-events: none;
-        }
-
-        .ripple {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            border: 2px solid var(--accent-light);
-            transform: translate(-50%, -50%) scale(0);
-            opacity: 0;
-        }
-
-        .ripple.active {
-            animation: rippleAnim 2s var(--ease) infinite;
-        }
-
-        .ripple:nth-child(2) { animation-delay: 0.5s; }
-        .ripple:nth-child(3) { animation-delay: 1s; }
-
-        @keyframes rippleAnim {
-            0% {
-                transform: translate(-50%, -50%) scale(0.5);
-                opacity: 0.8;
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(2);
-                opacity: 0;
-            }
-        }
-
-        .kick-hint {
-            margin-top: var(--space-lg);
-            font-size: 14px;
-            color: var(--text-secondary);
-            transition: all 0.3s;
-        }
-
-        .kick-hint.active {
-            color: var(--accent);
-            font-weight: 500;
-        }
-
-        /* ==================== 底部导航 ==================== */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-top: 1px solid rgba(255, 182, 193, 0.2);
-            display: flex;
-            justify-content: space-around;
-            padding: var(--space-sm);
-            padding-bottom: calc(var(--space-sm) + env(safe-area-inset-bottom));
-            z-index: 100;
-        }
-
-        .nav-item {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-            padding: var(--space-sm);
-            color: var(--text-light);
-            text-decoration: none;
-            border-radius: var(--radius-md);
-            transition: all 0.3s;
-        }
-
-        .nav-item:hover, .nav-item.active {
-            color: var(--accent);
-            background: var(--accent-soft);
-        }
-
-        .nav-icon {
-            font-size: 22px;
-        }
-
-        .nav-label {
-            font-size: 11px;
-            font-weight: 500;
-        }
-
-        /* ==================== 弹窗 ==================== */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(8px);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-            padding: var(--space-md);
-        }
-
-        .modal-overlay.show {
-            display: flex;
-            animation: fadeIn 0.3s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .modal {
-            background: var(--bg-card);
-            border-radius: var(--radius-xl);
-            width: 100%;
-            max-width: 340px;
-            overflow: hidden;
-            animation: slideUp 0.4s var(--ease-spring);
-        }
-
-        @keyframes slideUp {
-            from { 
-                opacity: 0;
-                transform: translateY(30px) scale(0.95);
-            }
-            to { 
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .modal-header {
-            padding: var(--space-lg);
-            border-bottom: 1px solid var(--bg-soft);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .modal-header h3 {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .modal-close {
-            width: 32px;
-            height: 32px;
-            border: none;
-            background: var(--bg-soft);
-            border-radius: var(--radius-full);
-            font-size: 18px;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .modal-close:hover {
-            background: var(--accent-soft);
-            color: var(--accent);
-        }
-
-        .modal-body {
-            padding: var(--space-lg);
-        }
-
-        .modal-footer {
-            padding: var(--space-md) var(--space-lg);
-            padding-top: 0;
-            display: flex;
-            gap: var(--space-sm);
-        }
-
-        .modal-footer .btn {
-            flex: 1;
-            padding: var(--space-md);
-        }
-
-        /* 表单 */
-        .form-group {
-            margin-bottom: var(--space-md);
-        }
-
-        .form-label {
-            display: block;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            margin-bottom: var(--space-sm);
-        }
-
-        .form-input {
-            width: 100%;
-            padding: var(--space-md);
-            background: var(--bg-soft);
-            border: 2px solid transparent;
-            border-radius: var(--radius-md);
-            font-size: 15px;
-            color: var(--text-primary);
-            transition: all 0.3s;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: var(--accent-light);
-            background: white;
-        }
-
-        .form-input::placeholder {
-            color: var(--text-light);
-        }
-
-        .form-msg {
-            font-size: 12px;
-            margin-top: var(--space-sm);
-        }
-
-        .form-msg.error { color: var(--danger); }
-        .form-msg.success { color: var(--success); }
-
-        /* ==================== Toast ==================== */
-        .toast {
-            position: fixed;
-            bottom: 90px;
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            background: var(--bg-card);
-            color: var(--text-primary);
-            padding: var(--space-md) var(--space-lg);
-            border-radius: var(--radius-full);
-            font-size: 14px;
-            font-weight: 500;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s var(--ease);
-            z-index: 2000;
-            box-shadow: var(--shadow-card);
-            border: 1px solid var(--accent-soft);
-        }
-
-        .toast.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .toast.success {
-            background: linear-gradient(135deg, white, var(--accent-soft));
-        }
-
-        .toast.warning {
-            background: linear-gradient(135deg, white, #FFF8E1);
-        }
-
-        /* ==================== 幸福气泡 ==================== */
-        .heart-bubble {
-            position: fixed;
-            top: 45%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--gradient-sweet);
-            color: white;
-            padding: 16px 28px;
-            border-radius: var(--radius-xl);
-            font-size: 16px;
-            font-weight: 600;
-            z-index: 9999;
-            animation: heartFloat 2s var(--ease) forwards;
-            box-shadow: 0 12px 40px rgba(255, 105, 180, 0.4);
-            white-space: nowrap;
-        }
-
-        @keyframes heartFloat {
-            0% {
-                opacity: 0;
-                transform: translate(-50%, -30%) scale(0.5);
-            }
-            20% {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1.1);
-            }
-            40% {
-                transform: translate(-50%, -50%) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translate(-50%, -80%) scale(0.8);
-            }
-        }
-
-        /* ==================== 响应式 ==================== */
-        @media (max-width: 380px) {
-            .kick-button {
-                width: 150px;
-                height: 150px;
-                font-size: 52px;
-            }
-            .ripples {
-                width: 150px;
-                height: 150px;
-            }
-            .stat-value {
-                font-size: 28px;
-            }
-        }
+            --pink-50: #FFF0F5; --pink-100: #FFE4EC; --pink-200: #FFD6E0;
+            --pink-300: #FFC0CB; --pink-400: #FFB6C1; --pink-500: #FF69B4; --pink-600: #DB7093;
+            --gradient: linear-gradient(135deg, #FFB6C1 0%, #FF69B4 100%);
+            --gradient-warm: linear-gradient(135deg, #FFE4EC 0%, #FFD6E0 100%);
+            --bg: #FFFBFC; --card: #FFFFFF; --text: #4A4A4A; --text-light: #888;
+            --success: #81C784; --warning: #FFD54F; --danger: #EF5350;
+            --space-xs:4px; --space-sm:8px; --space-md:16px; --space-lg:24px; --space-xl:32px;
+            --radius-sm:12px; --radius-md:20px; --radius-lg:28px; --radius-full:999px;
+            --shadow: 0 4px 20px rgba(255,105,180,0.1); --shadow-card: 0 8px 32px rgba(255,105,180,0.12);
+        }
+        * {margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+        html,body {font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+        
+        /* Background */
+        .bg{position:fixed;top:0;left:0;right:0;bottom:0;background:
+            radial-gradient(circle at 10% 20%,rgba(255,182,193,0.15),transparent 40%),
+            radial-gradient(circle at 90% 80%,rgba(255,182,193,0.1),transparent 40%);z-index:-1}
+        
+        /* Container */
+        .container{max-width:420px;margin:0 auto;min-height:100vh;padding:var(--space-md);padding-bottom:90px}
+        
+        /* Header */
+        .header{text-align:center;padding:var(--space-lg) 0}
+        .logo{font-size:12px;font-weight:500;letter-spacing:3px;color:var(--pink-500);margin-bottom:var(--space-sm)}
+        .header h1{font-size:28px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:var(--space-xs)}
+        .header .subtitle{font-size:13px;color:var(--text-light)}
+        
+        /* Card */
+        .card{background:var(--card);border-radius:var(--radius-lg);padding:var(--space-lg);box-shadow:var(--shadow-card);margin-bottom:var(--space-md)}
+        
+        /* User */
+        .user-card{display:flex;align-items:center;gap:var(--space-md);margin-bottom:var(--space-lg)}
+        .avatar{width:48px;height:48px;border-radius:var(--radius-full);background:var(--gradient);display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 4px 12px rgba(255,105,180,0.3)}
+        .user-info{flex:1}
+        .user-name{font-size:15px;font-weight:600}
+        .user-status{font-size:12px;color:var(--text-light)}
+        
+        /* Button */
+        .btn{padding:var(--space-sm) var(--space-md);border:none;border-radius:var(--radius-full);font-size:13px;font-weight:600;cursor:pointer;transition:0.3s}
+        .btn-primary{background:var(--gradient);color:white;box-shadow:0 4px 16px rgba(255,105,180,0.3)}
+        .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,105,180,0.4)}
+        .btn-secondary{background:var(--pink-50);color:var(--text-light)}
+        .btn:active{transform:scale(0.95)}
+        
+        /* Stats */
+        .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-md)}
+        .stat-item{text-align:center}
+        .stat-value{font-size:32px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .stat-label{font-size:11px;color:var(--text-light);margin-top:2px}
+        
+        /* Kick Button */
+        .kick-area{text-align:center;padding:var(--space-xl) 0;position:relative}
+        .kick-btn{width:160px;height:160px;border-radius:var(--radius-full);border:none;background:var(--gradient);color:white;font-size:56px;cursor:pointer;box-shadow:0 12px 40px rgba(255,105,180,0.35),inset 0 -8px 20px rgba(0,0,0,0.1),inset 0 8px 20px rgba(255,255,255,0.3);transition:0.3s;position:relative;z-index:2}
+        .kick-btn:hover{transform:scale(1.05)}
+        .kick-btn:active{transform:scale(0.95)}
+        .kick-btn.kick{animation:kick 0.6s}
+        @keyframes kick{0%{transform:scale(1)}30%{transform:scale(0.85)}60%{transform:scale(1.1)}100%{transform:scale(1)}}
+        .ripples{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:160px;height:160px;pointer-events:none}
+        .ripple{position:absolute;top:50%;left:50%;width:100%;height:100%;border-radius:50%;border:2px solid var(--pink-300);transform:translate(-50%,-50%) scale(0);opacity:0}
+        .ripple.active{animation:ripple 2s ease-out infinite}
+        .ripple:nth-child(2){animation-delay:0.5s}.ripple:nth-child(3){animation-delay:1s}
+        @keyframes ripple{0%{transform:translate(-50%,-50%) scale(0.5);opacity:0.8}100%{transform:translate(-50%,-50%) scale(2);opacity:0}}
+        .kick-hint{margin-top:var(--space-md);font-size:14px;color:var(--text-light)}
+        .kick-hint.active{color:var(--pink-500);font-weight:500}
+        
+        /* Nav */
+        .nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-top:1px solid var(--pink-100);display:flex;justify-content:space-around;padding:var(--space-sm);padding-bottom:calc(var(--space-sm)+env(safe-area-inset-bottom));z-index:100}
+        .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:var(--space-sm);color:var(--text-light);text-decoration:none;border-radius:var(--radius-sm);transition:0.3s}
+        .nav-item:hover,.nav-item.active{color:var(--pink-500);background:var(--pink-50)}
+        .nav-icon{font-size:20px}
+        .nav-label{font-size:10px;font-weight:500}
+        
+        /* Modal */
+        .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);z-index:1000;align-items:center;justify-content:center;padding:var(--space-md)}
+        .modal-overlay.show{display:flex;animation:fadeIn 0.3s}
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+        .modal{background:var(--card);border-radius:var(--radius-lg);width:100%;max-width:320px;animation:slideUp 0.4s}
+        @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        .modal-header{padding:var(--space-lg);border-bottom:1px solid var(--pink-50);display:flex;align-items:center;justify-content:space-between}
+        .modal-header h3{font-size:17px;font-weight:600}
+        .modal-close{width:30px;height:30px;border:none;background:var(--pink-50);border-radius:50%;font-size:16px;color:var(--text-light);cursor:pointer}
+        .modal-body{padding:var(--space-lg)}
+        .modal-footer{padding:0 var(--space-lg) var(--space-lg);display:flex;gap:var(--space-sm)}
+        .modal-footer .btn{flex:1;padding:var(--space-md)}
+        
+        /* Form */
+        .form-group{margin-bottom:var(--space-md)}
+        .form-label{display:block;font-size:13px;font-weight:500;color:var(--text-light);margin-bottom:var(--space-sm)}
+        .form-input{width:100%;padding:var(--space-md);background:var(--pink-50);border:2px solid transparent;border-radius:var(--radius-md);font-size:15px;transition:0.3s}
+        .form-input:focus{outline:none;border-color:var(--pink-300);background:white}
+        .form-msg{font-size:12px;margin-top:var(--space-sm)}
+        .form-msg.error{color:var(--danger)}
+        
+        /* Toast */
+        .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--card);color:var(--text);padding:var(--space-md) var(--space-lg);border-radius:var(--radius-full);font-size:14px;font-weight:500;opacity:0;visibility:hidden;transition:0.3s;z-index:2000;box-shadow:var(--shadow-card);border:1px solid var(--pink-100)}
+        .toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+        .toast.success{background:linear-gradient(135deg,white,var(--pink-50))}
+        
+        /* Heart Bubble */
+        .heart-bubble{position:fixed;top:45%;left:50%;transform:translate(-50%,-50%);background:var(--gradient);color:white;padding:14px 24px;border-radius:var(--radius-lg);font-size:15px;font-weight:600;z-index:9999;animation:heartFloat 2s forwards;box-shadow:0 12px 40px rgba(255,105,180,0.4);white-space:nowrap}
+        @keyframes heartFloat{0%{opacity:0;transform:translate(-50%,-30%) scale(0.5)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}40%{transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-80%) scale(0.8)}}
+        
+        /* Page Styles */
+        .page{display:none}
+        .page.active{display:block}
+        
+        /* Stats Page */
+        .chart-card{margin-bottom:var(--space-md)}
+        .chart-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:var(--space-md);display:flex;align-items:center;gap:var(--space-sm)}
+        .chart-title::before{content:'📊'}
+        .bar-chart{display:flex;align-items:flex-end;justify-content:space-between;height:120px;gap:4px}
+        .bar-item{flex:1;display:flex;flex-direction:column;align-items:center}
+        .bar{width:100%;background:var(--gradient);border-radius:4px 4px 0 0;min-height:4px;transition:height 0.5s}
+        .bar-label{font-size:10px;color:var(--text-light);margin-top:4px}
+        
+        /* History Page */
+        .history-list{}
+        .history-item{display:flex;align-items:center;justify-content:space-between;padding:var(--space-md);background:var(--pink-50);border-radius:var(--radius-md);margin-bottom:var(--space-sm)}
+        .history-date{font-size:14px;font-weight:600}
+        .history-count{font-size:20px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        
+        /* Settings Page */
+        .settings-list{}
+        .settings-item{display:flex;align-items:center;justify-content:space-between;padding:var(--space-md);background:var(--pink-50);border-radius:var(--radius-md);margin-bottom:var(--space-sm);cursor:pointer}
+        .settings-item:active{background:var(--pink-100)}
+        .settings-left{display:flex;align-items:center;gap:var(--space-md)}
+        .settings-icon{font-size:20px}
+        .settings-label{font-size:14px;font-weight:500}
+        
+        /* Toggle */
+        .toggle{width:48px;height:26px;background:var(--pink-200);border-radius:var(--radius-full);position:relative;cursor:pointer;transition:0.3s}
+        .toggle.active{background:var(--pink-500)}
+        .toggle::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;background:white;border-radius:50%;transition:0.3s}
+        .toggle.active::after{left:25px}
+        
+        /* Empty */
+        .empty{text-align:center;padding:var(--space-xl);color:var(--text-light)}
+        .empty-icon{font-size:40px;margin-bottom:var(--space-md)}
     </style>
 </head>
 <body>
-    <div class="bg-pattern"></div>
-    <div class="floating-shapes">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
-        <div class="shape shape-3"></div>
-    </div>
-
+    <div class="bg"></div>
+    
     <div class="container">
         <!-- Header -->
         <header class="header">
             <div class="logo">BABY LOVE</div>
-            <h1>💗 胎动记录</h1>
+            <h1 id="pageTitle">💗 胎动记录</h1>
             <p class="subtitle">记录与宝宝的幸福时光</p>
         </header>
 
         <!-- User Card -->
-        <div class="user-card">
-            <div class="user-avatar" id="userAvatar">👩</div>
+        <div class="user-card card">
+            <div class="avatar" id="userAvatar">👩</div>
             <div class="user-info">
                 <div class="user-name" id="userName">未登录</div>
                 <div class="user-status" id="userStatus">登录后记录宝宝胎动</div>
             </div>
-            <button class="btn btn-primary" id="loginBtn" onclick="showLoginModal()">登录</button>
+            <button class="btn btn-primary" id="loginBtn" onclick="showLogin()">登录</button>
             <button class="btn btn-secondary" id="logoutBtn" onclick="handleLogout()" style="display:none;">退出</button>
         </div>
 
-        <!-- Stats -->
-        <div class="stats-card">
-            <div class="stats-title">今日记录</div>
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-value" id="todayCount">0</div>
-                    <div class="stat-label">今日次数</div>
-                    <div class="stat-change" id="todayChange"></div>
+        <!-- Home Page -->
+        <div class="page active" id="page-home">
+            <!-- Stats -->
+            <div class="card">
+                <div class="chart-title">今日记录</div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="todayCount">0</div>
+                        <div class="stat-label">今日次数</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="weekAvg">0</div>
+                        <div class="stat-label">本周平均</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="weekTotal">0</div>
+                        <div class="stat-label">本周总数</div>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="weekAvg">0</div>
-                    <div class="stat-label">本周平均</div>
+            </div>
+
+            <!-- Kick Button -->
+            <div class="kick-area">
+                <div class="kick-btn-wrap">
+                    <div class="ripples">
+                        <div class="ripple" id="ripple1"></div>
+                        <div class="ripple" id="ripple2"></div>
+                        <div class="ripple" id="ripple3"></div>
+                    </div>
+                    <button class="kick-btn" id="kickBtn" onclick="recordKick()">👶</button>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="weekTotal">0</div>
-                    <div class="stat-label">本周总数</div>
+                <p class="kick-hint" id="kickHint">点击记录宝宝胎动</p>
+            </div>
+        </div>
+
+        <!-- Stats Page -->
+        <div class="page" id="page-stats">
+            <div class="card chart-card">
+                <div class="chart-title">本周趋势</div>
+                <div class="bar-chart" id="weekChart"></div>
+            </div>
+            <div class="card">
+                <div class="chart-title">数据分析</div>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-value" id="maxDay">0</div>
+                        <div class="stat-label">最高单日</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="activeDays">0</div>
+                        <div class="stat-label">活跃天数</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="streak">0</div>
+                        <div class="stat-label">连续天数</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Kick Button -->
-        <div class="kick-area">
-            <div class="kick-button-wrap">
-                <div class="ripples">
-                    <div class="ripple" id="ripple1"></div>
-                    <div class="ripple" id="ripple2"></div>
-                    <div class="ripple" id="ripple3"></div>
-                </div>
-                <button class="kick-button" id="kickButton" onclick="recordKick()">👶</button>
+        <!-- History Page -->
+        <div class="page" id="page-history">
+            <div class="card">
+                <div class="chart-title">历史记录</div>
+                <div class="history-list" id="historyList"></div>
             </div>
-            <p class="kick-hint" id="kickHint">点击记录宝宝胎动</p>
+        </div>
+
+        <!-- Settings Page -->
+        <div class="page" id="page-settings">
+            <div class="card">
+                <div class="chart-title">设置</div>
+                <div class="settings-list">
+                    <div class="settings-item" onclick="showEditPregnancy()">
+                        <div class="settings-left">
+                            <span class="settings-icon">🤰</span>
+                            <span class="settings-label" id="pregnancyLabel">设置预产期</span>
+                        </div>
+                        <span>›</span>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-left">
+                            <span class="settings-icon">🔔</span>
+                            <span class="settings-label">提醒开关</span>
+                        </div>
+                        <div class="toggle active" id="vibrateToggle" onclick="toggleVibrate()"></div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-left">
+                            <span class="settings-icon">👶</span>
+                            <span class="settings-label">宝宝小名</span>
+                        </div>
+                        <span>›</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card" style="margin-top:var(--space-md)">
+                <div class="chart-title">关于</div>
+                <div class="settings-list">
+                    <div class="settings-item">
+                        <div class="settings-left">
+                            <span class="settings-icon">💕</span>
+                            <span class="settings-label">版本</span>
+                        </div>
+                        <span style="color:var(--text-light)">v2.0</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- Bottom Nav -->
-    <nav class="bottom-nav">
-        <a class="nav-item active" href="#">
+    <nav class="nav">
+        <a class="nav-item active" href="#" data-page="home" onclick="switchPage('home')">
             <span class="nav-icon">🏠</span>
             <span class="nav-label">首页</span>
         </a>
-        <a class="nav-item" href="#">
+        <a class="nav-item" href="#" data-page="stats" onclick="switchPage('stats')">
             <span class="nav-icon">📊</span>
             <span class="nav-label">统计</span>
         </a>
-        <a class="nav-item" href="#">
+        <a class="nav-item" href="#" data-page="history" onclick="switchPage('history')">
             <span class="nav-icon">📖</span>
-            <span class="nav-label">记录</span>
+            <span class="nav-label">历史</span>
         </a>
-        <a class="nav-item" href="#">
+        <a class="nav-item" href="#" data-page="settings" onclick="switchPage('settings')">
             <span class="nav-icon">⚙️</span>
             <span class="nav-label">设置</span>
         </a>
@@ -801,7 +306,7 @@
         <div class="modal">
             <div class="modal-header">
                 <h3>💕 欢迎回来</h3>
-                <button class="modal-close" onclick="hideLoginModal()">✕</button>
+                <button class="modal-close" onclick="hideLogin()">×</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -810,12 +315,12 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">密码</label>
-                    <input type="password" class="form-input" id="loginPassword" placeholder="密码">
+                    <input type="password" class="form-input" id="loginPw" placeholder="密码">
                 </div>
                 <div class="form-msg" id="loginMsg"></div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="showRegisterModal()">注册</button>
+                <button class="btn btn-secondary" onclick="showRegister()">注册</button>
                 <button class="btn btn-primary" onclick="handleLogin()">登录</button>
             </div>
         </div>
@@ -826,21 +331,21 @@
         <div class="modal">
             <div class="modal-header">
                 <h3>💗 注册账户</h3>
-                <button class="modal-close" onclick="hideRegisterModal()">✕</button>
+                <button class="modal-close" onclick="hideRegister()">×</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
                     <label class="form-label">邮箱</label>
-                    <input type="email" class="form-input" id="registerEmail" placeholder="your@email.com">
+                    <input type="email" class="form-input" id="regEmail" placeholder="your@email.com">
                 </div>
                 <div class="form-group">
                     <label class="form-label">密码</label>
-                    <input type="password" class="form-input" id="registerPassword" placeholder="至少6位">
+                    <input type="password" class="form-input" id="regPw" placeholder="至少6位">
                 </div>
-                <div class="form-msg" id="registerMsg"></div>
+                <div class="form-msg" id="regMsg"></div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" onclick="showLoginModal()">返回</button>
+                <button class="btn btn-secondary" onclick="showLogin()">返回</button>
                 <button class="btn btn-primary" onclick="handleRegister()">注册</button>
             </div>
         </div>
@@ -849,215 +354,182 @@
     <!-- Toast -->
     <div class="toast" id="toast"></div>
 
-    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
-    <script src="js/config.js"></script>
-    <script src="js/storage.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/data.js"></script>
     <script>
-        // ==================== 主应用 ====================
+        // ==================== Config ====================
+        const CONFIG = { SUPABASE:{ URL:'https://uwvlduprxppwdkjkvwby.supabase.co', ANON_KEY:'sb_publishable_NCyVuDM0d_Nkn50QvKdY-Q_OCQJsN5L'}};
+        const STORAGE_KEYS = { KICK:'kickData', SETTINGS:'kickSettings'};
+        
+        // ==================== Storage ====================
+        const Storage = {
+            getData(){try{return JSON.parse(localStorage.getItem(STORAGE_KEYS.KICK))||{}}catch(e){return {}}},
+            saveData(d){localStorage.setItem(STORAGE_KEYS.KICK,JSON.stringify(d));return true},
+            getSettings(){try{return JSON.parse(localStorage.getItem(STORAGE_KEYS.SETTINGS))||{}}catch(e){return{}}},
+            saveSettings(s){localStorage.setItem(STORAGE_KEYS.SETTINGS,JSON.stringify(s));return true},
+            getTodayKey(){const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`},
+            getYesterday(){const d=new Date();d.setDate(d.getDate()-1);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`},
+            addKick(t){const d=this.getData();const k=this.getTodayKey();if(!d[k])d[k]=[];d[k].push(t);this.saveData(d)},
+            getTodayCount(){const d=this.getData();return d[this.getTodayKey()]?.length||0},
+            getYesterdayCount(){const d=this.getData();return d[this.getYesterday()]?.length||0},
+            getWeekData(){const d=this.getData();const w=[];const t=new Date();for(let i=6;i>=0;i--){const dt=new Date();dt.setDate(t.getDate()-i);const k=`${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;w.push({date:k,count:d[k]?.length||0});}return w},
+            clear(){localStorage.clear()}
+        };
+        
+        // ==================== Auth ====================
+        const Auth = {
+            supabase:null, user:null,
+            async init(){
+                this.supabase = window.supabase.createClient(CONFIG.SUPABASE.URL,CONFIG.SUPABASE.ANON_KEY);
+                this.supabase.auth.onAuthStateChange((e,s)=>{if(e==='SIGNED_IN'&&s?.user){this.user=s.user;App.updateUI();App.onLogin()}else if(e==='SIGNED_OUT'){this.user=null;App.updateUI()}});
+                const {data:{session}}=await this.supabase.auth.getSession();
+                if(session?.user)this.user=session.user;
+            },
+            async login(e,p){try{const{data,error}=await this.supabase.auth.signInWithPassword({email:e,password:p});if(error)throw error;return{ok:true,user:data.user}}catch(err){return{ok:false,msg:err.message}}},
+            async register(e,p){try{const{data,error}=await this.supabase.auth.signUp({email:e,password:p});if(error)throw error;return{ok:true,user:data.user}}catch(err){return{ok:false,msg:err.message}}},
+            async logout(){await this.supabase.auth.signOut();Storage.clear()},
+            isLoggedIn(){return this.user!==null},
+            getId(){return this.user?.id||null}
+        };
+        
+        // ==================== Data ====================
+        const Data = {
+            supabase:null,
+            init(s){this.supabase=s},
+            async save(date,time){if(!this.supabase||!Auth.getId())return;
+                await this.supabase.from('kick_records').insert({user_id:Auth.getId(),record_date:date,record_time:time,created_at:new Date().toISOString()});
+            }
+        };
+        
+        // ==================== App ====================
         const App = {
-            async init() {
-                Auth.supabase = window.supabase.createClient(CONFIG.SUPABASE.URL, CONFIG.SUPABASE.ANON_KEY);
+            async init(){
+                Auth.supabase = window.supabase.createClient(CONFIG.SUPABASE.URL,CONFIG.SUPABASE.ANON_KEY);
                 await Auth.init();
                 Data.init(Auth.supabase);
                 this.updateUI();
                 this.updateStats();
                 this.startRipple();
             },
-            
-            updateUI() {
-                const loggedIn = Auth.isLoggedIn();
-                document.getElementById('loginBtn').style.display = loggedIn ? 'none' : 'block';
-                document.getElementById('logoutBtn').style.display = loggedIn ? 'block' : 'none';
-                document.getElementById('userName').textContent = loggedIn ? (Auth.user?.email?.split('@')[0] || '妈妈') : '未登录';
-                document.getElementById('userStatus').textContent = loggedIn ? '记录宝宝的每一次跳动' : '登录后记录宝宝胎动';
-                
-                const hint = document.getElementById('kickHint');
-                const button = document.getElementById('kickButton');
-                if (loggedIn) {
-                    hint.classList.add('active');
-                    hint.textContent = '点击记录宝宝胎动 💕';
-                } else {
-                    hint.classList.remove('active');
-                    hint.textContent = '登录后记录宝宝胎动';
-                }
+            updateUI(){
+                const logged = Auth.isLoggedIn();
+                document.getElementById('loginBtn').style.display=logged?'none':'block';
+                document.getElementById('logoutBtn').style.display=logged?'block':'none';
+                document.getElementById('userName').textContent=logged?(Auth.user.email.split('@')[0]):'未登录';
+                document.getElementById('userStatus').textContent=logged?'记录宝宝的每一次跳动':'登录后记录宝宝胎动';
+                const hint=document.getElementById('kickHint');
+                if(loged){hint.classList.add('active');hint.textContent='点击记录宝宝胎动 💕'}else{hint.classList.remove('active');hint.textContent='登录后记录宝宝胎动'}
             },
-            
-            updateStats() {
-                const today = Storage.getTodayCount();
-                const yesterday = Storage.getYesterdayCount();
-                const week = Storage.getWeekData();
-                const total = week.reduce((s, d) => s + d.count, 0);
+            updateStats(){
+                const today=Storage.getTodayCount();
+                const yesterday=Storage.getYesterdayCount();
+                const week=Storage.getWeekData();
+                const total=week.reduce((s,d)=>s+d.count,0);
+                document.getElementById('todayCount').textContent=today;
+                document.getElementById('weekTotal').textContent=total;
+                document.getElementById('weekAvg').textContent=Math.round(total/7)||0;
                 
-                document.getElementById('todayCount').textContent = today;
-                document.getElementById('weekTotal').textContent = total;
-                document.getElementById('weekAvg').textContent = Math.round(total / 7) || 0;
+                // Stats page
+                const max=Math.max(...week.map(d=>d.count));
+                const active=week.filter(d=>d.count>0).length;
+                document.getElementById('maxDay').textContent=max;
+                document.getElementById('activeDays').textContent=active;
+                document.getElementById('streak').textContent=active;
                 
-                const changeEl = document.getElementById('todayChange');
-                if (yesterday > 0) {
-                    const pct = ((today - yesterday) / yesterday * 100).toFixed(0);
-                    if (pct > 0) {
-                        changeEl.textContent = '↑ ' + pct + '%';
-                        changeEl.className = 'stat-change up';
-                    } else if (pct < 0) {
-                        changeEl.textContent = '↓ ' + Math.abs(pct) + '%';
-                        changeEl.className = 'stat-change down';
-                    }
-                } else if (today > 0) {
-                    changeEl.textContent = '🎉';
-                    changeEl.className = 'stat-change';
-                }
-            },
-            
-            startRipple() {
-                const ripple = document.getElementById('ripple1');
-                if (ripple) ripple.classList.add('active');
-            },
-            
-            canRecord() {
-                if (!Auth.isLoggedIn()) {
-                    this.showToast('请先登录哦 💕', 'warning');
-                    showLoginModal();
-                    return false;
-                }
-                return true;
-            },
-            
-            async recordKick() {
-                if (!this.canRecord()) return;
+                // Week chart
+                const chart=document.getElementById('weekChart');
+                const maxH=100;
+                chart.innerHTML=week.map(d=>{
+                    const h=max?Math.max(d.count/max*maxH,4):4;
+                    return `<div class="bar-item"><div class="bar" style="height:${h}px"></div><div class="bar-label">${d.date.slice(-2)}日</div></div>`;
+                }).join('');
                 
-                const time = new Date().toISOString();
+                // History
+                const history=document.getElementById('historyList');
+                const sorted=Object.entries(Storage.getData()).sort((a,b)=>b[0].localeCompare(a[0]));
+                if(sorted.length===0){history.innerHTML='<div class="empty"><div class="empty-icon">📝</div><p>暂无记录</p></div>'}else{history.innerHTML=sorted.slice(0,30).map(([date,times])=>`<div class="history-item"><span class="history-date">${date}</span><span class="history-count">${times.length}次</span></div>`).join('')}
+            },
+            startRipple(){document.getElementById('ripple1').classList.add('active')},
+            canRecord(){if(!Auth.isLoggedIn()){this.showToast('请先登录哦 💕','warning');showLogin();return false}return true},
+            async recordKick(){
+                if(!this.canRecord())return;
+                const time=new Date().toISOString();
                 Storage.addKick(time);
+                if(Auth.isLoggedIn()){await Data.save(Storage.getTodayKey(),time);}
                 
-                if (Auth.isLoggedIn()) {
-                    await Data.saveKickRecord(Storage.getTodayKey(), time);
-                }
+                // Anim
+                const btn=document.getElementById('kickBtn');
+                btn.classList.add('kick');setTimeout(()=>btn.classList.remove('kick'),600);
+                if(navigator.vibrate)navigator.vibrate([50,30,50]);
                 
-                // 动画
-                const btn = document.getElementById('kickButton');
-                btn.classList.add('kick');
-                setTimeout(() => btn.classList.remove('kick'), 600);
-                
-                // 涟漪
-                const ripples = document.querySelectorAll('.ripple');
-                ripples.forEach(r => {
-                    r.style.animation = 'none';
-                    setTimeout(() => r.style.animation = '', 10);
-                });
-                
-                // 震动
-                if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
-                
-                // 幸福消息
-                const msgs = ['💕 宝宝感受到了！', '❤️ 幸福的互动', '👶 宝宝在回应你', '✨ 甜蜜时刻', '🌸 爱的传递'];
-                this.showHeartBubble(msgs[Math.floor(Math.random() * msgs.length)]);
+                // Heart bubble
+                const msgs=['💕宝宝感受到了！','❤️幸福的互动','👶宝宝在回应你','✨甜蜜时刻','🌸爱的传递'];
+                this.showHeartBubble(msgs[Math.floor(Math.random()*msgs.length)]);
                 
                 this.updateStats();
             },
-            
-            showHeartBubble(msg) {
-                const exist = document.querySelector('.heart-bubble');
-                if (exist) exist.remove();
-                
-                const bubble = document.createElement('div');
-                bubble.className = 'heart-bubble';
-                bubble.textContent = msg;
-                document.body.appendChild(bubble);
-                setTimeout(() => bubble.remove(), 2000);
+            showHeartBubble(msg){
+                document.querySelectorAll('.heart-bubble').forEach(e=>e.remove());
+                const b=document.createElement('div');b.className='heart-bubble';b.textContent=msg;document.body.appendChild(b);setTimeout(()=>b.remove(),2000);
             },
-            
-            showToast(msg, type = '') {
-                const toast = document.getElementById('toast');
-                toast.textContent = msg;
-                toast.className = 'toast show ' + type;
-                setTimeout(() => toast.classList.remove('show'), 3000);
-            },
-            
-            onLoginSuccess() {
-                this.showToast('登录成功！开始记录幸福 💕', 'success');
-                this.updateUI();
-            }
+            showToast(msg,type=''){const t=document.getElementById('toast');t.textContent=msg;t.className='toast show '+type;setTimeout(()=>t.classList.remove('show'),3000)},
+            onLogin(){this.showToast('登录成功！开始记录幸福 💕','success');this.updateUI();}
         };
-
-        // ==================== 全局函数 ====================
-        function showLoginModal() {
-            document.getElementById('loginModal').classList.add('show');
-        }
-        function hideLoginModal() {
-            document.getElementById('loginModal').classList.remove('show');
-        }
-        function showRegisterModal() {
-            document.getElementById('registerModal').classList.add('show');
-            hideLoginModal();
-        }
-        function hideRegisterModal() {
-            document.getElementById('registerModal').classList.remove('show');
-        }
-
-        async function handleLogin() {
-            const email = document.getElementById('loginEmail').value.trim();
-            const pw = document.getElementById('loginPassword').value;
-            const msg = document.getElementById('loginMsg');
+        
+        // ==================== Pages ====================
+        function switchPage(p){
+            document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));
+            document.getElementById('page-'+p).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active'));
+            document.querySelector(`[data-page="${p}"]`).classList.add('active');
             
-            if (!email || !pw) {
-                msg.textContent = '请填写邮箱和密码';
-                msg.className = 'form-msg error';
-                return;
-            }
+            const titles={home:'💗 胎动记录',stats:'📊 数据统计',history:'📖 历史记录',settings:'⚙️ 设置'};
+            document.getElementById('pageTitle').textContent=titles[p];
             
-            const result = await Auth.login(email, pw);
-            if (result.success) {
-                hideLoginModal();
-                App.onLoginSuccess();
-            } else {
-                msg.textContent = result.error;
-                msg.className = 'form-msg error';
-            }
+            if(p!=='home')App.updateStats();
         }
-
-        async function handleRegister() {
-            const email = document.getElementById('registerEmail').value.trim();
-            const pw = document.getElementById('registerPassword').value;
-            const msg = document.getElementById('registerMsg');
-            
-            if (!email || !pw) {
-                msg.textContent = '请填写邮箱和密码';
-                msg.className = 'form-msg error';
-                return;
-            }
-            if (pw.length < 6) {
-                msg.textContent = '密码至少6位';
-                msg.className = 'form-msg error';
-                return;
-            }
-            
-            const result = await Auth.register(email, pw);
-            if (result.success) {
-                App.showToast('注册成功！请登录 💕');
-                hideRegisterModal();
-                showLoginModal();
-            } else {
-                msg.textContent = result.error;
-                msg.className = 'form-msg error';
-            }
+        
+        // ==================== Auth UI ====================
+        function showLogin(){document.getElementById('loginModal').classList.add('show')}
+        function hideLogin(){document.getElementById('loginModal').classList.remove('show')}
+        function showRegister(){document.getElementById('registerModal').classList.add('show');hideLogin()}
+        function hideRegister(){document.getElementById('registerModal').classList.remove('show')}
+        
+        async function handleLogin(){
+            const e=document.getElementById('loginEmail').value.trim();
+            const p=document.getElementById('loginPw').value;
+            if(!e||!p){document.getElementById('loginMsg').textContent='请填写邮箱和密码';document.getElementById('loginMsg').className='form-msg error';return}
+            const r=await Auth.login(e,p);
+            if(r.ok){hideLogin();App.onLogin()}else{document.getElementById('loginMsg').textContent=r.msg;document.getElementById('loginMsg').className='form-msg error'}
         }
-
-        async function handleLogout() {
+        
+        async function handleRegister(){
+            const e=document.getElementById('regEmail').value.trim();
+            const p=document.getElementById('regPw').value;
+            if(!e||!p){document.getElementById('regMsg').textContent='请填写邮箱和密码';document.getElementById('regMsg').className='form-msg error';return}
+            if(p.length<6){document.getElementById('regMsg').textContent='密码至少6位';document.getElementById('regMsg').className='form-msg error';return}
+            const r=await Auth.register(e,p);
+            if(r.ok){App.showToast('注册成功！请登录 💕');hideRegister();showLogin()}else{document.getElementById('regMsg').textContent=r.msg;document.getElementById('regMsg').className='form-msg error'}
+        }
+        
+        async function handleLogout(){
             await Auth.logout();
-            Storage.clearAll();
             App.updateUI();
-            App.updateStats();
             App.showToast('已退出登录');
         }
-
-        function recordKick() {
-            App.recordKick();
+        
+        function recordKick(){App.recordKick()}
+        
+        function toggleVibrate(){
+            const t=document.getElementById('vibrateToggle');
+            t.classList.toggle('active');
         }
-
-        // 初始化
-        document.addEventListener('DOMContentLoaded', () => App.init());
+        
+        function showEditPregnancy(){
+            App.showToast('功能开发中...');
+        }
+        
+        // Init
+        document.addEventListener('DOMContentLoaded',()=>App.init());
     </script>
 </body>
 </html>
