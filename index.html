@@ -220,7 +220,7 @@
                 <div class="chart-title">关于</div>
                 <div class="settings-item" style="cursor:default">
                     <div class="settings-left"><span class="settings-icon">💕</span><span class="settings-label">版本</span></div>
-                    <span style="color:var(--text-light)">v2.2</span>
+                    <span style="color:var(--text-light)">v2.3</span>
                 </div>
             </div>
         </div>
@@ -352,7 +352,8 @@
                 this.supabase.auth.onAuthStateChange(async(e,s)=>{
                     if(e==='SIGNED_IN'&&s?.user){
                         this.user=s.user;
-                        await Data.syncFromCloud(); // 关键：同步云端数据
+                        await Data.syncFromCloud();
+                        await Settings.syncFromCloud(); // 新增：同步用户设置
                         App.onLogin();
                     }else if(e==='SIGNED_OUT'){
                         this.user=null;
@@ -363,6 +364,7 @@
                 if(session?.user){
                     this.user=session.user;
                     await Data.syncFromCloud();
+                    await Settings.syncFromCloud();
                 }
             },
             async login(e,p){
@@ -384,11 +386,85 @@
             getId(){return this.user?.id||null}
         };
         
+        // 用户设置管理
+        const Settings = {
+            supabase:null,
+            init(s){this.supabase=s},
+            
+            // 从云端同步用户设置
+            async syncFromCloud(){
+                if(!this.supabase || !Auth.getId()) return;
+                
+                try{
+                    const {data,error} = await this.supabase
+                        .from('kick_settings')
+                        .select('*')
+                        .eq('user_id', Auth.getId())
+                        .single();
+                    
+                    if(error) throw error;
+                    
+                    if(data){
+                        // 同步到本地存储
+                        const localSet = Store.getSet();
+                        localSet.nickname = data.baby_name || localSet.nickname;
+                        localSet.dueDate = data.due_date || localSet.dueDate;
+                        localSet.vibrate = data.vibrate !== null ? data.vibrate : localSet.vibrate;
+                        Store.saveSet(localSet);
+                        
+                        App.loadSettings();
+                        console.log('✅ 设置同步完成:', data);
+                    }
+                }catch(err){
+                    console.log('设置同步失败或无数据:', err.message);
+                }
+            },
+            
+            // 保存设置到云端
+            async saveToCloud(settings){
+                if(!this.supabase || !Auth.getId()) return;
+                
+                try{
+                    // 先查询是否存在
+                    const {data:existing} = await this.supabase
+                        .from('kick_settings')
+                        .select('id')
+                        .eq('user_id', Auth.getId())
+                        .single();
+                    
+                    if(existing){
+                        // 更新
+                        await this.supabase
+                            .from('kick_settings')
+                            .update({
+                                baby_name: settings.nickname,
+                                due_date: settings.dueDate,
+                                vibrate: settings.vibrate,
+                                updated_at: new Date().toISOString()
+                            })
+                            .eq('user_id', Auth.getId());
+                    }else{
+                        // 创建
+                        await this.supabase
+                            .from('kick_settings')
+                            .insert({
+                                user_id: Auth.getId(),
+                                baby_name: settings.nickname,
+                                due_date: settings.dueDate,
+                                vibrate: settings.vibrate
+                            });
+                    }
+                    console.log('✅ 设置已保存到云端');
+                }catch(err){
+                    console.error('保存设置失败:', err);
+                }
+            }
+        };
+        
         const Data = {
             supabase:null,
             init(s){this.supabase=s},
             
-            // 从云端同步数据到本地
             async syncFromCloud(){
                 if(!this.supabase || !Auth.getId()) return;
                 
@@ -402,12 +478,10 @@
                     if(error) throw error;
                     
                     if(data && data.length > 0){
-                        // 合并数据到本地存储
                         const localData = Store.getData();
                         data.forEach(row => {
                             const date = row.record_date;
                             if(!localData[date]) localData[date] = [];
-                            // 避免重复添加
                             if(!localData[date].includes(row.record_time)){
                                 localData[date].push(row.record_time);
                             }
@@ -436,6 +510,7 @@
                 Auth.supabase = window.supabase.createClient(CFG.SUPABASE.URL,CFG.SUPABASE.ANON_KEY);
                 await Auth.init();
                 Data.init(Auth.supabase);
+                Settings.init(Auth.supabase);
                 this.loadSettings();
                 this.updateUI();
                 this.updateStats();
@@ -453,6 +528,13 @@
                     const days = Math.ceil((due - today) / (1000*60*60*24));
                     document.getElementById('countdownDays').textContent = days > 0 ? days : 0;
                     document.getElementById('countdownDue').textContent = s.dueDate;
+                }
+                // 震动开关状态
+                const vibrateToggle = document.getElementById('vibrateToggle');
+                if(s.vibrate === false){
+                    vibrateToggle.classList.remove('active');
+                }else{
+                    vibrateToggle.classList.add('active');
                 }
             },
             updateUI(){
@@ -541,29 +623,40 @@
         
         function recordKick(){App.recordKick()}
         
-        function showNickname(){document.getElementById('nicknameModal').classList.add('show')}
+        function showNickname(){
+            document.getElementById('nicknameInput').value = Store.getSet().nickname || '';
+            document.getElementById('nicknameModal').classList.add('show');
+        }
         function hideNickname(){document.getElementById('nicknameModal').classList.remove('show')}
-        function showDueDate(){document.getElementById('dueDateModal').classList.add('show')}
+        function showDueDate(){
+            document.getElementById('dueDateInput').value = Store.getSet().dueDate || '';
+            document.getElementById('dueDateModal').classList.add('show');
+        }
         function hideDueDate(){document.getElementById('dueDateModal').classList.remove('show')}
         
-        function saveNickname(){
+        async function saveNickname(){
             const v=document.getElementById('nicknameInput').value.trim();
             if(!v)return;
             const s=Store.getSet();s.nickname=v;Store.saveSet(s);
-            App.loadSettings();hideNickname();App.showToast('小名已保存 💕');
+            App.loadSettings();hideNickname();
+            App.showToast('小名已保存 💕');
+            await Settings.saveToCloud(s);
         }
         
-        function saveDueDate(){
+        async function saveDueDate(){
             const v=document.getElementById('dueDateInput').value;
             if(!v)return;
             const s=Store.getSet();s.dueDate=v;Store.saveSet(s);
-            App.loadSettings();hideDueDate();App.showToast('预产期已设置 💕');
+            App.loadSettings();hideDueDate();
+            App.showToast('预产期已设置 💕');
+            await Settings.saveToCloud(s);
         }
         
-        function toggleVibrate(){
+        async function toggleVibrate(){
             const t=document.getElementById('vibrateToggle');
             t.classList.toggle('active');
             const s=Store.getSet();s.vibrate=t.classList.contains('active');Store.saveSet(s);
+            await Settings.saveToCloud(s);
         }
         
         document.addEventListener('DOMContentLoaded',()=>App.init());
