@@ -21,12 +21,10 @@
         .bg{position:fixed;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at 20% 20%,rgba(255,182,193,0.2),transparent 50%),radial-gradient(circle at 80% 80%,rgba(255,182,193,0.15),transparent 50%);z-index:-1}
         .container{max-width:420px;margin:0 auto;min-height:100vh;padding:var(--space-md);padding-bottom:90px}
         
-        /* Header */
         .header{text-align:center;padding:var(--space-lg) 0 var(--space-md)}
         .logo{font-size:11px;font-weight:500;letter-spacing:4px;color:var(--pink-500);margin-bottom:var(--space-xs)}
         .header h1{font-size:24px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
         
-        /* User Card - 顶部简洁版 */
         .user-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-lg)}
         .user-info{display:flex;align-items:center;gap:var(--space-sm)}
         .avatar{width:40px;height:40px;border-radius:var(--radius-full);background:var(--gradient);display:flex;align-items:center;justify-content:center;font-size:18px}
@@ -34,14 +32,12 @@
         .user-name span{color:var(--pink-500)}
         .btn-login{background:var(--gradient);color:white;border:none;padding:8px 16px;border-radius:var(--radius-full);font-size:12px;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(255,105,180,0.3)}
         
-        /* Countdown Card */
         .countdown-card{background:var(--card);border-radius:var(--radius-lg);padding:var(--space-lg);text-align:center;box-shadow:var(--shadow-lg);margin-bottom:var(--space-md)}
         .countdown-label{font-size:12px;color:var(--text-light);margin-bottom:var(--space-xs)}
         .countdown-days{font-size:42px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1}
         .countdown-days span{font-size:16px;font-weight:400;color:var(--text-light)}
         .countdown-due{font-size:13px;color:var(--text-light);margin-top:var(--space-xs)}
         
-        /* Kick Button - 主角区域 */
         .kick-section{text-align:center;padding:var(--space-xl) 0}
         .kick-btn{width:150px;height:150px;border-radius:var(--radius-full);border:none;background:var(--gradient);color:white;font-size:52px;cursor:pointer;box-shadow:0 12px 40px rgba(255,105,180,0.35),inset 0 -6px 16px rgba(0,0,0,0.1),inset 0 6px 16px rgba(255,255,255,0.3);transition:0.3s;position:relative;z-index:2}
         .kick-btn:hover{transform:scale(1.05)}
@@ -58,20 +54,17 @@
         .kick-hint{margin-top:var(--space-md);font-size:14px;color:var(--text-light)}
         .kick-hint.active{color:var(--pink-500);font-weight:500}
         
-        /* Stats Mini */
         .stats-mini{display:flex;justify-content:center;gap:var(--space-xl);margin-top:var(--space-md)}
         .stat-mini{text-align:center}
         .stat-mini-value{font-size:24px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
         .stat-mini-label{font-size:11px;color:var(--text-light)}
         
-        /* Nav */
         .nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,0.95);backdrop-filter:blur(20px);border-top:1px solid var(--pink-100);display:flex;justify-content:space-around;padding:var(--space-sm);padding-bottom:calc(var(--space-sm)+env(safe-area-inset-bottom));z-index:100}
         .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:var(--space-sm);color:var(--text-light);text-decoration:none;border-radius:var(--radius-sm);transition:0.3s}
         .nav-item:hover,.nav-item.active{color:var(--pink-500);background:var(--pink-50)}
         .nav-icon{font-size:20px}
         .nav-label{font-size:10px;font-weight:500}
         
-        /* Modal */
         .modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);z-index:1000;align-items:center;justify-content:center;padding:var(--space-md)}
         .modal-overlay.show{display:flex;animation:fadeIn 0.3s}
         @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -94,19 +87,15 @@
         .btn{background:var(--gradient);color:white;border:none;padding:10px 16px;border-radius:var(--radius-full);font-size:13px;font-weight:600;cursor:pointer;transition:0.3s}
         .btn-secondary{background:var(--pink-50);color:var(--text)}
         
-        /* Toast */
         .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--card);color:var(--text);padding:12px 20px;border-radius:var(--radius-full);font-size:13px;font-weight:500;opacity:0;visibility:hidden;transition:0.3s;z-index:2000;box-shadow:var(--shadow-lg);border:1px solid var(--pink-100)}
         .toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
         
-        /* Heart Bubble */
         .heart-bubble{position:fixed;top:45%;left:50%;transform:translate(-50%,-50%);background:var(--gradient);color:white;padding:12px 20px;border-radius:20px;font-size:14px;font-weight:600;z-index:9999;animation:heartFloat 2s forwards;box-shadow:0 12px 40px rgba(255,105,180,0.4)}
         @keyframes heartFloat{0%{opacity:0;transform:translate(-50%,-30%) scale(0.5)}20%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}40%{transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-80%) scale(0.8)}}
         
-        /* Pages */
         .page{display:none}
         .page.active{display:block}
         
-        /* Stats Page */
         .chart-card{background:var(--card);border-radius:var(--radius-lg);padding:var(--space-lg);box-shadow:var(--shadow-lg);margin-bottom:var(--space-md)}
         .chart-title{font-size:13px;font-weight:600;color:var(--text-light);margin-bottom:var(--space-md)}
         .bar-chart{display:flex;align-items:flex-end;justify-content:space-between;height:100px;gap:3px}
@@ -119,19 +108,17 @@
         .stats-col-value{font-size:28px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
         .stats-col-label{font-size:11px;color:var(--text-light)}
         
-        /* History */
         .history-item{display:flex;align-items:center;justify-content:space-between;padding:12px;background:var(--pink-50);border-radius:var(--radius-md);margin-bottom:var(--space-sm)}
         .history-date{font-size:13px;font-weight:500}
         .history-count{font-size:18px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
         .empty{text-align:center;padding:40px 20px;color:var(--text-light)}
         
-        /* Settings */
         .settings-item{display:flex;align-items:center;justify-content:space-between;padding:14px;background:var(--pink-50);border-radius:var(--radius-md);margin-bottom:var(--space-sm);cursor:pointer}
         .settings-item:active{background:var(--pink-100)}
         .settings-left{display:flex;align-items:center;gap:var(--space-md)}
         .settings-icon{font-size:18px}
-        .settings-label{font-size:14px;font-weight: 500{width:44px;height:24px;background:var(--:500}
-       pink-200);border-radius:var(--radius-full);position:relative;cursor:pointer;transition:0.3s}
+        .settings-label{font-size:14px;font-weight:500}
+        .toggle{width:44px;height:24px;background:var(--pink-200);border-radius:var(--radius-full);position:relative;cursor:pointer;transition:0.3s}
         .toggle.active{background:var(--pink-500)}
         .toggle::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;background:white;border-radius:50%;transition:0.3s}
         .toggle.active::after{left:22px}
@@ -140,32 +127,27 @@
 <body>
     <div class="bg"></div>
     <div class="container">
-        <!-- Header -->
         <header class="header">
             <div class="logo">BABY LOVE</div>
             <h1 id="pageTitle">💗 胎动记录</h1>
         </header>
 
-        <!-- User Bar -->
         <div class="user-bar">
             <div class="user-info">
                 <div class="avatar" id="userAvatar">👩</div>
-                <div class="user-name" id="userName"><span id="babyNickname">宝宝</span></div>
+                <div class="user-name"><span id="babyNickname">宝宝</span></div>
             </div>
             <button class="btn-login" id="loginBtn" onclick="showLogin()">登录</button>
             <button class="btn-login" id="logoutBtn" onclick="handleLogout()" style="display:none;">退出</button>
         </div>
 
-        <!-- Home Page -->
         <div class="page active" id="page-home">
-            <!-- Countdown -->
             <div class="countdown-card">
                 <div class="countdown-label">距离宝宝出生还有</div>
                 <div class="countdown-days"><span id="countdownDays">--</span> <span>天</span></div>
                 <div class="countdown-due" id="countdownDue">请设置预产期</div>
             </div>
 
-            <!-- Kick Section -->
             <div class="kick-section">
                 <div style="position:relative;display:inline-block">
                     <div class="ripples">
@@ -177,7 +159,6 @@
                 </div>
                 <p class="kick-hint" id="kickHint">点击记录宝宝胎动</p>
                 
-                <!-- Mini Stats -->
                 <div class="stats-mini">
                     <div class="stat-mini">
                         <div class="stat-mini-value" id="todayCount">0</div>
@@ -191,7 +172,6 @@
             </div>
         </div>
 
-        <!-- Stats Page -->
         <div class="page" id="page-stats">
             <div class="chart-card">
                 <div class="chart-title">本周记录</div>
@@ -203,7 +183,7 @@
                     <div class="stats-col-label">日均</div>
                 </div>
                 <div class="stats-col">
-                    <div class="stats-col-value" id="weekTotal">0</div>
+                    <div class="stats-col-value" id="weekTotalStat">0</div>
                     <div class="stats-col-label">本周总数</div>
                 </div>
                 <div class="stats-col">
@@ -213,7 +193,6 @@
             </div>
         </div>
 
-        <!-- History Page -->
         <div class="page" id="page-history">
             <div class="chart-card">
                 <div class="chart-title">历史记录</div>
@@ -221,15 +200,14 @@
             </div>
         </div>
 
-        <!-- Settings Page -->
         <div class="page" id="page-settings">
             <div class="chart-card">
                 <div class="chart-title">设置</div>
-                <div class="settings-item" onclick="showEditNickname()">
+                <div class="settings-item" onclick="showNickname()">
                     <div class="settings-left"><span class="settings-icon">👶</span><span class="settings-label">宝宝小名</span></div>
                     <span style="color:var(--pink-500)" id="settingsNickname">未设置</span>
                 </div>
-                <div class="settings-item" onclick="showEditDueDate()">
+                <div class="settings-item" onclick="showDueDate()">
                     <div class="settings-left"><span class="settings-icon">📅</span><span class="settings-label">预产期</span></div>
                     <span style="color:var(--pink-500)" id="settingsDueDate">未设置</span>
                 </div>
@@ -242,13 +220,12 @@
                 <div class="chart-title">关于</div>
                 <div class="settings-item" style="cursor:default">
                     <div class="settings-left"><span class="settings-icon">💕</span><span class="settings-label">版本</span></div>
-                    <span style="color:var(--text-light)">v2.1</span>
+                    <span style="color:var(--text-light)">v2.2</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Bottom Nav -->
     <nav class="nav">
         <a class="nav-item active" href="#" data-page="home" onclick="switchPage('home')">
             <span class="nav-icon">🏠</span><span class="nav-label">首页</span>
@@ -323,7 +300,6 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label class="form-label">请输入宝宝小名</label>
                     <input type="text" class="form-input" id="nicknameInput" placeholder="例如：小宝、豆豆">
                 </div>
             </div>
@@ -342,7 +318,6 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label class="form-label">选择预产期</label>
                     <input type="date" class="form-input" id="dueDateInput">
                 </div>
             </div>
@@ -352,15 +327,12 @@
         </div>
     </div>
 
-    <!-- Toast -->
     <div class="toast" id="toast"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
     <script>
-        // Config
         const CFG = { SUPABASE:{ URL:'https://uwvlduprxppwdkjkvwby.supabase.co', ANON_KEY:'sb_publishable_NCyVuDM0d_Nkn50QvKdY-Q_OCQJsN5L'}};
         
-        // Storage
         const Store = {
             KICK: 'kickData', SETTINGS: 'appSettings',
             getData(){try{return JSON.parse(localStorage.getItem(this.KICK))||{}}catch(e){return{}}},
@@ -373,31 +345,92 @@
             getWeek(){const d=this.getData();const w=[];const t=new Date();for(let i=6;i>=0;i--){const dt=new Date();dt.setDate(t.getDate()-i);const k=`${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;w.push({date:k,count:d[k]?.length||0});}return w}
         };
         
-        // Auth
         const Auth = {
             supabase:null, user:null,
             async init(){
                 this.supabase = window.supabase.createClient(CFG.SUPABASE.URL,CFG.SUPABASE.ANON_KEY);
-                this.supabase.auth.onAuthStateChange((e,s)=>{if(e==='SIGNED_IN'&&s?.user){this.user=s.user;App.onLogin()}else if(e==='SIGNED_OUT'){this.user=null;App.updateUI()}});
+                this.supabase.auth.onAuthStateChange(async(e,s)=>{
+                    if(e==='SIGNED_IN'&&s?.user){
+                        this.user=s.user;
+                        await Data.syncFromCloud(); // 关键：同步云端数据
+                        App.onLogin();
+                    }else if(e==='SIGNED_OUT'){
+                        this.user=null;
+                        App.updateUI();
+                    }
+                });
                 const {data:{session}}=await this.supabase.auth.getSession();
-                if(session?.user)this.user=session.user;
+                if(session?.user){
+                    this.user=session.user;
+                    await Data.syncFromCloud();
+                }
             },
-            async login(e,p){try{const{data,error}=await this.supabase.auth.signInWithPassword({email:e,password:p});if(error)throw error;return{ok:true}}catch(err){return{ok:false,msg:err.message}}},
-            async register(e,p){try{const{data,error}=await this.supabase.auth.signUp({email:e,password:p});if(error)throw error;return{ok:true}}catch(err){return{ok:false,msg:err.message}}},
-            async logout(){await this.supabase.auth.signOut();Store.save({});App.updateUI()},
+            async login(e,p){
+                try{
+                    const{data,error}=await this.supabase.auth.signInWithPassword({email:e,password:p});
+                    if(error)throw error;
+                    return{ok:true};
+                }catch(err){return{ok:false,msg:err.message}}
+            },
+            async register(e,p){
+                try{
+                    const{data,error}=await this.supabase.auth.signUp({email:e,password:p});
+                    if(error)throw error;
+                    return{ok:true};
+                }catch(err){return{ok:false,msg:err.message}}
+            },
+            async logout(){await this.supabase.auth.signOut()},
             isLoggedIn(){return this.user!==null},
             getId(){return this.user?.id||null}
         };
         
-        // Data
         const Data = {
-            supabase:null, init(s){this.supabase=s},
-            async save(date,time){if(!this.supabase||!Auth.getId())return;
-                await this.supabase.from('kick_records').insert({user_id:Auth.getId(),record_date:date,record_time:time});
+            supabase:null,
+            init(s){this.supabase=s},
+            
+            // 从云端同步数据到本地
+            async syncFromCloud(){
+                if(!this.supabase || !Auth.getId()) return;
+                
+                try{
+                    const {data,error} = await this.supabase
+                        .from('kick_records')
+                        .select('record_date,record_time')
+                        .eq('user_id', Auth.getId())
+                        .order('record_date', {ascending:false});
+                    
+                    if(error) throw error;
+                    
+                    if(data && data.length > 0){
+                        // 合并数据到本地存储
+                        const localData = Store.getData();
+                        data.forEach(row => {
+                            const date = row.record_date;
+                            if(!localData[date]) localData[date] = [];
+                            // 避免重复添加
+                            if(!localData[date].includes(row.record_time)){
+                                localData[date].push(row.record_time);
+                            }
+                        });
+                        Store.save(localData);
+                        App.updateStats();
+                        console.log('✅ 云端数据同步完成:', data.length, '条');
+                    }
+                }catch(err){
+                    console.error('数据同步失败:', err);
+                }
+            },
+            
+            async save(date,time){
+                if(!this.supabase || !Auth.getId()) return;
+                await this.supabase.from('kick_records').insert({
+                    user_id: Auth.getId(),
+                    record_date: date,
+                    record_time: time
+                });
             }
         };
         
-        // App
         const App = {
             async init(){
                 Auth.supabase = window.supabase.createClient(CFG.SUPABASE.URL,CFG.SUPABASE.ANON_KEY);
@@ -437,13 +470,11 @@
                 document.getElementById('todayCount').textContent = today;
                 document.getElementById('weekTotal').textContent = total;
                 
-                // Stats page
                 const max = Math.max(...week.map(d=>d.count));
-                document.getElementById('weekTotal').textContent = total;
+                document.getElementById('weekTotalStat').textContent = total;
                 document.getElementById('weekAvg').textContent = Math.round(total/7)||0;
                 document.getElementById('maxDay').textContent = max;
                 
-                // Chart
                 const chart = document.getElementById('weekChart');
                 const maxH = 80;
                 chart.innerHTML = week.map(d=>{
@@ -451,7 +482,6 @@
                     return `<div class="bar-item"><div class="bar" style="height:${h}px"></div><div class="bar-label">${d.date.slice(-2)}日</div></div>`;
                 }).join('');
                 
-                // History
                 const history = document.getElementById('historyList');
                 const sorted = Object.entries(Store.getData()).sort((a,b)=>b[0].localeCompare(a[0]));
                 if(sorted.length===0){history.innerHTML='<div class="empty">暂无记录</div>'}else{history.innerHTML=sorted.slice(0,30).map(([date,times])=>`<div class="history-item"><span class="history-date">${date}</span><span class="history-count">${times.length}次</span></div>`).join('')}
@@ -460,7 +490,7 @@
                 if(!Auth.isLoggedIn()){this.showToast('请先登录哦 💕');showLogin();return}
                 const time = new Date().toISOString();
                 Store.addKick(time);
-                if(Auth.isLoggedIn()){await Data.save(Store.getToday(),time);}
+                await Data.save(Store.getToday(),time);
                 
                 const btn = document.getElementById('kickBtn');
                 btn.classList.add('kick');setTimeout(()=>btn.classList.remove('kick'),600);
@@ -473,10 +503,9 @@
             },
             showHeart(msg){document.querySelectorAll('.heart-bubble').forEach(e=>e.remove());const b=document.createElement('div');b.className='heart-bubble';b.textContent=msg;document.body.appendChild(b);setTimeout(()=>b.remove(),2000)},
             showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000)},
-            onLogin(){this.showToast('登录成功！💕');this.updateUI()}
+            onLogin(){this.showToast('登录成功！同步中... 💕');this.updateUI();this.updateStats()}
         };
         
-        // Pages
         function switchPage(p){
             document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));
             document.getElementById('page-'+p).classList.add('active');
@@ -487,7 +516,6 @@
             if(p!=='home')App.updateStats();
         }
         
-        // Auth UI
         function showLogin(){document.getElementById('loginModal').classList.add('show')}
         function hideLogin(){document.getElementById('loginModal').classList.remove('show')}
         function showRegister(){document.getElementById('registerModal').classList.add('show');hideLogin()}
@@ -498,7 +526,7 @@
             const p=document.getElementById('loginPw').value;
             if(!e||!p){document.getElementById('loginMsg').textContent='请填写信息';document.getElementById('loginMsg').className='form-msg error';return}
             const r=await Auth.login(e,p);
-            if(r.ok){hideLogin();App.onLogin()}else{document.getElementById('loginMsg').textContent=r.msg;document.getElementById('loginMsg').className='form-msg error'}
+            if(r.ok){hideLogin();}else{document.getElementById('loginMsg').textContent=r.msg;document.getElementById('loginMsg').className='form-msg error'}
         }
         
         async function handleRegister(){
@@ -513,10 +541,9 @@
         
         function recordKick(){App.recordKick()}
         
-        // Settings
         function showNickname(){document.getElementById('nicknameModal').classList.add('show')}
         function hideNickname(){document.getElementById('nicknameModal').classList.remove('show')}
-        function showEditDueDate(){document.getElementById('dueDateModal').classList.add('show')}
+        function showDueDate(){document.getElementById('dueDateModal').classList.add('show')}
         function hideDueDate(){document.getElementById('dueDateModal').classList.remove('show')}
         
         function saveNickname(){
