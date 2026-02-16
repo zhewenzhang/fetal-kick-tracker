@@ -1909,9 +1909,8 @@
                     </button>
                 </div>
                 
-                <div class="anonymous-login">
-                    <a onclick="handleAnonymousLogin()">暂不登录，先试试</a>
-                    <p class="anonymous-note">匿名使用功能受限，建议登录以获得完整体验和多设备同步</p>
+                <div class="anonymous-login" style="display:none;">
+                    <!-- 匿名登录已禁用 - 方案A：强制登录 -->
                 </div>
             </div>
             
@@ -1925,9 +1924,8 @@
                     <button class="auth-btn-primary" onclick="handleRegister()">注册</button>
                 </div>
                 
-                <div class="anonymous-login">
-                    <a onclick="handleAnonymousLogin()">暂不注册，先试试</a>
-                    <p class="anonymous-note">注册后可享受多设备同步和数据备份</p>
+                <div class="anonymous-login" style="display:none;">
+                    <!-- 匿名登录已禁用 - 方案A：强制登录 -->
                 </div>
             </div>
         </div>
@@ -2115,38 +2113,24 @@
                     // 同步用户数据
                     await syncUserData();
                 } else {
-                    // 没有会话，尝试匿名登录
-                    await signInAnonymous();
+                    // 方案A：强制登录 - 显示登录模态框，不允许匿名
+                    authState.initialized = true;
+                    showLoginModal();
                 }
             } catch (e) {
                 console.error('检查会话失败:', e);
-                await signInAnonymous();
+                // 方案A：强制登录 - 显示登录模态框
+                authState.initialized = true;
+                showLoginModal();
             }
         }
 
-        // ==================== 匿名登录 ====================
+        // ==================== 匿名登录（已禁用 - 方案A） ====================
         async function signInAnonymous() {
-            try {
-                // 检查现有会话（已在前面的 checkExistingSession 中处理）
-                if (authState.user) {
-                    currentUser = authState.user;
-                    return true;
-                }
-                
-                // 尝试匿名登录
-                if (supabase) {
-                    const { data, error } = await supabase.auth.signInAnonymously();
-                    if (error) throw error;
-                    // 匿名登录会自动触发 onAuthStateChange
-                    return true;
-                }
-            } catch (e) {
-                console.error('匿名登录失敗:', e);
-                // 离线模式使用临时ID
-                authState.initialized = true;
-                updateAuthUI();
-                return false;
-            }
+            // 方案A：强制登录 - 已禁用匿名登录
+            showLoginModal();
+            return false;
+        }
         }
 
         // ==================== 邮箱登录 ====================
@@ -2259,15 +2243,10 @@
             }
         }
 
-        // ==================== 匿名使用 ====================
+        // ==================== 匿名使用（已禁用） ====================
         async function handleAnonymousLogin() {
-            hideLoginModal();
-            
-            if (!authState.user) {
-                await signInAnonymous();
-            } else if (authState.isAnonymous) {
-                showToast('👤 继续以访客身份使用');
-            }
+            // 方案A：强制登录 - 已禁用匿名登录
+            showAuthMessage('error', '请先登录或注册账号', 'login');
         }
 
         // ==================== 退出登录 ====================
