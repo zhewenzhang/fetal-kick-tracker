@@ -12,7 +12,7 @@
             --pink-300: #FFC0CB; --pink-400: #FFB6C1; --pink-500: #FF69B4;
             --gradient: linear-gradient(135deg, #FFB6C1 0%, #FF69B4 100%);
             --bg: #FFFBFC; --card: #FFFFFF; --text: #4A4A4A; --text-light: #AAA;
-            --space-xs:4px; --space-sm:8px; --space-md:16px; --space-lg:24px; --space-xl:32px;
+            --space-xs:4px; --space-sm:8px; --space-md:16px; --space-lg:24px;
             --radius-sm:12px; --radius-md:20px; --radius-lg:28px; --radius-full:999px;
             --shadow: 0 4px 20px rgba(255,105,180,0.1); --shadow-lg: 0 8px 32px rgba(255,105,180,0.12);
         }
@@ -25,20 +25,27 @@
         .logo{font-size:10px;font-weight:500;letter-spacing:4px;color:var(--pink-500);margin-bottom:2px}
         .header h1{font-size:18px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
         
-        /* 用户信息条 - 精简版 */
+        /* 用户信息条 */
         .user-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-md);background:var(--card);padding:10px 14px;border-radius:var(--radius-md);box-shadow:var(--shadow)}
-        .user-info{display:flex;align-items:center;gap:var(--space-md)}
+        .user-info{display:flex;align-items:center;gap:var(--space-sm)}
         .user-name{font-size:15px;font-weight:600}
         .user-name .name{color:var(--pink-500)}
-        .user-name .countdown{font-size:12px;color:var(--text-light);font-weight:400;margin-left:var(--space-sm)}
+        .user-name .weeks{font-size:13px;color:var(--pink-400);font-weight:500}
         .btn-login{background:var(--gradient);color:white;border:none;padding:6px 14px;border-radius:var(--radius-full);font-size:11px;font-weight:600;cursor:pointer}
         
         /* 倒计时卡片 */
         .countdown-card{background:var(--card);border-radius:var(--radius-lg);padding:var(--space-lg);text-align:center;box-shadow:var(--shadow-lg);margin-bottom:var(--space-md)}
-        .countdown-weeks{font-size:16px;font-weight:600;color:var(--text);margin-bottom:var(--space-xs)}
-        .countdown-weeks span{color:var(--pink-500)}
-        .countdown-days{font-size:44px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
+        .countdown-days{font-size:48px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1}
         .countdown-days span{font-size:16px;font-weight:400;color:var(--text-light)}
+        .countdown-label{font-size:12px;color:var(--text-light);margin-top:var(--space-xs)}
+        
+        /* 鼓励语滚动 */
+        .tips-section{background:var(--card);border-radius:var(--radius-lg);padding:14px;box-shadow:var(--shadow);margin-bottom:var(--space-md);overflow:hidden}
+        .tips-track{display:flex;animation:scrollTips 30s linear infinite}
+        .tips-track.paused{animation-play-state:paused}
+        @keyframes scrollTips{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+        .tip-item{padding:8px 16px;white-space:nowrap;font-size:13px;color:var(--text);display:flex;align-items:center;gap:6px}
+        .tip-item::before{content:'💪';font-size:14px}
         
         /* 记录按钮 */
         .kick-section{text-align:center;padding:var(--space-md) 0}
@@ -144,7 +151,7 @@
             <div class="user-info">
                 <span class="user-name">
                     <span class="name" id="userDisplayName">宝宝</span>
-                    <span class="countdown" id="userCountdown"></span>
+                    <span class="weeks" id="userWeeks"></span>
                 </span>
             </div>
             <button class="btn-login" id="loginBtn" onclick="showLogin()">登录</button>
@@ -154,8 +161,15 @@
         <div class="page active" id="page-home">
             <!-- 倒计时 -->
             <div class="countdown-card">
-                <div class="countdown-weeks" id="countdownWeeks">约 <span>0</span> 周</div>
                 <div class="countdown-days"><span id="countdownDays">--</span> <span>天</span></div>
+                <div class="countdown-label">距离宝宝出生</div>
+            </div>
+
+            <!-- 鼓励语滚动 -->
+            <div class="tips-section">
+                <div class="tips-track" id="tipsTrack">
+                    <!-- 鼓励语内容 -->
+                </div>
             </div>
 
             <!-- 记录按钮 -->
@@ -249,7 +263,7 @@
                         <svg class="settings-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
                         <span class="settings-label">版本</span>
                     </div>
-                    <span style="color:var(--text-light);font-size:12px">v3.1</span>
+                    <span style="color:var(--text-light);font-size:12px">v5.0</span>
                 </div>
             </div>
         </div>
@@ -320,6 +334,25 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
     <script>
+        // 鼓励语和孕期知识
+        const TIPS = [
+            '宝宝能感受到你的爱，保持心情愉快很重要',
+            '每天和宝宝说说话，建立最初的亲子连接',
+            '适当的运动有助于顺产，妈妈要坚持下去哦',
+            '均衡营养摄入，让宝宝健康成长',
+            '保持充足睡眠，对自己和宝宝都重要',
+            '记录胎动是了解宝宝健康的好方法',
+            '妈妈坚强，宝宝也会感受到力量',
+            '孕期不适是暂时的，坚持就是胜利',
+            '定期产检，关注宝宝发育情况',
+            '保持室内空气流通，对妈妈和宝宝都好',
+            '多喝水有助于羊水充足，宝宝更舒适',
+            '听听轻柔的音乐，有助于宝宝情绪稳定',
+            '爸爸的参与能让孕期更加幸福',
+            '不要担心体型变化，这是最美的印记',
+            '每一天的坚持都是对宝宝的爱'
+        ];
+
         const CFG = { SUPABASE:{ URL:'https://uwvlduprxppwdkjkvwby.supabase.co', ANON_KEY:'sb_publishable_NCyVuDM0d_Nkn50QvKdY-Q_OCQJsN5L'}};
         
         const Store = {
@@ -427,7 +460,13 @@
                 this.loadSettings();
                 this.updateUI();
                 this.updateStats();
+                this.initTips();
                 document.getElementById('ripple1').classList.add('active');
+            },
+            initTips(){
+                const track = document.getElementById('tipsTrack');
+                // 复制内容实现无缝滚动
+                track.innerHTML = TIPS.map(tip => `<div class="tip-item">${tip}</div>`).join('') + TIPS.map(tip => `<div class="tip-item">${tip}</div>`).join('');
             },
             loadSettings(){
                 const s = Store.getSet();
@@ -437,21 +476,18 @@
                 document.getElementById('settingsNickname').textContent = s.nickname || '未设置';
                 document.getElementById('settingsDueDate').textContent = s.dueDate || '未设置';
                 
-                // 倒计时计算
+                // 倒计时和周数
                 if(s.dueDate){
                     const due = new Date(s.dueDate);
                     const today = new Date();
                     const daysTotal = Math.ceil((due - today) / (1000*60*60*24));
-                    const weeks = Math.floor(daysTotal / 7);
-                    const days = daysTotal % 7;
+                    const weeks = Math.floor((280 - daysTotal) / 7); // 假设40周
                     
                     document.getElementById('countdownDays').textContent = daysTotal > 0 ? daysTotal : 0;
-                    document.getElementById('countdownWeeks').innerHTML = `约 <span>${weeks}</span> 周${days > 0 ? ' '+days+' 天' : ''}`;
-                    document.getElementById('userCountdown').textContent = `约${weeks}周${days}天`;
+                    document.getElementById('userWeeks').textContent = weeks > 0 ? `${weeks}周` : '';
                 }else{
                     document.getElementById('countdownDays').textContent = '--';
-                    document.getElementById('countdownWeeks').innerHTML = '请设置预产期';
-                    document.getElementById('userCountdown').textContent = '';
+                    document.getElementById('userWeeks').textContent = '';
                 }
                 
                 const vibrateToggle = document.getElementById('vibrateToggle');
